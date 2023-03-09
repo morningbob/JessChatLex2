@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-jesschat-dev-155709-authRole",
+      "UnauthRoleArn": "arn:aws:iam::611916090982:role/amplify-jesschat-dev-155709-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::611916090982:role/amplify-jesschat-dev-155709-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-jesschat-dev-155709-deployment",
+      "UnauthRoleName": "amplify-jesschat-dev-155709-unauthRole",
+      "StackName": "amplify-jesschat-dev-155709",
+      "StackId": "arn:aws:cloudformation:us-east-1:611916090982:stack/amplify-jesschat-dev-155709/f63e23b0-bebc-11ed-a9d2-0e4452f7c397",
+      "AmplifyAppId": "d3q4gvnjbypptf"
+    },
+    "categories": {
+      "auth": {
+        "jesschat8f59c7d3": {}
+      }
+    }
+  }
+}
