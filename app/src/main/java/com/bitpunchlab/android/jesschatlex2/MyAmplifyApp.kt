@@ -14,7 +14,7 @@ class MyAmplifyApp : Application() {
 
         try {
             //Amplify.configure(applicationContext)
-            configureAmplify(applicationContext)
+            //configureAmplify(applicationContext)
             Log.i("MyAmplifyApp", "Initialized Amplify")
         } catch (error: AmplifyException) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error)

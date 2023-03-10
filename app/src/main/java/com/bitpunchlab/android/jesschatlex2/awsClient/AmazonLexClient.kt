@@ -2,9 +2,10 @@ package com.bitpunchlab.android.jesschatlex2.awsClient
 
 import android.content.Context
 import android.util.Log
-import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobile.client.Callback
-import com.amazonaws.mobile.client.UserStateDetails
+import androidx.compose.foundation.interaction.Interaction
+//import com.amazonaws.mobile.client.AWSMobileClient
+//import com.amazonaws.mobile.client.Callback
+//import com.amazonaws.mobile.client.UserStateDetails
 import com.amazonaws.mobileconnectors.lex.interactionkit.InteractionClient
 import com.amazonaws.mobileconnectors.lex.interactionkit.Response
 import com.amazonaws.mobileconnectors.lex.interactionkit.config.InteractionConfig
@@ -20,7 +21,7 @@ import org.json.JSONObject
 import java.lang.Exception
 
 object AmazonLexClient {
-
+/*
     var lexClient : InteractionClient? = null
 
     private val _messageState = MutableStateFlow<String>("")
@@ -120,4 +121,10 @@ object AmazonLexClient {
     fun sendMessage(message: String) {
         lexClient!!.textInForTextOut(message, null)
     }
+
+    fun sendMessage2() {
+        //Interactions
+    }
+
+*/
 }

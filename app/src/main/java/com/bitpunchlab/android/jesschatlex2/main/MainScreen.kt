@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -105,9 +106,9 @@ fun MainScreen(navController: NavHostController,
 
 
             ) {
-                Button(onClick = { mainViewModel.logoutUser() }) {
-                    Text(text = "logout")
-                }
+                //Button(onClick = { mainViewModel.logoutUser() }) {
+                //    Text(text = "logout")
+                //}
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxHeight(0.75f)

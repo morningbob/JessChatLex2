@@ -33,5 +33,23 @@
       "providerPlugin": "awscloudformation",
       "service": "Lex"
     }
+  },
+  "parameters": {
+    "AMPLIFY_interactions_lexchat_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "interactions",
+          "resourceName": "lexchat"
+        }
+      ]
+    },
+    "AMPLIFY_interactions_lexchat_s3Key": {
+      "usedBy": [
+        {
+          "category": "interactions",
+          "resourceName": "lexchat"
+        }
+      ]
+    }
   }
 }

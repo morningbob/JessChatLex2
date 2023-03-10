@@ -13,9 +13,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.bitpunchlab.android.jesschatlex2.ui.theme.JessChatLexTheme
 import androidx.navigation.compose.rememberNavController
+import com.amazonaws.mobile.client.AWSMobileClient
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.amplifyframework.kotlin.core.Amplify
 import com.bitpunchlab.android.jesschatlex2.awsClient.AmazonLexClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.main.MainScreen
 import com.bitpunchlab.android.jesschatlex2.main.MessagesRecordScreen
 import com.bitpunchlab.android.jesschatlex2.userAccount.*
@@ -32,9 +34,11 @@ class MainActivity : ComponentActivity() {
 
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        AmazonLexClient.initializeLex(applicationContext)
-        //Amplify.Auth.rememberDevice()
+        MobileClient.initializeMobileClient(applicationContext)
 
+        //AmazonLexClient.initializeLex(applicationContext)
+        //Amplify.Auth.rememberDevice()
+/*
         CoroutineScope(Dispatchers.IO).launch {
             val authSession = Amplify.Auth.fetchAuthSession(
                 //{ Log.i("AmplifyQuickstart", "Auth session = ") },
@@ -43,10 +47,14 @@ class MainActivity : ComponentActivity() {
             Log.i("Main activity", "Auth session = $authSession")
             // retrieve tokens
             val auth = authSession as AWSCognitoAuthSession
+            mainViewModel.cognitoAuthSession.postValue(auth)
+            //auth.awsCredentialsResult.value.
             Log.i("token: " , auth.userPoolTokensResult.value?.accessToken.toString())
-
+            //auth.
             //authListening()
-
+            //val access = auth.awsCredentialsResult.value?.accessKeyId
+            //val secret = auth.awsCredentialsResult.value?.secretAccessKey
+            //AWSMobileClient.getInstance().credentials.awsAccessKeyId = ""
             // check the auth session, if the user is signed it here is necessary
             // because listening to auth state change, doesn't not detect the first state
             if (authSession.isSignedIn) {
@@ -57,6 +65,8 @@ class MainActivity : ComponentActivity() {
                 Log.i("main activity", "is not signed in")
             }
         }
+
+ */
         setContent {
             JessChatLexTheme {
                 // A surface container using the 'background' color from the theme

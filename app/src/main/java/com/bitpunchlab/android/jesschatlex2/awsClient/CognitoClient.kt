@@ -2,7 +2,7 @@ package com.bitpunchlab.android.jesschatlex2.awsClient
 
 import android.util.Log
 import aws.smithy.kotlin.runtime.ServiceException
-import com.amazonaws.mobile.client.AWSMobileClient
+//import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.services.cognitoidentity.AmazonCognitoIdentity
 import com.amazonaws.services.cognitoidentity.AmazonCognitoIdentityClient
 import com.amazonaws.services.cognitoidentity.model.CognitoIdentityProvider
@@ -15,8 +15,6 @@ import com.amplifyframework.auth.cognito.result.AWSCognitoAuthSignOutResult
 import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.kotlin.core.Amplify
 import kotlinx.coroutines.*
-import org.json.JSONException
-import org.json.JSONObject
 import java.security.InvalidParameterException
 
 object CognitoClient {
