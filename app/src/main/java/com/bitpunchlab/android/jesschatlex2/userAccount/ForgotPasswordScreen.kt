@@ -321,7 +321,7 @@ fun ResetPasswordSucceededDialog(forgotPassViewModel: ForgotPassViewModel, mode:
 fun ResetPasswordFailedDialog(forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
     CustomDialog(
         title = "Reset Password Failed",
-        message = "We couldn't reset your password.  Please make sure you have wifi.  Other than that, the server might be down.  Please try again later.  If the problem persists, please contact admin@jessbitcom.pro",
+        message = "We couldn't reset your password.  Please make sure you have wifi and the code is correct.  Other than that, the server might be down.  Please try again later.  If the problem persists, please contact admin@jessbitcom.pro",
         backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBrownBackground,
         buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),

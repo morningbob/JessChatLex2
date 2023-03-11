@@ -9,6 +9,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -92,6 +93,37 @@ class RegisterViewModel() : ViewModel() {
     fun registerUser() {
         _loadingAlpha.value = 1f
         CoroutineScope(Dispatchers.IO).launch {
+            if (MobileClient.signUp(nameState.value, emailState.value, passwordState.value)) {
+                _showRegistrationStatusDialog.value = 1
+                _loadingAlpha.value = 0f
+                resetFields()
+            } else {
+                _showRegistrationStatusDialog.value = 2
+                _loadingAlpha.value = 0f
+                resetFields()
+            }
+        }
+
+    }
+
+    fun resetFields() {
+        _nameState.value = ""
+        _emailState.value = ""
+        _passwordState.value = ""
+        _confirmPassState.value = ""
+        _nameErrorState.value = " "
+        _emailErrorState.value = " "
+        _passwordErrorState.value = " "
+        _confirmPassErrorState.value = " "
+    }
+
+    fun updateRegistrationStatusDialog(newValue: Int) {
+        //_showFailureDialog.value = newValue
+        _showRegistrationStatusDialog.value = newValue
+    }
+}
+/*
+        CoroutineScope(Dispatchers.IO).launch {
             if (CognitoClient.registerUser(nameState.value, emailState.value, passwordState.value)) {
                 // here we set the alpha to 0 when the result came back,
                 // need to set it here, then it wait for the result
@@ -110,23 +142,5 @@ class RegisterViewModel() : ViewModel() {
             // can't set alpha here, because it will not wait for the result.
 
         }
-    }
 
-    fun resetFields() {
-        _nameState.value = ""
-        _emailState.value = ""
-        _passwordState.value = ""
-        _confirmPassState.value = ""
-        _nameErrorState.value = " "
-        _emailErrorState.value = " "
-        _passwordErrorState.value = " "
-        _confirmPassErrorState.value = " "
-    }
-
-    fun updateRegistrationStatusDialog(newValue: Int) {
-        //_showFailureDialog.value = newValue
-        _showRegistrationStatusDialog.value = newValue
-    }
-
-
-}
+         */

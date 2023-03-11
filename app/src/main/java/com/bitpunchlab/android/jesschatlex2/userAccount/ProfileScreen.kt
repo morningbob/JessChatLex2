@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.bitpunchlab.android.jesschatlex2.Login
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.*
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
@@ -25,6 +27,8 @@ import com.bitpunchlab.android.jesschatlex2.ui.theme.JessChatLex
 @Composable
 fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel,
     profileViewModel: ProfileViewModel = viewModel()) {
+
+    val loginState by MobileClient.isLoggedIn.collectAsState()
 
     val userName by mainViewModel.userName.collectAsState()
     val userEmail by mainViewModel.userEmail.collectAsState()
@@ -45,6 +49,17 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
             return ColorMode.LIGHT_PURPLE
         }
         return ColorMode.DARK_PURPLE
+    }
+
+    LaunchedEffect(key1 = loginState) {
+        if (loginState == false) {
+            //navController.popBackStack()
+            navController.navigate(Login.route) {
+                popUpTo(navController.graph.id) {
+                    inclusive = false
+                }
+            }
+        }
     }
 
     val paddingValues = WindowInsets.navigationBars.asPaddingValues()

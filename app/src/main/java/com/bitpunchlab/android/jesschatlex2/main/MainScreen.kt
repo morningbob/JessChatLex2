@@ -32,6 +32,7 @@ import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.Records
 import com.bitpunchlab.android.jesschatlex2.awsClient.AmazonLexClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.CustomCircularProgressBar
 import com.bitpunchlab.android.jesschatlex2.base.SendIcon
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
@@ -54,7 +55,8 @@ fun MainScreen(navController: NavHostController,
 
     val loadingAlpha by mainViewModel.loadingAlpha.collectAsState()
 
-    val loginState by mainViewModel.isLoggedIn.collectAsState()
+    //val loginState by mainViewModel.isLoggedIn.collectAsState()
+    val loginState by MobileClient.isLoggedIn.collectAsState()
     var input by remember { mutableStateOf("") }
 
     var shouldNavigateRecords by remember { mutableStateOf(false) }
@@ -62,8 +64,13 @@ fun MainScreen(navController: NavHostController,
     val innerPadding = 70.dp
 
     LaunchedEffect(key1 = loginState) {
-        if (!loginState) {
-            navController.navigate(Login.route)
+        if (loginState == false) {
+            navController.navigate(Login.route) {
+                popUpTo(navController.graph.id) {
+                    inclusive = false
+                }
+            }
+            //navController.navigate(Login.route)
         }
     }
 

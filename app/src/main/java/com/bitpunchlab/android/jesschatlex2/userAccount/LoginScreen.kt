@@ -26,6 +26,7 @@ import com.bitpunchlab.android.jesschatlex2.ForgotPassword
 import com.bitpunchlab.android.jesschatlex2.Main
 import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.*
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
@@ -57,23 +58,26 @@ fun LoginScreen(navController: NavHostController,
     val emailErrorState by loginViewModel.emailErrorState.collectAsState()
     val passwordErrorState by loginViewModel.passwordErrorState.collectAsState()
     val loadingAlpha by loginViewModel.loadingAlpha.collectAsState()
-    val loginState by mainViewModel.isLoggedIn.collectAsState()
+    //val loginState by mainViewModel.isLoggedIn.collectAsState()
+    val loginState by MobileClient.isLoggedIn.collectAsState()
     val showFailureDialog by loginViewModel.showFailureDialog.collectAsState()
     val showConfirmEmailDialog by loginViewModel.showConfirmEmailDialog.collectAsState()
     val showConfirmEmailStatus by loginViewModel.showConfirmEmailStatus.collectAsState()
+    val resendCodeStatus by loginViewModel.resendCodeStatus.collectAsState()
     
     val readyLogin by loginViewModel.readyLogin.collectAsState()
 
     val confirmEmail by loginViewModel.confirmEmail.collectAsState()
     val confirmCode by loginViewModel.confirmCode.collectAsState()
     val confirmEmailError by loginViewModel.confirmEmailError.collectAsState()
+    val resendCodeEmailError by loginViewModel.resendCodeEmailError.collectAsState()
     val confirmCodeError by loginViewModel.confirmCodeError.collectAsState()
 
-    val rememberDeviceCheckbox by loginViewModel.rememberDeviceCheckbox.collectAsState()
+
 
     // LaunchedEffect is used to run code that won't trigger recomposition of the view
     LaunchedEffect(key1 = loginState) {
-        if (loginState) {
+        if (loginState == true) {
             navController.navigate(Main.route)
         }
     }
@@ -156,23 +160,6 @@ fun LoginScreen(navController: NavHostController,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Checkbox(
-                        checked = rememberDeviceCheckbox,
-                        onCheckedChange = {
-                            loginViewModel.updateRememberDevice(it)
-                        },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = JessChatLex.getColor(mode, Element.BANNER),
-                            uncheckedColor = Color.White,
-
-                            ),
-                    )
-                    GeneralText(
-                        textString = "Remember me",
-                        modifier = Modifier
-                            .padding(0.dp),
-                        textColor = JessChatLex.getColor(mode, Element.TEXT)
-                    )
                     //Spacer(modifier = Modifier.weight(1f))
                 }
             }
@@ -211,6 +198,21 @@ fun LoginScreen(navController: NavHostController,
                 onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
             )
 
+            // when code = 0, nothing happen
+            // 1 = dialog, get email
+            // 2 = code sent
+            // 3 = failed to send code
+            GeneralText(
+                textString = "Resend Verification Code",
+                modifier = Modifier
+                    .padding(top = 10.dp, bottom = 5.dp),
+                textColor = JessChatLex.getColor(mode, Element.CLICKABLE),//JessChatLex.blueBackground,
+                textAlign = TextAlign.Center,
+                onClick = { // get email
+                    loginViewModel.updateResendCodeStatus(1)
+                    }
+            )
+
         }
         if (showFailureDialog) {
             LoginFailureDialog(loginViewModel = loginViewModel, mode = mode)
@@ -224,8 +226,6 @@ fun LoginScreen(navController: NavHostController,
                     loginViewModel.updateShowConfirmEmailDialog(false)
                     loginViewModel.updateConfirmEmailStatus(3)},
 
-
-                errorString = confirmEmailError
             )
         }
 
@@ -233,6 +233,22 @@ fun LoginScreen(navController: NavHostController,
             ConfirmEmailResultDialog(confirmEmailStatus = showConfirmEmailStatus,
                 loginViewModel = loginViewModel, mode = mode, error = confirmEmailError
                 )
+        }
+
+        if (resendCodeStatus == 1) {
+            ResendCodeDialog(
+                loginViewModel = loginViewModel,
+                mode = mode,
+                emailError = {
+                    loginViewModel.updateResendCodeEmailError(it)
+                    loginViewModel.updateResendCodeStatus(0)
+                    loginViewModel.updateResendCodeStatus(4)
+                })
+        } else {
+            ResendCodeResultDialog(
+                status = resendCodeStatus,
+                loginViewModel = loginViewModel,
+                mode = mode, errorString = resendCodeEmailError)
         }
 
         Box(
@@ -261,12 +277,8 @@ fun LoginFailureDialog(loginViewModel: LoginViewModel, mode: ColorMode) {
 }
 
 @Composable
-fun ConfirmEmailDialog(emailState: String? = null,
-                       codeState: String? = null,
-                       loginViewModel: LoginViewModel, mode: ColorMode,
-                       emailError: ((String) -> Unit)? = null,
-                       errorString: String? = null
-                        ) {
+fun ConfirmEmailDialog(loginViewModel: LoginViewModel, mode: ColorMode,
+                       emailError: ((String) -> Unit)? = null,) {
     CustomDialog(
         title = "Verification Code",
         message = "Please enter the verification code in the email.",
@@ -337,5 +349,95 @@ fun ConfirmEmailResultDialog(confirmEmailStatus: Int, error: String? = null, log
             okOnClick = { _, _ -> loginViewModel.updateConfirmEmailStatus(0) },)
     }
 }
+
+@Composable
+fun ResendCodeDialog(loginViewModel: LoginViewModel, emailError: ((String) -> Unit)? = null,
+                     mode: ColorMode) {
+    CustomDialog(
+        title = "Resend Verification Code",
+        message = "Please enter the email you registered the app.",
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
+        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+        fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
+        fieldOne = "Email",
+        onDismiss = { loginViewModel.updateResendCodeStatus(0) },
+        okOnClick = { email, _ ->
+            Log.i("resend code dialog", "email: $email")
+            if (!email.isNullOrEmpty()) {
+                val error = InputValidation.verifyEmail(email)
+                if (error == "") {
+                    loginViewModel.resendVerificationCode(email)
+                    loginViewModel.updateResendCodeStatus(0)
+                } else {
+                    emailError?.invoke(error)
+                }
+            } else {
+                emailError?.invoke("Email is required.")
+            }
+        },
+        cancelOnClick = { _, _ ->
+            loginViewModel.updateResendCodeStatus(0) },)
+}
+
+@Composable
+fun ResendCodeResultDialog(status: Int, loginViewModel: LoginViewModel, mode: ColorMode,
+    errorString: String? = null) {
+    if (status == 2) {
+        CustomDialog(
+            title = "Resend Verification Code",
+            message = "New verification code was sent to your email.  Please check your email.",
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+            onDismiss = { loginViewModel.updateResendCodeStatus(0)},
+            okOnClick = { _, _ -> loginViewModel.updateResendCodeStatus(0)},
+            )
+    } else if (status == 3) {
+        CustomDialog(
+            title = "Resend Verification Code",
+            message = "We couldn't send a verification code.  Please make sure that you have wifi, and the email is the one you use to register the app.  Other than that, the server may be down.",
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+            onDismiss = { loginViewModel.updateResendCodeStatus(0)},
+            okOnClick = { _, _ -> loginViewModel.updateResendCodeStatus(0)})
+    } else if (status == 4 && !errorString.isNullOrEmpty()) {
+        CustomDialog(
+            title = "Resend Code Error",
+            message = errorString,
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+            onDismiss = { loginViewModel.updateResendCodeStatus(0) },
+            okOnClick = { _, _ -> loginViewModel.updateResendCodeStatus(0)})
+    }
+}
+/*
+val rememberDeviceCheckbox by loginViewModel.rememberDeviceCheckbox.collectAsState()
+                    Checkbox(
+                        checked = rememberDeviceCheckbox,
+                        onCheckedChange = {
+                            loginViewModel.updateRememberDevice(it)
+                        },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = JessChatLex.getColor(mode, Element.BANNER),
+                            uncheckedColor = Color.White,
+
+                            ),
+                    )
+
+                    GeneralText(
+                        textString = "Remember me",
+                        modifier = Modifier
+                            .padding(0.dp),
+                        textColor = JessChatLex.getColor(mode, Element.TEXT)
+                    )
+
+                     */
 
 

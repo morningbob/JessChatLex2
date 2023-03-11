@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.saveable
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,8 +52,12 @@ class LoginViewModel : ViewModel() {
     private val _confirmCodeError = MutableStateFlow<String>(" ")
     val confirmCodeError : StateFlow<String> = _confirmCodeError.asStateFlow()
 
-    private val _rememberDeviceCheckbox = MutableStateFlow<Boolean>(false)
-    val rememberDeviceCheckbox : StateFlow<Boolean> = _rememberDeviceCheckbox.asStateFlow()
+    private val _resendCodeStatus = MutableStateFlow<Int>(0)
+    val resendCodeStatus : StateFlow<Int> = _resendCodeStatus.asStateFlow()
+
+    private val _resendCodeEmailError = MutableStateFlow<String>("")
+    val resendCodeEmailError : StateFlow<String> = _resendCodeEmailError.asStateFlow()
+
 
 
     init {
@@ -60,13 +65,6 @@ class LoginViewModel : ViewModel() {
             combine(emailErrorState, passwordErrorState) { email, password ->
                 _readyLogin.value = email == "" && password == ""
             }.collect()
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            rememberDeviceCheckbox.collect() { checked ->
-                //if (checked) {
-                //    CognitoClient.rememberDevice()
-                //}
-            }
         }
     }
 
@@ -83,26 +81,110 @@ class LoginViewModel : ViewModel() {
     fun loginUser() {
         _loadingAlpha.value = 1f
         CoroutineScope(Dispatchers.IO).launch {
-            if (CognitoClient.loginUser(email = emailState.value, password = passwordState.value)) {
-                // navigate to main
-                // setting the alpha here and below, duplicately, because of timing issue
-                // want to set to 0f only when login result came back
+            if (MobileClient.signIn(emailState.value, passwordState.value)) {
                 _loadingAlpha.value = 0f
                 resetFields()
-                // after signin succeeded, if the checked value is true,
-                // we remember the device
-                if (CognitoClient.rememberDevice()) {
-                    Log.i("remember device", "success")
-                }
             } else {
-                // display alert
-                Log.i("login user", "failure")
-                resetFields()
                 _showFailureDialog.value = true
                 _loadingAlpha.value = 0f
+                resetFields()
+            }
+        }
+
+    }
+
+    // 0 means not ready, 1 means success, 2 means failure
+    fun verifyConfirmCode(email: String, code: String) {
+        _loadingAlpha.value = 1f
+        CoroutineScope(Dispatchers.IO).launch {
+            if (MobileClient.confirmSignUp(email, code)) {
+                Log.i("verify code", "success")
+                // show success alert
+                _loadingAlpha.value = 0f
+                _showConfirmEmailStatus.value = 1
+            } else {
+                Log.i("verify code", "failed")
+                _loadingAlpha.value = 0f
+                _showConfirmEmailStatus.value = 2
             }
         }
     }
+
+    fun resendVerificationCode(email: String) {
+        _loadingAlpha.value = 1f
+        CoroutineScope(Dispatchers.IO).launch {
+            if (MobileClient.resendConfirmationCode(email)) {
+                _loadingAlpha.value = 0f
+                _resendCodeStatus.value = 2
+            } else {
+                _loadingAlpha.value = 0f
+                _resendCodeStatus.value = 3
+            }
+        }
+    }
+
+    fun updateShowDialog(newValue: Boolean) {
+        _showFailureDialog.value = newValue
+    }
+
+    fun updateShowConfirmEmailDialog(newValue: Boolean) {
+        _showConfirmEmailDialog.value = newValue
+    }
+
+    fun updateConfirmEmailStatus(newValue: Int) {
+        _showConfirmEmailStatus.value = newValue
+    }
+
+    fun updateResendCodeStatus(newValue: Int) {
+        _resendCodeStatus.value = newValue
+    }
+
+    fun updateConfirmEmail(newValue: String) {
+        _confirmEmail.value = newValue
+    }
+
+    fun updateConfirmCode(newValue: String) {
+        _confirmCode.value = newValue
+    }
+
+    fun updateConfirmEmailError(newValue: String) {
+        _confirmEmailError.value = newValue
+    }
+
+    fun updateResendCodeEmailError(newValue: String) {
+        _resendCodeEmailError.value = newValue
+    }
+
+    private fun resetFields() {
+        _emailState.value = ""
+        _passwordState.value = ""
+        _emailErrorState.value = " "
+        _passwordState.value = " "
+    }
+}
+/*
+       CoroutineScope(Dispatchers.IO).launch {
+           if (CognitoClient.loginUser(email = emailState.value, password = passwordState.value)) {
+               // navigate to main
+               // setting the alpha here and below, duplicately, because of timing issue
+               // want to set to 0f only when login result came back
+               _loadingAlpha.value = 0f
+               resetFields()
+               // after signin succeeded, if the checked value is true,
+               // we remember the device
+               if (CognitoClient.rememberDevice()) {
+                   Log.i("remember device", "success")
+               }
+           } else {
+               // display alert
+               Log.i("login user", "failure")
+               resetFields()
+               _showFailureDialog.value = true
+               _loadingAlpha.value = 0f
+           }
+       }
+
+        */
 /*
     fun recoverUser(email: String) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -114,8 +196,19 @@ class LoginViewModel : ViewModel() {
         }
     }
 */
-    // 0 means not ready, 1 means success, 2 means failure
-    fun verifyConfirmCode(email: String, code: String) {
+/*
+    fun sendVerificationCode(email: String) {
+        _loadingAlpha.value = 1f
+        CoroutineScope(Dispatchers.IO).launch {
+            if (CognitoClient.resendVerificationCode(email)) {
+                _loadingAlpha.value = 0f
+
+            } else {
+                _loadingAlpha.value = 0f
+            }
+        }
+    }
+    fun verifyConfirmCode1(email: String, code: String) {
         //_showConfirmEmailDialog.value = true
         Log.i("verify confirm code", "received: $code")
         _loadingAlpha.value = 1f
@@ -132,52 +225,9 @@ class LoginViewModel : ViewModel() {
             }
         }
     }
-/*
-    fun sendVerificationCode(email: String) {
-        _loadingAlpha.value = 1f
-        CoroutineScope(Dispatchers.IO).launch {
-            if (CognitoClient.resendVerificationCode(email)) {
-                _loadingAlpha.value = 0f
-
-            } else {
-                _loadingAlpha.value = 0f
-            }
-        }
-    }
-*/
-    fun updateShowDialog(newValue: Boolean) {
-        _showFailureDialog.value = newValue
-    }
-
-    fun updateShowConfirmEmailDialog(newValue: Boolean) {
-        _showConfirmEmailDialog.value = newValue
-    }
-
-    fun updateConfirmEmailStatus(newValue: Int) {
-        _showConfirmEmailStatus.value = newValue
-    }
-
-    fun updateConfirmEmail(newValue: String) {
-        _confirmEmail.value = newValue
-    }
-
-    fun updateConfirmCode(newValue: String) {
-        _confirmCode.value = newValue
-    }
-
-    fun updateConfirmEmailError(newValue: String) {
-        _confirmEmailError.value = newValue
-    }
-
-    fun updateRememberDevice(newValue: Boolean) {
+    private val _rememberDeviceCheckbox = MutableStateFlow<Boolean>(false)
+    val rememberDeviceCheckbox : StateFlow<Boolean> = _rememberDeviceCheckbox.asStateFlow()
+fun updateRememberDevice(newValue: Boolean) {
         _rememberDeviceCheckbox.value = newValue
     }
-
-
-    private fun resetFields() {
-        _emailState.value = ""
-        _passwordState.value = ""
-        _emailErrorState.value = " "
-        _passwordState.value = " "
-    }
-}
+*/

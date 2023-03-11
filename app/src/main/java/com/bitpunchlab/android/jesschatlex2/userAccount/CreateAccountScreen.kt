@@ -26,6 +26,7 @@ import com.bitpunchlab.android.jesschatlex2.Login
 import com.bitpunchlab.android.jesschatlex2.Main
 import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.*
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
@@ -46,7 +47,8 @@ fun CreateAccountScreen(navController: NavHostController,
     val passwordErrorState by registerViewModel.passwordErrorState.collectAsState()
     val confirmPassErrorState by registerViewModel.confirmPassErrorState.collectAsState()
     val loadingAlpha by registerViewModel.loadingAlpha.collectAsState()
-    val loginState by mainViewModel.isLoggedIn.collectAsState()
+    //val loginState by mainViewModel.isLoggedIn.collectAsState()
+    val loginState by MobileClient.isLoggedIn.collectAsState()
     val showRegistrationStatusDialog by registerViewModel.showRegistrationStatusDialog.collectAsState()
     val readyRegister by registerViewModel.readyRegister.collectAsState()
     val shouldRedirectLogin by registerViewModel.shouldRedirectLogin.collectAsState()
@@ -64,7 +66,7 @@ fun CreateAccountScreen(navController: NavHostController,
     }
 
     LaunchedEffect(key1 = loginState) {
-        if (loginState) {
+        if (loginState == true) {
             navController.navigate(Main.route)
         }
     }

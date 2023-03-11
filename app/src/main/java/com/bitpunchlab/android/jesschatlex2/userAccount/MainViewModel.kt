@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.interaction.Interaction
+import androidx.compose.material.ModalDrawer
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -30,6 +31,7 @@ import com.amplifyframework.kotlin.core.Amplify
 import com.bitpunchlab.android.jesschatlex2.awsClient.AmazonLexClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.LexClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.database.ChatDatabase
 import com.bitpunchlab.android.jesschatlex2.helpers.WhoSaid
 import com.bitpunchlab.android.jesschatlex2.models.Message
@@ -61,24 +63,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // listen to login status
     init {
-        listenLoginStatus()
+        //listenLoginStatus()
         listenLexMessages()
+        // I listen to sign in state, even before the AWS Mobile Client is initialized
+        // so, it can detect the sign in from very early on
+        MobileClient.listenUserState()
         // we watch when isLogged in is true, we get the name
         CoroutineScope(Dispatchers.IO).launch {
             isLoggedIn.collect() { it ->
                 if (it) {
                     //retrieveUserName()
-                    val pair = CognitoClient.getUserNameEmail()
-                    pair?.let {
-                        _userName.value = it.first
-                        _userEmail.value = it.second
-                    }
+                    //val pair = CognitoClient.getUserNameEmail()
+                    //pair?.let {
+                    //    _userName.value = it.first
+                    //    _userEmail.value = it.second
+                    //}
                 }
             }
         }
         cognitoAuthSession.observeForever(androidx.lifecycle.Observer { auth ->
             auth?.let {
-                LexClient.initializeLex(getApplication<Application>().applicationContext, auth)
+                //LexClient.initializeLex(getApplication<Application>().applicationContext, auth)
             }
         })
     }
@@ -132,14 +137,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun listenLexMessages() {
         CoroutineScope(Dispatchers.IO).launch {
 
-            LexClient.messageState.collect() {
+            MobileClient.messageState.collect() {
                 if (it != "") {
                     val message = Message(
                         UUID.randomUUID().toString(),
                         WhoSaid.Lex,
                         it
                     )
-                    //_newMessage.value = message
                     currentMessageList.add(message)
                     insertMessage(message)
                     _loadingAlpha.value = 0f
@@ -157,7 +161,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         if (messageString != "") {
             _loadingAlpha.value = 1f
             //AmazonLexClient.sendMessage(messageString)
-            LexClient.sendMessage(messageString)
+            //LexClient.sendMessage(messageString)
+            MobileClient.sendMessage(messageString)
             //a(getApplication<Application>().applicationContext)
             val message = Message(
                 UUID.randomUUID().toString(),
@@ -181,77 +186,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun insertMessage(message: Message) {
         CoroutineScope(Dispatchers.IO).launch {
-            //withContext(uiScope.coroutineContext) { // Use instead of the default context
             database.chatDAO.insertMessages(message)
         }
     }
 
     fun logoutUser() {
         CoroutineScope(Dispatchers.IO).launch {
-            CognitoClient.logoutUser()
+            //CognitoClient.logoutUser()
+            MobileClient.signOut()
         }
     }
 
-    fun a(context: Context) {
-        //AmazonLexRuntimeClient::setRegion(Region::)
-        //AmazonLexRuntimeClient::
 
-        val textReq = PostTextRequest()
-        textReq.botName = "BookTrip_dev"
-        textReq.botAlias = "JessChat"
-        textReq.userId = "testUser"
-        textReq.inputText = "hi there"
-        var credentials : AuthSessionResult<AWSCredentials>
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val authSession = Amplify.Auth.fetchAuthSession()
-            val auth = authSession as AWSCognitoAuthSession
-            //credentials =
-            //val cre = credentials as AWSCredentials
-            val access = auth.awsCredentialsResult.value?.accessKeyId
-            val secret = auth.awsCredentialsResult.value?.secretAccessKey
-            val region = "us-east-1"
-            val id = auth.identityIdResult.value
-            val a = object : AWSCredentials {
-                override fun getAWSAccessKeyId(): String {
-                    return access!!
-                }
-
-                override fun getAWSSecretKey(): String {
-                    return secret!!
-                }
-
-            }
-            //var new : AWSCredentials? = null
-            val p = object : AWSCredentialsProvider {
-                override fun getCredentials(): com.amazonaws.auth.AWSCredentials {
-                    return a
-                }
-
-                override fun refresh() {
-
-                }
-
-            }
-
-            //val new = AWSCredentials(accessKeyId = access!!, secretAccessKey = secret!!) as AWSCredentialsProvider
-            //val a = AWSCredentialsProvide
-            //AmazonLexRuntimeClient(new).postText(textReq)
-            val lexInterConfig = InteractionConfig(
-                "BookTrip_dev",
-                "JessChat",
-                id
-
-            )
-            val client = InteractionClient(context, p, Regions.fromName(region), lexInterConfig)
-
-        }
-
-
-        //Amplify.Predictions.
-        //(AmazonLexRuntimeClient::postText)(textReq)
-        //(AmazonLexRuntime::postText)(textReq)
-    }
 }
 
 class MainViewModelFactory(private val application: Application)

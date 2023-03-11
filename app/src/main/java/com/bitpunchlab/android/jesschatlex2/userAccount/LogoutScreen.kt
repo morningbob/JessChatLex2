@@ -41,8 +41,13 @@ fun LogoutScreen(navController: NavHostController,
 
     LaunchedEffect(key1 = loginState) {
         if (!loginState) {
-            navController.navigate(Login.route)
+            //navController.navigate(Login.route)
             loadingAlpha = 0f
+            navController.navigate(Login.route) {
+                popUpTo(navController.graph.id) {
+                    inclusive = false
+                }
+            }
         }
     }
 

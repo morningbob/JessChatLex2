@@ -32,12 +32,56 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        MobileClient.initializeMobileClient(applicationContext)
         mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        MobileClient.initializeMobileClient(applicationContext)
+        setContent {
+            JessChatLexTheme {
+                // A surface container using the 'background' color from the theme
+                JessNavigation(application)
+            }
+        }
+    }
+}
 
-        //AmazonLexClient.initializeLex(applicationContext)
-        //Amplify.Auth.rememberDevice()
+@Composable
+fun JessNavigation(application: Application) {
+    val navController = rememberNavController()
+    val mainViewModel : MainViewModel = viewModel(factory = MainViewModelFactory(application))
+
+        NavHost(navController = navController, startDestination = Login.route) {
+            composable(Login.route) {
+                LoginScreen(navController, mainViewModel)
+            }
+            composable(CreateAccount.route) {
+                CreateAccountScreen(navController, mainViewModel)
+            }
+            composable(ForgotPassword.route) {
+                ForgotPasswordScreen(navController)
+            }
+            composable(Main.route) {
+                MainScreen(navController, mainViewModel)
+            }
+            composable(Records.route) {
+                MessagesRecordScreen(navController, mainViewModel)
+            }
+            composable(Profile.route) {
+                ProfileScreen(navController, mainViewModel)
+            }
+            composable(Logout.route) {
+                LogoutScreen(navController, mainViewModel)
+            }
+
+        }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    JessChatLexTheme {
+
+    }
+}
 /*
         CoroutineScope(Dispatchers.IO).launch {
             val authSession = Amplify.Auth.fetchAuthSession(
@@ -67,54 +111,4 @@ class MainActivity : ComponentActivity() {
         }
 
  */
-        setContent {
-            JessChatLexTheme {
-                // A surface container using the 'background' color from the theme
-                JessNavigation(application)
-            }
-        }
-    }
-}
-
-@Composable
-fun JessNavigation(application: Application) {
-    val navController = rememberNavController()
-    val mainViewModel : MainViewModel = viewModel(factory = MainViewModelFactory(application))
-
-    //Box(modifier = Modifier.navigationBarsPadding()) {
-
-        NavHost(navController = navController, startDestination = Login.route) {
-            composable(Login.route) {
-                LoginScreen(navController, mainViewModel)
-            }
-            composable(CreateAccount.route) {
-                CreateAccountScreen(navController, mainViewModel)
-            }
-            composable(ForgotPassword.route) {
-                ForgotPasswordScreen(navController)
-            }
-            composable(Main.route) {
-                MainScreen(navController, mainViewModel)
-            }
-            composable(Records.route) {
-                MessagesRecordScreen(navController, mainViewModel)
-            }
-            composable(Profile.route) {
-                ProfileScreen(navController, mainViewModel)
-            }
-            composable(Logout.route) {
-                LogoutScreen(navController, mainViewModel)
-            }
-
-        }
-    //}
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    JessChatLexTheme {
-
-    }
-}
 
