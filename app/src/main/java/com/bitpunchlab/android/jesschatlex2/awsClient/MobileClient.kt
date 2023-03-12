@@ -31,29 +31,18 @@ object MobileClient {
     @SuppressLint("StaticFieldLeak")
     var lexClient : InteractionClient? = null
 
+    private val _userName = MutableStateFlow<String>("")
+    val userName : StateFlow<String> = _userName.asStateFlow()
+
+    private val _userEmail = MutableStateFlow<String>("")
+    val userEmail : StateFlow<String> = _userEmail.asStateFlow()
+
     private val _messageState = MutableStateFlow<String>("")
     val messageState : StateFlow<String> = _messageState.asStateFlow()
-
-    private val _signUpResult = MutableStateFlow<Boolean?>(null)
-    val signUpResult : StateFlow<Boolean?> = _signUpResult.asStateFlow()
-
-    private val _signInResult = MutableStateFlow<Boolean?>(null)
-    val signInResult : StateFlow<Boolean?> = _signInResult.asStateFlow()
 
     private val _isLoggedIn = MutableStateFlow<Boolean?>(null)
     val isLoggedIn : StateFlow<Boolean?> = _isLoggedIn.asStateFlow()
 
-    private val _confirmSignUp = MutableStateFlow<Boolean?>(null)
-    val confirmSignUp : StateFlow<Boolean?> = _confirmSignUp.asStateFlow()
-
-    private val _getCode = MutableStateFlow<Boolean?>(null)
-    val getCode : StateFlow<Boolean?> = _getCode.asStateFlow()
-
-    private val _resendCode = MutableStateFlow<Boolean?>(null)
-    val resendCode : StateFlow<Boolean?> = _resendCode.asStateFlow()
-
-    //private val _resendCode = MutableStateFlow<Boolean?>(null)
-    //val resendCode : StateFlow<Boolean?> = _resendCode.asStateFlow()
 
     fun initializeMobileClient(context: Context) {
 
@@ -81,7 +70,7 @@ object MobileClient {
 
                     val id = AWSMobileClient.getInstance().identityId
                     Log.i("AWSClient", "id: $id")
-                    var botName = ""
+                    var botName = "OrderFlowers_dev"
                     var botAlias = ""
                     var botRegion = ""
                     var lexConfig : JSONObject? = null
@@ -90,7 +79,7 @@ object MobileClient {
                         lexConfig = AWSMobileClient.getInstance().configuration.optJsonObject("Lex")
                         lexConfig = lexConfig.getJSONObject(lexConfig.keys().next())
 
-                        botName = lexConfig.getString("Name")
+                        //botName = lexConfig.getString("Name")
                         botAlias = lexConfig.getString("Alias")
                         botRegion = lexConfig.getString("Region")
                         Log.i("name", botName)
@@ -150,6 +139,26 @@ object MobileClient {
             }
         })
     }
+
+    suspend fun getUserNameEmail() : Pair<String, String>? =
+        suspendCancellableCoroutine<Pair<String, String>?> { cancellableContinuation ->
+            try {
+                val attributes = AWSMobileClient.getInstance().userAttributes
+                //attributes.keys.find { key -> (key == "")  }
+                var name : String? = attributes["name"]
+                var email : String? = attributes["email"]
+                if (!name.isNullOrEmpty() && !email.isNullOrEmpty()) {
+                    cancellableContinuation.resume(Pair(name, email)) {}
+                } else {
+                    cancellableContinuation.resume(null) {}
+                }
+                //cancellableContinuation
+            } catch (e: Exception) {
+                Log.i("mobile client", "there is error getting user name. $e")
+                cancellableContinuation.resume(null) {}
+            }
+        }
+    
 
     suspend fun signUp(name: String, email: String, password: String) : Boolean =
         suspendCancellableCoroutine<Boolean> {  cancellableContinuation ->
@@ -227,20 +236,20 @@ object MobileClient {
                     override fun onResult(result: SignInResult?) {
                         when (result?.signInState) {
                             SignInState.DONE -> {
-                                _signInResult.value = true
+                                //_signInResult.value = true
                                 Log.i("mobile client", "sign in done")
                                 cancellableContinuation.resume(true) {}
                             }
                             else -> {
                                 Log.i("mobile client", "sign in failed")
-                                _signInResult.value = false
+                                //_signInResult.value = false
                                 cancellableContinuation.resume(false) {}
                             }
                         }
                     }
 
                     override fun onError(e: java.lang.Exception?) {
-                        _signInResult.value = false
+                        //_signInResult.value = false
                         Log.i("mobile client", "sign in error $e")
                         cancellableContinuation.resume(false) {}
                     }
@@ -256,18 +265,18 @@ object MobileClient {
                     when (result?.state) {
                         ForgotPasswordState.CONFIRMATION_CODE -> {
                             Log.i("mobile client", "got confirmation code")
-                            _getCode.value = true
+                            //_getCode.value = true
                             cancellableContinuation.resume(true) {}
                         }
                         else -> {
-                            _getCode.value = false
+                            //_getCode.value = false
                             cancellableContinuation.resume(false) {}
                         }
                     }
                 }
 
                 override fun onError(e: java.lang.Exception?) {
-                    _getCode.value = false
+                    //_getCode.value = false
                     Log.i("mobile client", "forget password failed to get code")
                     cancellableContinuation.resume(false) {}
                 }
@@ -294,6 +303,24 @@ object MobileClient {
                 }
 
             })
+    }
+
+    suspend fun changePassword(oldPassword: String, newPassword: String) : Boolean =
+        suspendCancellableCoroutine { cancellableContinuation ->
+            AWSMobileClient.getInstance().changePassword(oldPassword, newPassword, object : Callback<Void> {
+                override fun onResult(result: Void?) {
+                    Log.i("mobile client", "change password succeeded")
+                    cancellableContinuation.resume(true) {}
+                }
+
+                override fun onError(e: java.lang.Exception?) {
+                    Log.i("mobile client", "change password failed, $e")
+                    cancellableContinuation.resume(false) {}
+                }
+
+            })
+
+
     }
 
     // for just sign out locally, just call signout()

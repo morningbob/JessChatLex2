@@ -3,6 +3,7 @@ package com.bitpunchlab.android.jesschatlex2.userAccount
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
+import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.DialogButton
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
@@ -79,7 +80,8 @@ class ProfileViewModel : ViewModel() {
     fun updatePassword(oldPassword: String, newPassword: String) {
         CoroutineScope(Dispatchers.IO).launch {
             _loadingAlpha.value = 1f
-            if (CognitoClient.updatePassword(oldPassword, newPassword)) {
+            //if (CognitoClient.updatePassword(oldPassword, newPassword)) {
+            if (MobileClient.changePassword(oldPassword, newPassword)) {
                 Log.i("reset password", "success")
                 // alert user
                 _loadingAlpha.value = 0f
@@ -94,7 +96,7 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun resetFields() {
+    private fun resetFields() {
         _currentPassword.value = ""
         _newPassword.value = ""
         _confirmPassword.value = ""

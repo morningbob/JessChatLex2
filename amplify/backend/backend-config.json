@@ -28,6 +28,11 @@
     }
   },
   "interactions": {
+    "bitPunch": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lex"
+    },
     "lexchat": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -35,6 +40,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_interactions_bitPunch_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "interactions",
+          "resourceName": "bitPunch"
+        }
+      ]
+    },
+    "AMPLIFY_interactions_bitPunch_s3Key": {
+      "usedBy": [
+        {
+          "category": "interactions",
+          "resourceName": "bitPunch"
+        }
+      ]
+    },
     "AMPLIFY_interactions_lexchat_deploymentBucketName": {
       "usedBy": [
         {

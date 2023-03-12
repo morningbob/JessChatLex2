@@ -19,6 +19,10 @@
         "lexchat": {
           "deploymentBucketName": "amplify-jesschat-dev-155709-deployment",
           "s3Key": "amplify-builds/lexchat-79644838664a2b457045-build.zip"
+        },
+        "bitPunch": {
+          "deploymentBucketName": "amplify-jesschat-dev-155709-deployment",
+          "s3Key": "amplify-builds/bitPunch-77625359503336683331-build.zip"
         }
       }
     }

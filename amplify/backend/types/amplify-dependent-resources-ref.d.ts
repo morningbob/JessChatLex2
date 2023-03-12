@@ -11,6 +11,11 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "interactions": {
+    "bitPunch": {
+      "BotName": "string",
+      "FunctionArn": "string",
+      "Region": "string"
+    },
     "lexchat": {
       "BotName": "string",
       "FunctionArn": "string",

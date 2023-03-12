@@ -70,8 +70,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         MobileClient.listenUserState()
         // we watch when isLogged in is true, we get the name
         CoroutineScope(Dispatchers.IO).launch {
-            isLoggedIn.collect() { it ->
-                if (it) {
+            MobileClient.isLoggedIn.collect() { it ->
+                if (it == true) {
+                    val pair = MobileClient.getUserNameEmail()
+                    pair?.let {
+                        _userName.value = pair.first
+                        _userEmail.value = pair.second
+                    }
                     //retrieveUserName()
                     //val pair = CognitoClient.getUserNameEmail()
                     //pair?.let {
