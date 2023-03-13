@@ -2,7 +2,6 @@ package com.bitpunchlab.android.jesschatlex2.userAccount
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
@@ -80,7 +79,6 @@ class ForgotPassViewModel : ViewModel() {
 
     fun requestCode(email: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            //if (CognitoClient.recoverUser(email)) {
             if (MobileClient.forgotPassword(email)) {
                 Log.i("password reset", "code sent success")
                 _resetPasswordStatus.value = 3
@@ -96,7 +94,6 @@ class ForgotPassViewModel : ViewModel() {
     fun verifyCodeAndChangePassword(email: String, newPass: String, code: String) {
         _loadingAlpha.value = 1f
         CoroutineScope(Dispatchers.IO).launch {
-            //if (CognitoClient.confirmResetPassword(email, newPass, code)) {
             if (MobileClient.confirmForgotPassword(email, newPass, code)) {
                 // display alert
                 _loadingAlpha.value = 0f

@@ -11,10 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bitpunchlab.android.jesschatlex2.Login
+import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.base.CustomCircularProgressBar
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
@@ -41,7 +43,6 @@ fun LogoutScreen(navController: NavHostController,
 
     LaunchedEffect(key1 = loginState) {
         if (!loginState) {
-            //navController.navigate(Login.route)
             loadingAlpha = 0f
             navController.navigate(Login.route) {
                 popUpTo(navController.graph.id) {
@@ -72,7 +73,7 @@ fun LogoutScreen(navController: NavHostController,
 
             ) {
                 Text(
-                    text = "Logging Out",
+                    text = stringResource(R.string.logging_out),
                     fontSize = 20.sp,
                     modifier = Modifier
                         .padding(bottom = 40.dp),

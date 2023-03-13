@@ -19,6 +19,7 @@ import com.amazonaws.mobileconnectors.lex.interactionkit.listeners.InteractionLi
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.lexrts.model.DialogState
 import com.bitpunchlab.android.jesschatlex2.ForgotPassword
+import com.bitpunchlab.android.jesschatlex2.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,17 +32,14 @@ object MobileClient {
     @SuppressLint("StaticFieldLeak")
     var lexClient : InteractionClient? = null
 
-    private val _userName = MutableStateFlow<String>("")
-    val userName : StateFlow<String> = _userName.asStateFlow()
-
-    private val _userEmail = MutableStateFlow<String>("")
-    val userEmail : StateFlow<String> = _userEmail.asStateFlow()
-
     private val _messageState = MutableStateFlow<String>("")
     val messageState : StateFlow<String> = _messageState.asStateFlow()
 
     private val _isLoggedIn = MutableStateFlow<Boolean?>(null)
     val isLoggedIn : StateFlow<Boolean?> = _isLoggedIn.asStateFlow()
+
+    private val _lexError = MutableStateFlow<Boolean?>(null)
+    val lexError : StateFlow<Boolean?> = _lexError.asStateFlow()
 
 
     fun initializeMobileClient(context: Context) {
@@ -52,7 +50,6 @@ object MobileClient {
                     // part 1
                     Log.d("AWSClient", "initialize.onResult, userState: " + result?.getUserState().toString())
                     val userStateDetails = result?.userState
-                    //val cred = AWSMobileClient.getInstance().awsCredentials
                     when (userStateDetails) {
                         UserState.SIGNED_IN -> {
                             Log.i("Mobile Client", "state as signed in")
@@ -70,7 +67,7 @@ object MobileClient {
 
                     val id = AWSMobileClient.getInstance().identityId
                     Log.i("AWSClient", "id: $id")
-                    var botName = "OrderFlowers_dev"
+                    var botName = context.getString(R.string.bot_name)
                     var botAlias = ""
                     var botRegion = ""
                     var lexConfig : JSONObject? = null
@@ -79,7 +76,6 @@ object MobileClient {
                         lexConfig = AWSMobileClient.getInstance().configuration.optJsonObject("Lex")
                         lexConfig = lexConfig.getJSONObject(lexConfig.keys().next())
 
-                        //botName = lexConfig.getString("Name")
                         botAlias = lexConfig.getString("Alias")
                         botRegion = lexConfig.getString("Region")
                         Log.i("name", botName)
@@ -101,13 +97,11 @@ object MobileClient {
                         Regions.fromName(botRegion),
                         lexInterConfig
                     )
-                    // part 2
-                    //listenUserState()
+
                     // part 3
                     lexClient?.setInteractionListener(interactionListener)
 
-                    //lexClient.setAudioPlaybackListener()
-                    //lexClient!!.setInteractionListener(interactionListener)
+
                 }
 
                 override fun onError(e: Exception?) {
@@ -144,7 +138,6 @@ object MobileClient {
         suspendCancellableCoroutine<Pair<String, String>?> { cancellableContinuation ->
             try {
                 val attributes = AWSMobileClient.getInstance().userAttributes
-                //attributes.keys.find { key -> (key == "")  }
                 var name : String? = attributes["name"]
                 var email : String? = attributes["email"]
                 if (!name.isNullOrEmpty() && !email.isNullOrEmpty()) {
@@ -152,7 +145,6 @@ object MobileClient {
                 } else {
                     cancellableContinuation.resume(null) {}
                 }
-                //cancellableContinuation
             } catch (e: Exception) {
                 Log.i("mobile client", "there is error getting user name. $e")
                 cancellableContinuation.resume(null) {}
@@ -169,18 +161,15 @@ object MobileClient {
                 override fun onResult(result: SignUpResult?) {
                     if (result?.confirmationState == false) {
                         Log.i("mobile client", "??")
-                        //_signUpResult.value = false
                         cancellableContinuation.resume(false) {}
                     } else {
                         Log.i("mobile client", "sign up done")
-                        //_signUpResult.value = true
                         cancellableContinuation.resume(true) {}
                     }
                 }
 
                 override fun onError(e: java.lang.Exception?) {
                     Log.i("mobile client", "error sign up $e")
-                    //_signUpResult.value = false
                     cancellableContinuation.resume(false) {}
                 }
 
@@ -193,18 +182,15 @@ object MobileClient {
                 override fun onResult(result: SignUpResult?) {
                     if (result?.confirmationState == false) {
                         Log.i("mobile client", "confirm code ??")
-                        //_confirmSignUp.value = false
                         cancellableContinuation.resume(false) {}
                     } else {
                         Log.i("mobile client", "confirm code succeeded")
-                        //_confirmSignUp.value = true
                         cancellableContinuation.resume(true) {}
                     }
                 }
 
                 override fun onError(e: java.lang.Exception?) {
                     Log.i("mobile client", "confirm code error $e")
-                    //_confirmSignUp.value = false
                     cancellableContinuation.resume(false) {}
                 }
 
@@ -216,12 +202,10 @@ object MobileClient {
             AWSMobileClient.getInstance().resendSignUp(email, object : Callback<SignUpResult>{
                 override fun onResult(result: SignUpResult?) {
                     Log.i("mobile client", "resend code sent")
-                    //_resendCode.value = true
                     cancellableContinuation.resume(true) {}
                 }
 
                 override fun onError(e: java.lang.Exception?) {
-                    //_resendCode.value = false
                     Log.i("mobile client", "resend code failed $e")
                     cancellableContinuation.resume(false) {}
                 }
@@ -236,20 +220,17 @@ object MobileClient {
                     override fun onResult(result: SignInResult?) {
                         when (result?.signInState) {
                             SignInState.DONE -> {
-                                //_signInResult.value = true
                                 Log.i("mobile client", "sign in done")
                                 cancellableContinuation.resume(true) {}
                             }
                             else -> {
                                 Log.i("mobile client", "sign in failed")
-                                //_signInResult.value = false
                                 cancellableContinuation.resume(false) {}
                             }
                         }
                     }
 
                     override fun onError(e: java.lang.Exception?) {
-                        //_signInResult.value = false
                         Log.i("mobile client", "sign in error $e")
                         cancellableContinuation.resume(false) {}
                     }
@@ -265,18 +246,15 @@ object MobileClient {
                     when (result?.state) {
                         ForgotPasswordState.CONFIRMATION_CODE -> {
                             Log.i("mobile client", "got confirmation code")
-                            //_getCode.value = true
                             cancellableContinuation.resume(true) {}
                         }
                         else -> {
-                            //_getCode.value = false
                             cancellableContinuation.resume(false) {}
                         }
                     }
                 }
 
                 override fun onError(e: java.lang.Exception?) {
-                    //_getCode.value = false
                     Log.i("mobile client", "forget password failed to get code")
                     cancellableContinuation.resume(false) {}
                 }
@@ -342,7 +320,6 @@ object MobileClient {
             Log.i("lex listener", "transaction completed")
             val responseText = response?.textResponse
             responseText?.let {
-                //messageList.add(responseText)
                 _messageState.value = responseText
             }
             Log.i("lex listener", "response (ready): $responseText")
@@ -366,11 +343,14 @@ object MobileClient {
             } else {
                 Log.i("lex listener", "interaction error detected")
             }
+            _lexError.value = true
         }
 
     }
 
     fun sendMessage(message: String) {
+        // reset lexError for the next round
+        _lexError.value = null
         if (lexClient != null) {
             lexClient?.textInForTextOut(message, null)
         } else {

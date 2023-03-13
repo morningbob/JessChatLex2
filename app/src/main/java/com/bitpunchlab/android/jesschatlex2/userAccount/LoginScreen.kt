@@ -1,42 +1,31 @@
 package com.bitpunchlab.android.jesschatlex2.userAccount
 
-import android.graphics.fonts.FontStyle
-import android.os.Build
+import android.content.res.Configuration
+import android.graphics.drawable.GradientDrawable.Orientation
 import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bitpunchlab.android.jesschatlex2.CreateAccount
 import com.bitpunchlab.android.jesschatlex2.ForgotPassword
 import com.bitpunchlab.android.jesschatlex2.Main
 import com.bitpunchlab.android.jesschatlex2.R
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.*
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import com.bitpunchlab.android.jesschatlex2.ui.theme.JessChatLex
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.math.log
 
 
 @Composable
@@ -53,12 +42,13 @@ fun LoginScreen(navController: NavHostController,
         return ColorMode.DARK_BLUE
     }
 
+    val config = LocalConfiguration.current
+
     val emailState by loginViewModel.emailState.collectAsState()
     val passwordState by loginViewModel.passwordState.collectAsState()
     val emailErrorState by loginViewModel.emailErrorState.collectAsState()
     val passwordErrorState by loginViewModel.passwordErrorState.collectAsState()
     val loadingAlpha by loginViewModel.loadingAlpha.collectAsState()
-    //val loginState by mainViewModel.isLoggedIn.collectAsState()
     val loginState by MobileClient.isLoggedIn.collectAsState()
     val showFailureDialog by loginViewModel.showFailureDialog.collectAsState()
     val showConfirmEmailDialog by loginViewModel.showConfirmEmailDialog.collectAsState()
@@ -67,13 +57,8 @@ fun LoginScreen(navController: NavHostController,
     
     val readyLogin by loginViewModel.readyLogin.collectAsState()
 
-    val confirmEmail by loginViewModel.confirmEmail.collectAsState()
-    val confirmCode by loginViewModel.confirmCode.collectAsState()
     val confirmEmailError by loginViewModel.confirmEmailError.collectAsState()
     val resendCodeEmailError by loginViewModel.resendCodeEmailError.collectAsState()
-    val confirmCodeError by loginViewModel.confirmCodeError.collectAsState()
-
-
 
     // LaunchedEffect is used to run code that won't trigger recomposition of the view
     LaunchedEffect(key1 = loginState) {
@@ -100,120 +85,265 @@ fun LoginScreen(navController: NavHostController,
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            //verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
+                //.verticalScroll(rememberScrollState())
                 .background(JessChatLex.getColor(mode, Element.BACKGROUND)),
 
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    //.padding(top = 0.dp, bottom = 30.dp, end = 80.dp)
-                    .background(JessChatLex.getColor(mode, Element.BANNER)),//JessChatLex.blueBackground),
+                    .background(JessChatLex.getColor(mode, Element.BANNER)),
 
                 ) {
-                TitleText(title = "Login", paddingTop = 100, paddingBottom = 100)
+                TitleText(
+                    title = stringResource(R.string.login),
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.header_title_padding),
+                            bottom = dimensionResource(id = R.dimen.header_title_padding)))
             }
-            /*
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                HeaderImage(resource = R.mipmap.login, description = "Login Icon",
-                    paddingTop = 30, paddingBottom = 0)
-                TitleText(title = "Login", paddingTop = 30, paddingBottom = 30)
-            }
-             */
-            Column(horizontalAlignment = Alignment.Start) {
-                //TextField(value = loginViewModel.email, onValueChange = { loginViewModel.updateEmail(it) })
-                UserInputTextField(
-                    title = "Email",
-                    content = emailState,
-                    textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
-                    textBorder = JessChatLex.getColor(mode, Element.BANNER),
-                    fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
-                    fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
-                    hide = false,
-                    modifier = Modifier.padding(top = 30.dp, start = 50.dp, end = 50.dp),
 
-                ) { loginViewModel.updateEmail(it) }
-                ErrorText(error = emailErrorState, color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
-                    modifier = Modifier
-                        .padding(start = 20.dp, end = 20.dp))
-                UserInputTextField(
-                    title = "Password",
-                    content = passwordState,
-                    textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
-                    textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.blueBackground,
-                    fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
-                    fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
-                    hide = true,
-                    modifier = Modifier.padding(top = 10.dp, start = 50.dp, end = 50.dp),
-                ) { loginViewModel.updatePassword(it) }
-                ErrorText(error = passwordErrorState, color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
-                    modifier = Modifier
-                        .padding(start = 20.dp, end = 20.dp)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 50.dp, end = 50.dp),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            // Portrait mode
+            if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                Column(horizontalAlignment = Alignment.Start) {
 
-                    //Spacer(modifier = Modifier.weight(1f))
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.bit_more_space)))
+                    UserInputTextField(
+                        title = stringResource(R.string.email),
+                        content = emailState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                        fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
+                        fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                        hide = false,
+                        modifier = Modifier.padding(
+                            top = dimensionResource(id = R.dimen.more_space),
+                            start = dimensionResource(R.dimen.textfield_left_padding),
+                            end = dimensionResource(R.dimen.textfield_right_padding)
+                        ),
+
+                        ) { loginViewModel.updateEmail(it) }
+                    ErrorText(
+                        error = emailErrorState,
+                        color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        modifier = Modifier
+                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    UserInputTextField(
+                        title = stringResource(R.string.password),
+                        content = passwordState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                        fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
+                        fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                        hide = true,
+                        modifier = Modifier.padding(top = dimensionResource(id = R.dimen.general_space),
+                            start = dimensionResource(R.dimen.textfield_left_padding),
+                            end = dimensionResource(R.dimen.textfield_right_padding)),
+                    ) { loginViewModel.updatePassword(it) }
+                    ErrorText(
+                        error = passwordErrorState,
+                        color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        modifier = Modifier
+                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                    )
                 }
-            }
-            AppButton(
-                title = "Send",
-                onClick = onSendClicked,
-                shouldEnable = readyLogin,
-                buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-                buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightBlueBackground,
-                buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-                modifier = Modifier
-            )
-            AppButton(
-                title = "Sign Up",
-                onClick = onSignUpClicked,
-                shouldEnable = true,
-                buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-                buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightBlueBackground,
-                buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-                modifier = Modifier
-            )
-            GeneralText(
-                textString = "Forgot Password",
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 5.dp),
-                textColor = JessChatLex.getColor(mode, Element.CLICKABLE),//JessChatLex.blueBackground,
-                textAlign = TextAlign.Center,
-                onClick = { onForgotPasswordClicked.invoke() }
-            )
-            GeneralText(
-                textString = "Confirm Email",
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 5.dp),
-                textColor = JessChatLex.getColor(mode, Element.CLICKABLE),//JessChatLex.blueBackground,
-                textAlign = TextAlign.Center,
-                onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
-            )
+                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                AppButton(
+                    title = stringResource(R.string.send),
+                    onClick = onSendClicked,
+                    shouldEnable = readyLogin,
+                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            start = dimensionResource(id = R.dimen.app_button_left_padding),
+                            end = dimensionResource(id = R.dimen.app_button_right_padding))
 
-            // when code = 0, nothing happen
-            // 1 = dialog, get email
-            // 2 = code sent
-            // 3 = failed to send code
-            GeneralText(
-                textString = "Resend Verification Code",
-                modifier = Modifier
-                    .padding(top = 10.dp, bottom = 5.dp),
-                textColor = JessChatLex.getColor(mode, Element.CLICKABLE),//JessChatLex.blueBackground,
-                textAlign = TextAlign.Center,
-                onClick = { // get email
-                    loginViewModel.updateResendCodeStatus(1)
+                )
+                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                AppButton(
+                    title = stringResource(R.string.signUp),
+                    onClick = onSignUpClicked,
+                    shouldEnable = true,
+                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                    modifier = Modifier
+                        .padding(top = dimensionResource(id = R.dimen.general_space),
+                            start = dimensionResource(id = R.dimen.app_button_left_padding),
+                            end = dimensionResource(id = R.dimen.app_button_right_padding))
+                )
+                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                GeneralText(
+                    textString = stringResource(R.string.forgot_password),
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.clickable_text_padding),
+                        top = dimensionResource(id = R.dimen.bit_more_space)),
+                    textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                    textAlign = TextAlign.Center,
+                    onClick = { onForgotPasswordClicked.invoke() }
+                )
+                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                GeneralText(
+                    textString = stringResource(R.string.confirm_email),
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.clickable_text_padding)),
+                    textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                    textAlign = TextAlign.Center,
+                    onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
+                )
+
+                // when code = 0, nothing happen
+                // 1 = dialog, get email
+                // 2 = code sent
+                // 3 = failed to send code
+                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                GeneralText(
+                    textString = stringResource(R.string.resend_code),
+                    modifier = Modifier
+                        .padding(dimensionResource(id = R.dimen.clickable_text_padding)),
+                    textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                    textAlign = TextAlign.Center,
+                    onClick = { // get email
+                        loginViewModel.updateResendCodeStatus(1)
                     }
-            )
+                )
 
-        }
+            } else {// end of if portrait
+                // landscape
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    UserInputTextField(
+                        title = stringResource(R.string.email),
+                        content = emailState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                        fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
+                        fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                        hide = false,
+                        modifier = Modifier.padding(
+                            top = dimensionResource(id = R.dimen.more_space),
+                            start = dimensionResource(R.dimen.textfield_left_padding),
+                            end = dimensionResource(R.dimen.textfield_right_padding)
+                        ),
+
+                        ) { loginViewModel.updateEmail(it) }
+                    ErrorText(
+                        error = emailErrorState,
+                        color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        modifier = Modifier
+                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    UserInputTextField(
+                        title = stringResource(R.string.password),
+                        content = passwordState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                        fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
+                        fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                        hide = true,
+                        modifier = Modifier.padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            start = dimensionResource(R.dimen.textfield_left_padding),
+                            end = dimensionResource(R.dimen.textfield_right_padding)),
+                    ) { loginViewModel.updatePassword(it) }
+                    ErrorText(
+                        error = passwordErrorState,
+                        color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        modifier = Modifier
+                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(top = dimensionResource(id = R.dimen.bit_more_space))
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+
+                    AppButton(
+                        title = stringResource(R.string.send),
+                        onClick = onSendClicked,
+                        shouldEnable = readyLogin,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .padding(top = dimensionResource(id = R.dimen.bit_more_space),
+                                start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    AppButton(
+                        title = stringResource(R.string.signUp),
+                        onClick = onSignUpClicked,
+                        shouldEnable = true,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .padding(top = dimensionResource(id = R.dimen.bit_more_space),
+                                start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                    )
+                    Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    GeneralText(
+                        textString = stringResource(R.string.forgot_password),
+                        modifier = Modifier
+                            .padding(dimensionResource(id = R.dimen.clickable_text_padding),
+                            top = dimensionResource(id = R.dimen.bit_more_space)),
+                        textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        textAlign = TextAlign.Center,
+                        onClick = { onForgotPasswordClicked.invoke() }
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    GeneralText(
+                        textString = stringResource(R.string.confirm_email),
+                        modifier = Modifier
+                            .padding(dimensionResource(id = R.dimen.clickable_text_padding)),
+                        textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        textAlign = TextAlign.Center,
+                        onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+
+                    // when code = 0, nothing happen
+                    // 1 = dialog, get email
+                    // 2 = code sent
+                    // 3 = failed to send code
+                    GeneralText(
+                        textString = stringResource(R.string.resend_code),
+                        modifier = Modifier
+                            .padding(dimensionResource(id = R.dimen.clickable_text_padding),
+                                bottom = dimensionResource(id = R.dimen.bit_more_space)),
+                        textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        textAlign = TextAlign.Center,
+                        onClick = { // get email
+                            loginViewModel.updateResendCodeStatus(1)
+                        }
+                    )
+                    } // end of landscape, 2nd column
+                    } // end of landscape body row
+            }
+
+        } // end of Body column
         if (showFailureDialog) {
             LoginFailureDialog(loginViewModel = loginViewModel, mode = mode)
         }
@@ -266,11 +396,11 @@ fun LoginScreen(navController: NavHostController,
 @Composable
 fun LoginFailureDialog(loginViewModel: LoginViewModel, mode: ColorMode) {
     CustomDialog(
-        title = "Login Failure",
-        message = "Login failed.  Please make sure you have wifi.  Other than that, maybe the email or the password is not correct.  If the problem persists, please contact admin@jessbitcom.pro",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+        title = stringResource(R.string.login_failure_title),
+        message = stringResource(R.string.login_failure_content),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
         onDismiss = { loginViewModel.updateShowDialog(false) },
         okOnClick = { _, _ -> loginViewModel.updateShowDialog(false) })
@@ -280,11 +410,11 @@ fun LoginFailureDialog(loginViewModel: LoginViewModel, mode: ColorMode) {
 fun ConfirmEmailDialog(loginViewModel: LoginViewModel, mode: ColorMode,
                        emailError: ((String) -> Unit)? = null,) {
     CustomDialog(
-        title = "Verification Code",
-        message = "Please enter the verification code in the email.",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+        title = stringResource(R.string.get_code_title),
+        message = stringResource(R.string.get_code_content),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
         fieldOne = "Email",
@@ -293,7 +423,6 @@ fun ConfirmEmailDialog(loginViewModel: LoginViewModel, mode: ColorMode,
         cancelOnClick = { _, _ ->
             loginViewModel.updateShowConfirmEmailDialog(false) },
         okOnClick = { email: String?, code: String? ->
-            //if (!inputList?.get(0).isNullOrEmpty() && !inputList?.get(1).isNullOrEmpty()) {
             Log.i("login screen", "email: ${email}")
             Log.i("login screen", "code: ${code}")
             if (!email.isNullOrEmpty() && !code.isNullOrEmpty()) {
@@ -305,7 +434,7 @@ fun ConfirmEmailDialog(loginViewModel: LoginViewModel, mode: ColorMode,
                     emailError!!.invoke(error)
                 }
             } else {
-                emailError!!.invoke("Both fields are required")
+                emailError!!.invoke("Both fields are required.")
             }
         }
     )
@@ -315,36 +444,34 @@ fun ConfirmEmailDialog(loginViewModel: LoginViewModel, mode: ColorMode,
 fun ConfirmEmailResultDialog(confirmEmailStatus: Int, error: String? = null, loginViewModel: LoginViewModel, mode: ColorMode) {
     if (confirmEmailStatus == 1) {
         CustomDialog(
-            title = "Email Verification Success",
-            message = "Your email and your account is verified.  Please login with the email.",
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            title = stringResource(R.string.email_verified_title),
+            message = stringResource(R.string.email_verified_content),
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             onDismiss = { loginViewModel.updateConfirmEmailStatus(0) },
-            //cancelOnClick = { loginViewModel.updateConfirmEmailStatus(0) },
             okOnClick = { _, _ -> loginViewModel.updateConfirmEmailStatus(0) },
         )
     } else if (confirmEmailStatus == 2) {
         CustomDialog(
-            title = "Email Verification Failure",
-            message = "We couldn't verify your email.  Please make sure you have wifi, and the confirmation code is correct.",
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
+            title = stringResource(R.string.email_verify_failed_title),
+            message = stringResource(R.string.email_verified_failed_content),
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             onDismiss = { loginViewModel.updateConfirmEmailStatus(0) },
-            //cancelOnClick = { loginViewModel.updateConfirmEmailStatus(0) },
             okOnClick = { _, _ -> loginViewModel.updateConfirmEmailStatus(0) },
         )
     } else if (confirmEmailStatus == 3 && !error.isNullOrEmpty()) {
         CustomDialog(
-            title = "Confirm Email Error",
+            title = stringResource(R.string.confirm_email_error),
             message = error,
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             onDismiss = { loginViewModel.updateConfirmEmailStatus(0) },
             okOnClick = { _, _ -> loginViewModel.updateConfirmEmailStatus(0) },)
     }
@@ -354,11 +481,14 @@ fun ConfirmEmailResultDialog(confirmEmailStatus: Int, error: String? = null, log
 fun ResendCodeDialog(loginViewModel: LoginViewModel, emailError: ((String) -> Unit)? = null,
                      mode: ColorMode) {
     CustomDialog(
-        title = "Resend Verification Code",
-        message = "Please enter the email you registered the app.",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+        title = stringResource(R.string.resend_code),
+        message = stringResource(R.string.resend_code_content),
+        backgroundColor = JessChatLex.getColor(
+            mode,
+            Element.BACKGROUND
+        ),//JessChatLex.lightBlueBackground,
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
         fieldOne = "Email",
@@ -378,7 +508,9 @@ fun ResendCodeDialog(loginViewModel: LoginViewModel, emailError: ((String) -> Un
             }
         },
         cancelOnClick = { _, _ ->
-            loginViewModel.updateResendCodeStatus(0) },)
+            loginViewModel.updateResendCodeStatus(0)
+        },
+    )
 }
 
 @Composable
@@ -386,58 +518,41 @@ fun ResendCodeResultDialog(status: Int, loginViewModel: LoginViewModel, mode: Co
     errorString: String? = null) {
     if (status == 2) {
         CustomDialog(
-            title = "Resend Verification Code",
-            message = "New verification code was sent to your email.  Please check your email.",
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            title = stringResource(R.string.resend_code),
+            message = stringResource(R.string.resend_code_sent_content),
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             onDismiss = { loginViewModel.updateResendCodeStatus(0)},
             okOnClick = { _, _ -> loginViewModel.updateResendCodeStatus(0)},
             )
     } else if (status == 3) {
         CustomDialog(
-            title = "Resend Verification Code",
-            message = "We couldn't send a verification code.  Please make sure that you have wifi, and the email is the one you use to register the app.  Other than that, the server may be down.",
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            title = stringResource(R.string.resend_code),
+            message = stringResource(R.string.resend_code_error_content),
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             onDismiss = { loginViewModel.updateResendCodeStatus(0)},
             okOnClick = { _, _ -> loginViewModel.updateResendCodeStatus(0)})
     } else if (status == 4 && !errorString.isNullOrEmpty()) {
         CustomDialog(
-            title = "Resend Code Error",
+            title = stringResource(R.string.resend_code_error_title),
             message = errorString,
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBlueBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.blueBackground,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.blueText,
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             onDismiss = { loginViewModel.updateResendCodeStatus(0) },
             okOnClick = { _, _ -> loginViewModel.updateResendCodeStatus(0)})
     }
 }
 /*
-val rememberDeviceCheckbox by loginViewModel.rememberDeviceCheckbox.collectAsState()
-                    Checkbox(
-                        checked = rememberDeviceCheckbox,
-                        onCheckedChange = {
-                            loginViewModel.updateRememberDevice(it)
-                        },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = JessChatLex.getColor(mode, Element.BANNER),
-                            uncheckedColor = Color.White,
-
-                            ),
-                    )
-
-                    GeneralText(
-                        textString = "Remember me",
-                        modifier = Modifier
-                            .padding(0.dp),
-                        textColor = JessChatLex.getColor(mode, Element.TEXT)
-                    )
-
-                     */
-
-
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                HeaderImage(resource = R.mipmap.login, description = "Login Icon",
+                    paddingTop = 30, paddingBottom = 0)
+                TitleText(title = "Login", paddingTop = 30, paddingBottom = 30)
+            }
+             */

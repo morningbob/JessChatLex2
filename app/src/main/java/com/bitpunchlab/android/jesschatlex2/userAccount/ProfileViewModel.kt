@@ -2,9 +2,7 @@ package com.bitpunchlab.android.jesschatlex2.userAccount
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
-import com.bitpunchlab.android.jesschatlex2.base.DialogButton
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +31,7 @@ class ProfileViewModel : ViewModel() {
     val _confirmPassError = MutableStateFlow<String>(" ")
     var confirmPassError : StateFlow<String> = _confirmPassError.asStateFlow()
 
+    // result succeeded 1, failed 2, but if old == new, 3
     val _changePassResult = MutableStateFlow<Int>(0)
     var changePassResult : StateFlow<Int> = _changePassResult.asStateFlow()
 
@@ -64,6 +63,7 @@ class ProfileViewModel : ViewModel() {
     fun updateNewPassword(newValue: String) {
         _newPassword.value = newValue
         _newPassError.value = InputValidation.verifyPassword(newValue)
+
     }
 
     fun updateConfirmPassword(newValue: String) {
@@ -73,14 +73,20 @@ class ProfileViewModel : ViewModel() {
 
     fun updateChangePassResult(newValue: Int) {
         _changePassResult.value = newValue
-        //_confirmPassError.value = InputValidation.verifyConfirmPass(newPassword.value, newValue)
+    }
+
+    fun checkAndUpdatePassword(oldPassword: String, newPassword: String) {
+        if (InputValidation.verifyConfirmPass(oldPassword, newPassword) == ""){
+            _changePassResult.value = 3
+        } else {
+            updatePassword(oldPassword, newPassword)
+        }
     }
 
     // 1 is succeed, 2 is failed, corresponding dialogs will be displayed
     fun updatePassword(oldPassword: String, newPassword: String) {
         CoroutineScope(Dispatchers.IO).launch {
             _loadingAlpha.value = 1f
-            //if (CognitoClient.updatePassword(oldPassword, newPassword)) {
             if (MobileClient.changePassword(oldPassword, newPassword)) {
                 Log.i("reset password", "success")
                 // alert user

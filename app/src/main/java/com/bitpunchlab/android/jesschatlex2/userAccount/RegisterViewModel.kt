@@ -1,14 +1,7 @@
 package com.bitpunchlab.android.jesschatlex2.userAccount
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.saveable
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
@@ -106,7 +99,7 @@ class RegisterViewModel() : ViewModel() {
 
     }
 
-    fun resetFields() {
+    private fun resetFields() {
         _nameState.value = ""
         _emailState.value = ""
         _passwordState.value = ""
@@ -118,29 +111,6 @@ class RegisterViewModel() : ViewModel() {
     }
 
     fun updateRegistrationStatusDialog(newValue: Int) {
-        //_showFailureDialog.value = newValue
         _showRegistrationStatusDialog.value = newValue
     }
 }
-/*
-        CoroutineScope(Dispatchers.IO).launch {
-            if (CognitoClient.registerUser(nameState.value, emailState.value, passwordState.value)) {
-                // here we set the alpha to 0 when the result came back,
-                // need to set it here, then it wait for the result
-                _loadingAlpha.value = 0f
-                // we clear all the field if the registration is successful
-                // and navigate to main
-                resetFields()
-                //_showSuccessDialog.value = true
-                _showRegistrationStatusDialog.value = 1
-                //_shouldRedirectLogin.value = true
-            } else {
-                //_showFailureDialog.value = true
-                _showRegistrationStatusDialog.value = 2
-                _loadingAlpha.value = 0f
-            }
-            // can't set alpha here, because it will not wait for the result.
-
-        }
-
-         */

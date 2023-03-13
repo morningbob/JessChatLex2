@@ -9,11 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.base.*
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
@@ -59,43 +61,44 @@ fun ForgotPasswordScreen(navController: NavHostController,
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .background(JessChatLex.getColor(mode, Element.BANNER)),//JessChatLex.brownBackground)
+                    .background(JessChatLex.getColor(mode, Element.BANNER)),
 
                 ) {
-                TitleText(title = "Forgot Password", paddingTop = 100, paddingBottom = 100)
+                TitleText(
+                    title = stringResource(R.string.forgot_password),
+                    modifier = Modifier
+                        .padding(top = 100.dp, bottom = 100.dp))
             }
             Text(
-                text = "You need a verification code in order to change your password.",
+                text = stringResource(R.string.reset_password_desc),
                 modifier = Modifier
                     .padding(top = 25.dp, bottom = 30.dp, start = 50.dp, end = 50.dp),
-                color = JessChatLex.getColor(mode, Element.TEXT)//JessChatLex.brownText
+                color = JessChatLex.getColor(mode, Element.TEXT)
             )
             if (chosenOption == 0) {
                 AppButton(
-                    title = "I have a verification code",
+                    title = stringResource(R.string.have_code),
                     onClick = {
                         chosenOption = 1
                               },
                     shouldEnable = true,
-                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
+                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
                     buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
-                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),//JessChatLex.lightBrownBackground,
+                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                     modifier = Modifier
-                        //.padding(top = 10.dp)
 
                 )
                 Spacer(modifier = Modifier.width(50.dp))
                 AppButton(
-                    title = "I don't have a verification code",
+                    title = stringResource(R.string.donot_have_code),
                     onClick = {
                         chosenOption = 2
                               },
                     shouldEnable = true,
-                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
-                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightBrownBackground,
+                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                     buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                     modifier = Modifier
-                        //.padding(top = 10.dp)
                 )
             }
 
@@ -139,10 +142,10 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                         mode: ColorMode) {
     Column() {
         UserInputTextField(
-            title = "Email",
+            title = stringResource(R.string.email),
             content = email,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
-            textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.brownBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
+            textBorder = JessChatLex.getColor(mode, Element.BANNER),
             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
@@ -157,10 +160,10 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             )
 
         UserInputTextField(
-            title = "Enter Verification Code",
+            title = stringResource(R.string.enter_code),
             content = code,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
-            textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.brownBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
+            textBorder = JessChatLex.getColor(mode, Element.BANNER),
             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
@@ -176,10 +179,10 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
 
 
         UserInputTextField(
-            title = "Enter a new password",
+            title = stringResource(R.string.enter_new_pass),
             content = newPassword,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
-            textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.brownBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
+            textBorder = JessChatLex.getColor(mode, Element.BANNER),
             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
@@ -196,10 +199,10 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
 
 
         UserInputTextField(
-            title = "Confirm the password",
+            title = stringResource(R.string.confirm_pass),
             content = confirmPass,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
-            textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.brownBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
+            textBorder = JessChatLex.getColor(mode, Element.BANNER),
             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
@@ -217,7 +220,7 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
         Spacer(modifier = Modifier.width(5.dp))
 
         AppButton(
-            title = "Change Password",
+            title = stringResource(R.string.change_pass),
             onClick = {
                 forgotPassViewModel.verifyCodeAndChangePassword(
                     email,
@@ -226,17 +229,16 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 )
             },
             shouldEnable = readyReset,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
-            buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightBrownBackground,
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             modifier = Modifier
         )
-                //.padding(top = 5.dp))
 
         Text(
-            text = "I don't have verification code.",
+            text = stringResource(R.string.no_code),
             fontSize = 18.sp,
-            color = JessChatLex.getColor(mode, Element.CLICKABLE),//JessChatLex.greenText,
+            color = JessChatLex.getColor(mode, Element.CLICKABLE),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 50.dp)
@@ -255,10 +257,10 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
                       forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
     Column() {
         UserInputTextField(
-            title = "Email",
+            title = stringResource(R.string.email),
             content = email,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
-            textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.brownBackground,
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
+            textBorder = JessChatLex.getColor(mode, Element.BANNER),
             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
@@ -276,22 +278,21 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
         Spacer(modifier = Modifier.width(5.dp))
 
         AppButton(
-            title = "Request Code",
+            title = stringResource(R.string.request_code),
             onClick = {
                 forgotPassViewModel.requestCode(email)
             },
             shouldEnable = readyRequest,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
-            buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightBrownBackground,
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             modifier = Modifier
-                //.padding(top = 5.dp)
         )
 
         Text(
-            text = "I have verification code.",
+            text = stringResource(R.string.have_code),
             fontSize = 18.sp,
-            color = JessChatLex.getColor(mode, Element.CLICKABLE),//JessChatLex.greenText,
+            color = JessChatLex.getColor(mode, Element.CLICKABLE),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 50.dp)
@@ -307,12 +308,12 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
 @Composable
 fun ResetPasswordSucceededDialog(forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
     CustomDialog(
-        title = "Reset Password Succeeded",
-        message = "Your password is reset successfully.",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBrownBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
+        title = stringResource(R.string.reset_pass_success_title),
+        message = stringResource(R.string.reset_pass_success_content),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         onDismiss = { forgotPassViewModel.updateResetPasswordStatus(0) },
         okOnClick = { _, _ -> forgotPassViewModel.updateResetPasswordStatus(0) })
 }
@@ -320,12 +321,12 @@ fun ResetPasswordSucceededDialog(forgotPassViewModel: ForgotPassViewModel, mode:
 @Composable
 fun ResetPasswordFailedDialog(forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
     CustomDialog(
-        title = "Reset Password Failed",
-        message = "We couldn't reset your password.  Please make sure you have wifi and the code is correct.  Other than that, the server might be down.  Please try again later.  If the problem persists, please contact admin@jessbitcom.pro",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBrownBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
+        title = stringResource(R.string.reset_pass_failed_title),
+        message = stringResource(R.string.reset_pass_failed_content),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         onDismiss = { forgotPassViewModel.updateResetPasswordStatus(0)},
         okOnClick = { _, _ -> forgotPassViewModel.updateResetPasswordStatus(0) })
 }
@@ -333,12 +334,12 @@ fun ResetPasswordFailedDialog(forgotPassViewModel: ForgotPassViewModel, mode: Co
 @Composable
 fun SendCodeSucceededDialog(forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
     CustomDialog(
-        title = "Verification Code Sent",
-        message = "We sent the verification code to your email.",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBrownBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
+        title = stringResource(R.string.code_sent_title),
+        message = stringResource(R.string.code_sent_content),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         onDismiss = { forgotPassViewModel.updateResetPasswordStatus(0) },
         okOnClick = { _, _ -> forgotPassViewModel.updateResetPasswordStatus(0) })
 }
@@ -346,12 +347,12 @@ fun SendCodeSucceededDialog(forgotPassViewModel: ForgotPassViewModel, mode: Colo
 @Composable
 fun SendCodeFailedDialog(forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
     CustomDialog(
-        title = "Verification Code",
-        message = "We couldn't send the verification code.  Please make sure you have wifi.  Other than that, the server might be down.  Please try again later.  If the problem persists, please contact admin@jessbitcom.pro",
-        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightBrownBackground,
-        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.brownBackground,
+        title = stringResource(R.string.code),
+        message = stringResource(R.string.send_code_error_content),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.brownText,
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
         onDismiss = { forgotPassViewModel.updateResetPasswordStatus(0) },
         okOnClick = { _, _ -> forgotPassViewModel.updateResetPasswordStatus(0) })
 }

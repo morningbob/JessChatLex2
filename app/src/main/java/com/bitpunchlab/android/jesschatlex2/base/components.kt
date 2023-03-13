@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -62,7 +63,6 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
 
             modifier = Modifier
                 .fillMaxWidth()
-                //.padding()
                 .then(modifier),
 
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
@@ -72,24 +72,23 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
                 unfocusedBorderColor = fieldBorder,
                 focusedLabelColor = textBorder,
                 unfocusedLabelColor = textBorder,
-                cursorColor = textColor,//Color.White,
+                cursorColor = textColor,
                 backgroundColor = fieldBackground,
                 textColor = textColor,
                 ),
             shape = RoundedCornerShape(12.dp),
-            //trailingIcon = trailingIcon
-            //trailingIcon = trailingIconFunction
         )
     }
 }
 
 @Composable
-fun TitleText(title: String, paddingTop: Int, paddingBottom: Int) {
+fun TitleText(title: String, modifier: Modifier) {
     Text(
         text = title,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = paddingTop.dp, bottom = paddingBottom.dp),
+            .then(modifier),
+            //.padding(top = paddingTop.dp, bottom = paddingBottom.dp),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.h1,
         fontSize = 40.sp,
@@ -139,8 +138,6 @@ fun AppButton(title: String, onClick: () -> Unit, shouldEnable: Boolean,
               buttonBorder: Color = JessChatLex.blueBackground,
               modifier: Modifier) {
 
-    //val backgroundColor = if ()
-
     OutlinedButton(
         onClick = { onClick.invoke() },
 
@@ -152,7 +149,7 @@ fun AppButton(title: String, onClick: () -> Unit, shouldEnable: Boolean,
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp, bottom = 10.dp, start = 70.dp, end = 70.dp)
+            .padding()
             .background(buttonBackground)
             .border(BorderStroke(2.dp, buttonBorder), RoundedCornerShape(15.dp))
             .then(modifier),
@@ -179,7 +176,7 @@ fun HeaderImage(resource: Int, description: String, paddingTop: Int, paddingBott
 
         )
 }
-// stateOne: ((String) -> Unit)? = null, stateTwo: ((String) -> Unit)? = null
+
 @Composable
 fun CustomDialog(title: String, message: String, backgroundColor: Color = JessChatLex.dialogBlueBackground,
                  buttonColor: Color = JessChatLex.blueText, buttonBorder: Color = JessChatLex.blueText,
@@ -264,7 +261,7 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                             horizontalArrangement = Arrangement.SpaceAround
                         ) {
                             DialogButton(
-                                title = "OK",
+                                title = stringResource(R.string.ok),
                                 stateOne = fieldOneValue,
                                 stateTwo = fieldTwoValue,
                                 color = buttonColor,
@@ -273,7 +270,7 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                                 modifier = Modifier,
                             )
                             DialogButton(
-                                title = "Cancel",
+                                title = stringResource(R.string.cancel),
                                 color = buttonColor,
                                 border = buttonBorder,
                                 onClick = cancelOnClick,
@@ -294,7 +291,7 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                             horizontalArrangement = Arrangement.Center
                         ) {
                             DialogButton(
-                                title = "OK",
+                                title = stringResource(R.string.ok),
                                 color = buttonColor,
                                 border = buttonBorder,
                                 onClick = okOnClick,
@@ -347,9 +344,9 @@ fun SendIcon(color: Color, onClick: () -> Unit) {
     ) {
         Icon(
             painter = painterResource(id = R.mipmap.send),
-            contentDescription = "Send Message",
+            contentDescription = stringResource(R.string.send_message),
             Modifier.size(30.dp),
-            tint = color//JessChatLex.messageColorUser
+            tint = color
         )
     }
 }

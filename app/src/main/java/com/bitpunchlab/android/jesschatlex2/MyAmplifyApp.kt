@@ -21,6 +21,7 @@ class MyAmplifyApp : Application() {
         }
     }
 
+    // won't configure Amplify, I use AWS Mobile Client
     private fun configureAmplify(context: Context) {
         Amplify.addPlugin(AWSCognitoAuthPlugin())
         Amplify.configure(context)

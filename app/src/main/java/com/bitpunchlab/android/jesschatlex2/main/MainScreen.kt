@@ -1,37 +1,26 @@
 package com.bitpunchlab.android.jesschatlex2.main
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bitpunchlab.android.jesschatlex2.Login
 import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.Records
-import com.bitpunchlab.android.jesschatlex2.awsClient.AmazonLexClient
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.CustomCircularProgressBar
 import com.bitpunchlab.android.jesschatlex2.base.SendIcon
@@ -41,11 +30,6 @@ import com.bitpunchlab.android.jesschatlex2.helpers.WhoSaid
 import com.bitpunchlab.android.jesschatlex2.models.Message
 import com.bitpunchlab.android.jesschatlex2.ui.theme.JessChatLex
 import com.bitpunchlab.android.jesschatlex2.userAccount.MainViewModel
-import com.bitpunchlab.android.jesschatlex2.userAccount.MainViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -55,13 +39,12 @@ fun MainScreen(navController: NavHostController,
 
     val loadingAlpha by mainViewModel.loadingAlpha.collectAsState()
 
-    //val loginState by mainViewModel.isLoggedIn.collectAsState()
     val loginState by MobileClient.isLoggedIn.collectAsState()
     var input by remember { mutableStateOf("") }
 
     var shouldNavigateRecords by remember { mutableStateOf(false) }
 
-    val innerPadding = 70.dp
+    val lexError by MobileClient.lexError.collectAsState()
 
     LaunchedEffect(key1 = loginState) {
         if (loginState == false) {
@@ -70,7 +53,6 @@ fun MainScreen(navController: NavHostController,
                     inclusive = false
                 }
             }
-            //navController.navigate(Login.route)
         }
     }
 
@@ -91,9 +73,6 @@ fun MainScreen(navController: NavHostController,
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding(),
-
-            //.verticalScroll(rememberScrollState()),
-        //color = JessChatLex.lightBlueBackground,
     ) {
         val themeMode = chooseMode()
 
@@ -102,20 +81,25 @@ fun MainScreen(navController: NavHostController,
             ) },
 
         ) {
-            //innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(JessChatLex.getColor(themeMode, Element.BACKGROUND)),//,//JessChatLex.lightBlueBackground),
-                    //.navigationBarsPadding(),
-                //.verticalScroll(rememberScrollState()),
+                    .background(JessChatLex.getColor(themeMode, Element.BACKGROUND)),
                 horizontalAlignment = Alignment.CenterHorizontally,
 
 
             ) {
-                //Button(onClick = { mainViewModel.logoutUser() }) {
-                //    Text(text = "logout")
-                //}
+                // display error message here, if there is interaction error
+                lexError?.let {
+                    Text(
+                        text = stringResource(R.string.lex_error),
+                        modifier = Modifier
+                            .background(Color.Yellow)
+                            .padding(5.dp),
+                        color = Color.Red
+                    )
+                }
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxHeight(0.75f)
@@ -129,7 +113,6 @@ fun MainScreen(navController: NavHostController,
                                 JessChatLex.getColor(themeMode, Element.BOT_MESSAGE)
                             } else {
                                 JessChatLex.getColor(themeMode, Element.USER_MESSAGE)
-                                //JessChatLex.messageColorUser
                             }
                             Text(
                                 text = message.message,
@@ -169,15 +152,14 @@ fun MainScreen(navController: NavHostController,
                             focusedBorderColor = JessChatLex.getColor(
                                 themeMode,
                                 Element.FIELD_BORDER
-                            ),//JessChatLex.blueBackground,
+                            ),
                             unfocusedBorderColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
                             placeholderColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
                             cursorColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER)
-                        ),//JessChatLex.blueBackground),
-                        //textStyle = LocalTextStyle.current.copy(color = textColor),
+                        ),
                         shape = RoundedCornerShape(12.dp),
                         label = { Text(
-                            text = "Type your message",
+                            text = stringResource(R.string.type_message),
                             color = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
                         ) }
                     )

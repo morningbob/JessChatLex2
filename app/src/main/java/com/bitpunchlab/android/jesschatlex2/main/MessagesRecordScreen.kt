@@ -40,11 +40,7 @@ fun MessagesRecordScreen(navController: NavHostController,
         }
         return ColorMode.DARK
     }
-    // a list to display all messages
-    // from the oldest to the newest
-    // scroll to the newest automatically
-    // load records in user info model
-    // watch the list here
+
     LaunchedEffect(Unit) {
         mainViewModel.getAllMessages()
     }
@@ -59,7 +55,6 @@ fun MessagesRecordScreen(navController: NavHostController,
         Scaffold(
             bottomBar = { BottomNavigationBar(navController
             ) },
-            //backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND)
         ) {
             Column(modifier = Modifier
                 .fillMaxSize()
@@ -70,12 +65,11 @@ fun MessagesRecordScreen(navController: NavHostController,
                         .padding(top = 30.dp, start = 30.dp, end = 30.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    //item {
                         allMessages.forEach { message : Message  ->
                             val textColor = if (message.whoSaid == WhoSaid.Lex) {
-                                JessChatLex.getColor(mode, Element.BOT_MESSAGE)//JessChatLex.blueText
+                                JessChatLex.getColor(mode, Element.BOT_MESSAGE)
                             } else {
-                                JessChatLex.getColor(mode, Element.USER_MESSAGE)//JessChatLex.messageColorUser
+                                JessChatLex.getColor(mode, Element.USER_MESSAGE)
                             }
                             item {
                                 Text(
@@ -93,7 +87,6 @@ fun MessagesRecordScreen(navController: NavHostController,
                                 )
                             }
                         }
-                   // }
                 }
             }
         }

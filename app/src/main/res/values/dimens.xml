@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="header_title_padding">100dp</dimen>
+    <dimen name="textfield_left_padding">50dp</dimen>
+    <dimen name="textfield_right_padding">50dp</dimen>
+    <dimen name="app_button_left_padding">70dp</dimen>
+    <dimen name="app_button_right_padding">70dp</dimen>
+    <dimen name="general_space">10dp</dimen>
+    <dimen name="bit_more_space">30dp</dimen>
+    <dimen name="more_space">50dp</dimen>
+    <dimen name="error_left_right_padding">20dp</dimen>
+    <dimen name="between_button_padding">10dp</dimen>
+    <dimen name="clickable_text_padding">6dp</dimen>
+</resources>

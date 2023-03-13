@@ -2,8 +2,6 @@ package com.bitpunchlab.android.jesschatlex2.userAccount
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.saveable
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.helpers.InputValidation
 import kotlinx.coroutines.CoroutineScope
@@ -40,17 +38,8 @@ class LoginViewModel : ViewModel() {
     private val _showConfirmEmailStatus = MutableStateFlow<Int>(0)
     val showConfirmEmailStatus: StateFlow<Int> = _showConfirmEmailStatus.asStateFlow()
 
-    private val _confirmEmail = MutableStateFlow<String>("")
-    val confirmEmail : StateFlow<String> = _confirmEmail.asStateFlow()
-
-    private val _confirmCode = MutableStateFlow<String>("")
-    val confirmCode : StateFlow<String> = _confirmCode.asStateFlow()
-
     private val _confirmEmailError = MutableStateFlow<String>(" ")
     val confirmEmailError : StateFlow<String> = _confirmEmailError.asStateFlow()
-
-    private val _confirmCodeError = MutableStateFlow<String>(" ")
-    val confirmCodeError : StateFlow<String> = _confirmCodeError.asStateFlow()
 
     private val _resendCodeStatus = MutableStateFlow<Int>(0)
     val resendCodeStatus : StateFlow<Int> = _resendCodeStatus.asStateFlow()
@@ -139,14 +128,6 @@ class LoginViewModel : ViewModel() {
         _resendCodeStatus.value = newValue
     }
 
-    fun updateConfirmEmail(newValue: String) {
-        _confirmEmail.value = newValue
-    }
-
-    fun updateConfirmCode(newValue: String) {
-        _confirmCode.value = newValue
-    }
-
     fun updateConfirmEmailError(newValue: String) {
         _confirmEmailError.value = newValue
     }
@@ -162,72 +143,3 @@ class LoginViewModel : ViewModel() {
         _passwordState.value = " "
     }
 }
-/*
-       CoroutineScope(Dispatchers.IO).launch {
-           if (CognitoClient.loginUser(email = emailState.value, password = passwordState.value)) {
-               // navigate to main
-               // setting the alpha here and below, duplicately, because of timing issue
-               // want to set to 0f only when login result came back
-               _loadingAlpha.value = 0f
-               resetFields()
-               // after signin succeeded, if the checked value is true,
-               // we remember the device
-               if (CognitoClient.rememberDevice()) {
-                   Log.i("remember device", "success")
-               }
-           } else {
-               // display alert
-               Log.i("login user", "failure")
-               resetFields()
-               _showFailureDialog.value = true
-               _loadingAlpha.value = 0f
-           }
-       }
-
-        */
-/*
-    fun recoverUser(email: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (CognitoClient.recoverUser(email)) {
-                Log.i("password reset", "success")
-            } else {
-                Log.i("password reset", "error")
-            }
-        }
-    }
-*/
-/*
-    fun sendVerificationCode(email: String) {
-        _loadingAlpha.value = 1f
-        CoroutineScope(Dispatchers.IO).launch {
-            if (CognitoClient.resendVerificationCode(email)) {
-                _loadingAlpha.value = 0f
-
-            } else {
-                _loadingAlpha.value = 0f
-            }
-        }
-    }
-    fun verifyConfirmCode1(email: String, code: String) {
-        //_showConfirmEmailDialog.value = true
-        Log.i("verify confirm code", "received: $code")
-        _loadingAlpha.value = 1f
-        CoroutineScope(Dispatchers.IO).launch {
-            if (CognitoClient.confirmVerificationCodeSignUp(email, code)) {
-                Log.i("verify code", "success")
-                // show success alert
-                _loadingAlpha.value = 0f
-                _showConfirmEmailStatus.value = 1
-            } else {
-                Log.i("verify code", "failed")
-                _loadingAlpha.value = 0f
-                _showConfirmEmailStatus.value = 2
-            }
-        }
-    }
-    private val _rememberDeviceCheckbox = MutableStateFlow<Boolean>(false)
-    val rememberDeviceCheckbox : StateFlow<Boolean> = _rememberDeviceCheckbox.asStateFlow()
-fun updateRememberDevice(newValue: Boolean) {
-        _rememberDeviceCheckbox.value = newValue
-    }
-*/

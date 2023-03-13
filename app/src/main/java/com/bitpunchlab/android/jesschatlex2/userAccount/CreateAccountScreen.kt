@@ -1,37 +1,25 @@
 package com.bitpunchlab.android.jesschatlex2.userAccount
 
-import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.amplifyframework.auth.AuthException
-import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.auth.options.AuthSignUpOptions
-import com.amplifyframework.kotlin.core.Amplify
 import com.bitpunchlab.android.jesschatlex2.Login
 import com.bitpunchlab.android.jesschatlex2.Main
 import com.bitpunchlab.android.jesschatlex2.R
-import com.bitpunchlab.android.jesschatlex2.awsClient.CognitoClient
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.*
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
 import com.bitpunchlab.android.jesschatlex2.ui.theme.JessChatLex
-import kotlinx.coroutines.*
 
 @Composable
 fun CreateAccountScreen(navController: NavHostController,
@@ -47,7 +35,6 @@ fun CreateAccountScreen(navController: NavHostController,
     val passwordErrorState by registerViewModel.passwordErrorState.collectAsState()
     val confirmPassErrorState by registerViewModel.confirmPassErrorState.collectAsState()
     val loadingAlpha by registerViewModel.loadingAlpha.collectAsState()
-    //val loginState by mainViewModel.isLoggedIn.collectAsState()
     val loginState by MobileClient.isLoggedIn.collectAsState()
     val showRegistrationStatusDialog by registerViewModel.showRegistrationStatusDialog.collectAsState()
     val readyRegister by registerViewModel.readyRegister.collectAsState()
@@ -56,6 +43,8 @@ fun CreateAccountScreen(navController: NavHostController,
     // navigate to main page if the user successfully created the account
     // or when user navigate to this page by back button
     // but he is already logged in
+
+    val config = LocalConfiguration.current
 
     val lightMode = !isSystemInDarkTheme()
     fun chooseMode() : ColorMode {
@@ -79,7 +68,6 @@ fun CreateAccountScreen(navController: NavHostController,
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        //color = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.lightGreenBackground
     ) {
         val mode = chooseMode()
 
@@ -88,7 +76,6 @@ fun CreateAccountScreen(navController: NavHostController,
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .background(JessChatLex.getColor(mode, Element.BACKGROUND)),
-            //verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
@@ -103,29 +90,26 @@ fun CreateAccountScreen(navController: NavHostController,
 
                 }
                 var onLoginClicked = {
-                    //registerViewModel.navigateLogin()
                     navController.navigate(Login.route)
                 }
 
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        //.padding(top = 100.dp, bottom = 30.dp)
                         .background(JessChatLex.getColor(mode, Element.BANNER)),//JessChatLex.greenBackground),
 
                     ) {
-                    TitleText(title = "Register", paddingTop = 100, paddingBottom = 100)
+                    TitleText(
+                        title = stringResource(R.string.register),
+                        modifier = Modifier
+                            .padding(top = 100.dp, bottom = 100.dp))
                 }
 
-                //HeaderImage(
-                //    resource = R.mipmap.adduser, description = "Create Account logo",
-                //    paddingTop = 30, paddingBottom = 0
-                //)
-                //TitleText(title = "Create Account", paddingTop = 30, paddingBottom = 30)
+
                 Column(horizontalAlignment = Alignment.Start) {
-                    UserInputTextField(title = "Name", content = nameState,
-                        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.greenText,
-                        textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.greenBackground,
+                    UserInputTextField(title = stringResource(R.string.name), content = nameState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = false,
@@ -135,9 +119,9 @@ fun CreateAccountScreen(navController: NavHostController,
                         modifier = Modifier
                             .padding(start = 20.dp, end = 20.dp)
                     )
-                    UserInputTextField(title = "Email", content = emailState,
-                        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.greenText,
-                        textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.greenBackground,
+                    UserInputTextField(title = stringResource(R.string.email), content = emailState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = false,
@@ -147,9 +131,9 @@ fun CreateAccountScreen(navController: NavHostController,
                         modifier = Modifier
                             .padding(start = 20.dp, end = 20.dp)
                     )
-                    UserInputTextField(title = "Password", content = passwordState,
-                        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.greenText,
-                        textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.greenBackground,
+                    UserInputTextField(title = stringResource(R.string.password), content = passwordState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = true,
@@ -159,9 +143,9 @@ fun CreateAccountScreen(navController: NavHostController,
                         modifier = Modifier
                             .padding(start = 20.dp, end = 20.dp)
                     )
-                    UserInputTextField(title = "Confirm Password", content = confirmPassState,
-                        textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.greenText,
-                        textBorder = JessChatLex.getColor(mode, Element.BANNER),//JessChatLex.greenBackground,
+                    UserInputTextField(title = stringResource(R.string.confirm_password), content = confirmPassState,
+                        textColor = JessChatLex.getColor(mode, Element.TEXT),
+                        textBorder = JessChatLex.getColor(mode, Element.BANNER),
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = true,
@@ -179,20 +163,20 @@ fun CreateAccountScreen(navController: NavHostController,
                         .padding(bottom = 50.dp)
                 ) {
                     AppButton(
-                        title = "Send",
+                        title = stringResource(R.string.send),
                         onClick = onSendClicked,
                         shouldEnable = readyRegister,
-                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.greenBackground,
-                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightGreenBackground,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
                     )
                     AppButton(
-                        title = "Login",
+                        title = stringResource(R.string.login),
                         onClick = onLoginClicked,
                         shouldEnable = true,
-                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.greenBackground,
-                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),//JessChatLex.lightGreenBackground,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
                     )
@@ -221,28 +205,33 @@ fun CreateAccountScreen(navController: NavHostController,
 fun RegistrationStatusDialog(status: Int, registerViewModel: RegisterViewModel, mode: ColorMode) {
     if (status == 1) {
         CustomDialog(
-            title = "Registration Success",
-            message = "You are successfully registered.  We sent a verification code to your email.  You need to confirm your email before logging in.",
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightGreenBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.greenBackground,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.greenText,
+            title = stringResource(R.string.registration_success_title),
+            message = stringResource(R.string.registration_success_content),
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             onDismiss = { registerViewModel.updateRegistrationStatusDialog(0) },
             okOnClick = { _, _ -> registerViewModel.updateRegistrationStatusDialog(0) }
         )
     } else if (status == 2) {
         CustomDialog(
-            title = "Registration Failure",
-            message = "There is error registering your account.  Please make sure you have wifi, and the email is not registered before.  Other than that, the server may be in maintenance.  If the problem persists, please contact admin@jessbitcom.pro",
-            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),//JessChatLex.lightGreenBackground,
-            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),//JessChatLex.greenBackground,
-            textColor = JessChatLex.getColor(mode, Element.TEXT),//JessChatLex.greenText,
+            title = stringResource(R.string.registration_failure_title),
+            message = stringResource(R.string.registration_failure_content),
+            backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+            buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+            textColor = JessChatLex.getColor(mode, Element.TEXT),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             onDismiss = { registerViewModel.updateRegistrationStatusDialog(0) },
             okOnClick = { _, _ -> registerViewModel.updateRegistrationStatusDialog(0) }
         )
     }
 }
+//HeaderImage(
+//    resource = R.mipmap.adduser, description = "Create Account logo",
+//    paddingTop = 30, paddingBottom = 0
+//)
+//TitleText(title = "Create Account", paddingTop = 30, paddingBottom = 30)
 
 
 
