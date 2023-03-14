@@ -1,6 +1,8 @@
 package com.bitpunchlab.android.jesschatlex2.main
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -14,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +40,8 @@ import com.bitpunchlab.android.jesschatlex2.userAccount.MainViewModel
 fun MainScreen(navController: NavHostController,
     mainViewModel: MainViewModel,) {
     //userInfoViewModel: UserInfoViewModel = viewModel(LocalContext.current as ComponentActivity)) {
+
+    val config = LocalConfiguration.current
 
     val loadingAlpha by mainViewModel.loadingAlpha.collectAsState()
 
@@ -81,91 +87,247 @@ fun MainScreen(navController: NavHostController,
             ) },
 
         ) {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(JessChatLex.getColor(themeMode, Element.BACKGROUND)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-
+                    .background(JessChatLex.getColor(themeMode, Element.BACKGROUND))
+                    .padding(bottom = it.calculateBottomPadding() + 50.dp),
 
             ) {
-                // display error message here, if there is interaction error
-                lexError?.let {
-                    Text(
-                        text = stringResource(R.string.lex_error),
-                        modifier = Modifier
-                            .background(Color.Yellow)
-                            .padding(5.dp),
-                        color = Color.Red
-                    )
-                }
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxHeight(0.75f)
-                        .fillMaxWidth()
-                        .padding(30.dp),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    item {
-                        mainViewModel.currentMessageList.forEach { message : Message ->
-                            val textColor = if (message.whoSaid == WhoSaid.Lex) {
-                                JessChatLex.getColor(themeMode, Element.BOT_MESSAGE)
-                            } else {
-                                JessChatLex.getColor(themeMode, Element.USER_MESSAGE)
-                            }
+                if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    Column(
+                        modifier = Modifier,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                        // display error message here, if there is interaction error
+                        lexError?.let {
                             Text(
-                                text = message.message,
-                                modifier = Modifier.padding(8.dp),
-                                color = textColor,
-                                fontSize = 20.sp
+                                text = stringResource(R.string.lex_error),
+                                modifier = Modifier
+                                    .background(Color.Yellow)
+                                    .padding(5.dp),
+                                color = Color.Red
                             )
                         }
-                    }
-                }
-                // this is the color of the cursor handle
-                val customTextSelectionColors = TextSelectionColors(
-                    handleColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
-                    backgroundColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
-                )
-
-                CompositionLocalProvider(
-                    LocalTextSelectionColors provides customTextSelectionColors,
-                ) {
-
-                    OutlinedTextField(
-                        value = input,
-                        onValueChange = { newInput: String ->
-                            input = newInput
-                        },
-                        trailingIcon = {
-                            if (input != "") {
-                                SendIcon(color = JessChatLex.getColor(themeMode, Element.SEND_ICON)) {
-                                    mainViewModel.sendMessage(input)
-                                    input = ""
+                        Log.i("bottom padding", it.calculateBottomPadding().toString())
+                        LazyColumn(
+                            modifier = Modifier
+                                //.fillMaxHeight(0.75f)
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                                .padding(30.dp),//bottom = it.calculateBottomPadding() + 100.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            item {
+                                mainViewModel.currentMessageList.forEach { message: Message ->
+                                    val textColor = if (message.whoSaid == WhoSaid.Lex) {
+                                        JessChatLex.getColor(themeMode, Element.BOT_MESSAGE)
+                                    } else {
+                                        JessChatLex.getColor(themeMode, Element.USER_MESSAGE)
+                                    }
+                                    Text(
+                                        text = message.message,
+                                        modifier = Modifier.padding(8.dp),
+                                        color = textColor,
+                                        fontSize = 20.sp
+                                    )
                                 }
                             }
-                        },
-                        textStyle = LocalTextStyle.current.copy(color = JessChatLex.getColor(themeMode, Element.FIELD_BORDER)),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                           
-                            focusedBorderColor = JessChatLex.getColor(
-                                themeMode,
-                                Element.FIELD_BORDER
-                            ),
-                            unfocusedBorderColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
-                            placeholderColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
-                            cursorColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER)
-                        ),
-                        shape = RoundedCornerShape(12.dp),
-                        label = { Text(
-                            text = stringResource(R.string.type_message),
-                            color = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
-                        ) }
-                    )
-                }
+                        }
+                        // this is the color of the cursor handle
+                        val customTextSelectionColors = TextSelectionColors(
+                            handleColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
+                            backgroundColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
+                        )
 
+                        CompositionLocalProvider(
+                            LocalTextSelectionColors provides customTextSelectionColors,
+                        ) {
+
+                            OutlinedTextField(
+                                value = input,
+                                onValueChange = { newInput: String ->
+                                    input = newInput
+                                },
+                                trailingIcon = {
+                                    if (input != "") {
+                                        SendIcon(
+                                            color = JessChatLex.getColor(
+                                                themeMode,
+                                                Element.SEND_ICON
+                                            )
+                                        ) {
+                                            mainViewModel.sendMessage(input)
+                                            input = ""
+                                        }
+                                    }
+                                },
+                                textStyle = LocalTextStyle.current.copy(
+                                    color = JessChatLex.getColor(
+                                        themeMode,
+                                        Element.FIELD_BORDER
+                                    )
+                                ),
+                                colors = TextFieldDefaults.outlinedTextFieldColors(
+
+                                    focusedBorderColor = JessChatLex.getColor(
+                                        themeMode,
+                                        Element.FIELD_BORDER
+                                    ),
+                                    unfocusedBorderColor = JessChatLex.getColor(
+                                        themeMode,
+                                        Element.FIELD_BORDER
+                                    ),
+                                    placeholderColor = JessChatLex.getColor(
+                                        themeMode,
+                                        Element.FIELD_BORDER
+                                    ),
+                                    cursorColor = JessChatLex.getColor(
+                                        themeMode,
+                                        Element.FIELD_BORDER
+                                    )
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                label = {
+                                    Text(
+                                        text = stringResource(R.string.type_message),
+                                        color = JessChatLex.getColor(
+                                            themeMode,
+                                            Element.FIELD_BORDER
+                                        ),
+                                    )
+                                }
+                            )
+                        }
+
+                    } // end of body column
+                }// end of if portrait
+                else {
+                    Row(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth(0.5f)
+                                .background(JessChatLex.getColor(themeMode, Element.BACKGROUND)),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            // display error message here, if there is interaction error
+                            lexError?.let {
+                                Text(
+                                    text = stringResource(R.string.lex_error),
+                                    modifier = Modifier
+                                        .background(Color.Yellow)
+                                        .padding(5.dp),
+                                    color = Color.Red
+                                )
+                            }
+
+                            LazyColumn(
+                                modifier = Modifier
+                                    .fillMaxHeight(0.75f)
+                                    .fillMaxWidth()
+                                    .padding(30.dp),
+                                horizontalAlignment = Alignment.Start
+                            ) {
+                                item {
+                                    mainViewModel.currentMessageList.forEach { message: Message ->
+                                        val textColor = if (message.whoSaid == WhoSaid.Lex) {
+                                            JessChatLex.getColor(themeMode, Element.BOT_MESSAGE)
+                                        } else {
+                                            JessChatLex.getColor(themeMode, Element.USER_MESSAGE)
+                                        }
+                                        Text(
+                                            text = message.message,
+                                            modifier = Modifier.padding(8.dp),
+                                            color = textColor,
+                                            fontSize = 20.sp
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(top = dimensionResource(id = R.dimen.more_space)),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        
+                        ) {
+                            // this is the color of the cursor handle
+                            val customTextSelectionColors = TextSelectionColors(
+                                handleColor = JessChatLex.getColor(themeMode, Element.FIELD_BORDER),
+                                backgroundColor = JessChatLex.getColor(
+                                    themeMode,
+                                    Element.FIELD_BORDER
+                                ),
+                            )
+                            CompositionLocalProvider(
+                                LocalTextSelectionColors provides customTextSelectionColors,
+                            ) {
+
+                                OutlinedTextField(
+                                    value = input,
+                                    onValueChange = { newInput: String ->
+                                        input = newInput
+                                    },
+                                    trailingIcon = {
+                                        if (input != "") {
+                                            SendIcon(
+                                                color = JessChatLex.getColor(
+                                                    themeMode,
+                                                    Element.SEND_ICON
+                                                )
+                                            ) {
+                                                mainViewModel.sendMessage(input)
+                                                input = ""
+                                            }
+                                        }
+                                    },
+                                    textStyle = LocalTextStyle.current.copy(
+                                        color = JessChatLex.getColor(
+                                            themeMode,
+                                            Element.FIELD_BORDER
+                                        )
+                                    ),
+                                    colors = TextFieldDefaults.outlinedTextFieldColors(
+
+                                        focusedBorderColor = JessChatLex.getColor(
+                                            themeMode,
+                                            Element.FIELD_BORDER
+                                        ),
+                                        unfocusedBorderColor = JessChatLex.getColor(
+                                            themeMode,
+                                            Element.FIELD_BORDER
+                                        ),
+                                        placeholderColor = JessChatLex.getColor(
+                                            themeMode,
+                                            Element.FIELD_BORDER
+                                        ),
+                                        cursorColor = JessChatLex.getColor(
+                                            themeMode,
+                                            Element.FIELD_BORDER
+                                        )
+                                    ),
+                                    shape = RoundedCornerShape(12.dp),
+                                    label = {
+                                        Text(
+                                            text = stringResource(R.string.type_message),
+                                            color = JessChatLex.getColor(
+                                                themeMode,
+                                                Element.FIELD_BORDER
+                                            ),
+                                        )
+                                    }
+                                )
+                            }
+                        } // end of 2nd column
+                        //} // end of body column
+                    } // end of row
+                } // end of if land
             }
+        //}
             // progress bar
             Box(
                 contentAlignment = Alignment.Center,
@@ -176,8 +338,8 @@ fun MainScreen(navController: NavHostController,
                 ) {
                 CustomCircularProgressBar()
             }
-        }
-    }
+        } // end of scaffold
+    } // end of surface
 }
 
 

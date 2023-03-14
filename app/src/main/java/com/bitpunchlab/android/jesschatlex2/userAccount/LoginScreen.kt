@@ -153,68 +153,78 @@ fun LoginScreen(navController: NavHostController,
                     )
                 }
                 //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
-                AppButton(
-                    title = stringResource(R.string.send),
-                    onClick = onSendClicked,
-                    shouldEnable = readyLogin,
-                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
-                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
-                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                Column(
                     modifier = Modifier
-                        .padding(
-                            top = dimensionResource(id = R.dimen.bit_more_space),
-                            start = dimensionResource(id = R.dimen.app_button_left_padding),
-                            end = dimensionResource(id = R.dimen.app_button_right_padding))
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    AppButton(
+                        title = stringResource(R.string.send),
+                        onClick = onSendClicked,
+                        shouldEnable = readyLogin,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .padding(
+                                top = dimensionResource(id = R.dimen.general_space),
+                                start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                end = dimensionResource(id = R.dimen.app_button_right_padding))
 
-                )
-                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
-                AppButton(
-                    title = stringResource(R.string.signUp),
-                    onClick = onSignUpClicked,
-                    shouldEnable = true,
-                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
-                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
-                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-                    modifier = Modifier
-                        .padding(top = dimensionResource(id = R.dimen.general_space),
-                            start = dimensionResource(id = R.dimen.app_button_left_padding),
-                            end = dimensionResource(id = R.dimen.app_button_right_padding))
-                )
-                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
-                GeneralText(
-                    textString = stringResource(R.string.forgot_password),
-                    modifier = Modifier
-                        .padding(dimensionResource(id = R.dimen.clickable_text_padding),
-                        top = dimensionResource(id = R.dimen.bit_more_space)),
-                    textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
-                    textAlign = TextAlign.Center,
-                    onClick = { onForgotPasswordClicked.invoke() }
-                )
-                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
-                GeneralText(
-                    textString = stringResource(R.string.confirm_email),
-                    modifier = Modifier
-                        .padding(dimensionResource(id = R.dimen.clickable_text_padding)),
-                    textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
-                    textAlign = TextAlign.Center,
-                    onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
-                )
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    AppButton(
+                        title = stringResource(R.string.signUp),
+                        onClick = onSignUpClicked,
+                        shouldEnable = true,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .padding(top = dimensionResource(id = R.dimen.general_space),
+                                start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    GeneralText(
+                        textString = stringResource(R.string.forgot_password),
+                        modifier = Modifier
+                            .padding(bottom = dimensionResource(id = R.dimen.general_space),
+                                top = dimensionResource(id = R.dimen.bit_more_space)),
+                        textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        textAlign = TextAlign.Center,
+                        onClick = { onForgotPasswordClicked.invoke() }
+                    )
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    GeneralText(
+                        textString = stringResource(R.string.confirm_email),
+                        modifier = Modifier
+                            .padding(bottom = dimensionResource(id = R.dimen.general_space),
+                                top = dimensionResource(id = R.dimen.general_space),
+                            ),
+                        textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        textAlign = TextAlign.Center,
+                        onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
+                    )
 
-                // when code = 0, nothing happen
-                // 1 = dialog, get email
-                // 2 = code sent
-                // 3 = failed to send code
-                //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
-                GeneralText(
-                    textString = stringResource(R.string.resend_code),
-                    modifier = Modifier
-                        .padding(dimensionResource(id = R.dimen.clickable_text_padding)),
-                    textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
-                    textAlign = TextAlign.Center,
-                    onClick = { // get email
-                        loginViewModel.updateResendCodeStatus(1)
-                    }
-                )
+                    // when code = 0, nothing happen
+                    // 1 = dialog, get email
+                    // 2 = code sent
+                    // 3 = failed to send code
+                    //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
+                    GeneralText(
+                        textString = stringResource(R.string.resend_code),
+                        modifier = Modifier
+                            .padding(
+                                top = dimensionResource(id = R.dimen.general_space),
+                                bottom = dimensionResource(id = R.dimen.more_space)),
+                        textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        textAlign = TextAlign.Center,
+                        onClick = { // get email
+                            loginViewModel.updateResendCodeStatus(1)
+                        }
+                    )
+                }
+
 
             } else {// end of if portrait
                 // landscape
@@ -307,7 +317,7 @@ fun LoginScreen(navController: NavHostController,
                     GeneralText(
                         textString = stringResource(R.string.forgot_password),
                         modifier = Modifier
-                            .padding(dimensionResource(id = R.dimen.clickable_text_padding),
+                            .padding(bottom = dimensionResource(id = R.dimen.general_space),
                             top = dimensionResource(id = R.dimen.bit_more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
@@ -317,7 +327,8 @@ fun LoginScreen(navController: NavHostController,
                     GeneralText(
                         textString = stringResource(R.string.confirm_email),
                         modifier = Modifier
-                            .padding(dimensionResource(id = R.dimen.clickable_text_padding)),
+                            .padding(bottom = dimensionResource(id = R.dimen.general_space),
+                            top = dimensionResource(id = R.dimen.general_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
                         onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
@@ -331,7 +342,7 @@ fun LoginScreen(navController: NavHostController,
                     GeneralText(
                         textString = stringResource(R.string.resend_code),
                         modifier = Modifier
-                            .padding(dimensionResource(id = R.dimen.clickable_text_padding),
+                            .padding(top = dimensionResource(id = R.dimen.general_space),
                                 bottom = dimensionResource(id = R.dimen.bit_more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,

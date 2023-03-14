@@ -8,6 +8,7 @@
     <dimen name="general_space">10dp</dimen>
     <dimen name="bit_more_space">30dp</dimen>
     <dimen name="more_space">50dp</dimen>
+    <dimen name="bunch_space"></dimen>
     <dimen name="error_left_right_padding">20dp</dimen>
     <dimen name="between_button_padding">10dp</dimen>
     <dimen name="clickable_text_padding">6dp</dimen>
