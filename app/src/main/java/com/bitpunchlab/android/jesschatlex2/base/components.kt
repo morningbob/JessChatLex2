@@ -14,6 +14,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -62,11 +63,12 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
             },
 
             modifier = Modifier
-                .fillMaxWidth()
+                //.fillMaxWidth()
                 .then(modifier),
 
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             textStyle = LocalTextStyle.current.copy(color = textColor),
+
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = fieldBorder,
                 unfocusedBorderColor = fieldBorder,
@@ -123,7 +125,8 @@ fun ErrorText(error: String, color: Color = Color.Red, modifier: Modifier) {
         text = error,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 3.dp, start = 50.dp, end = 50.dp)
+            .padding(top = 3.dp, start = dimensionResource(id = R.dimen.more_space),
+                end = dimensionResource(id = R.dimen.more_space))
             .then(modifier),
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.body2,
@@ -148,7 +151,7 @@ fun AppButton(title: String, onClick: () -> Unit, shouldEnable: Boolean,
 
         ),
         modifier = Modifier
-            .fillMaxWidth()
+            //.fillMaxWidth()
             .padding()
             .background(buttonBackground)
             .border(BorderStroke(2.dp, buttonBorder), RoundedCornerShape(15.dp))

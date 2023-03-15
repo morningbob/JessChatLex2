@@ -213,6 +213,7 @@ fun CreateAccountScreen(navController: NavHostController,
                             buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(
                                     start = dimensionResource(id = R.dimen.app_button_left_padding),
                                     end = dimensionResource(id = R.dimen.app_button_right_padding)
@@ -226,6 +227,7 @@ fun CreateAccountScreen(navController: NavHostController,
                             buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.bit_more_space),
                                     start = dimensionResource(id = R.dimen.app_button_left_padding),
@@ -372,6 +374,7 @@ fun CreateAccountScreen(navController: NavHostController,
                             ),
                             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.more_space),
                                     start = dimensionResource(id = R.dimen.app_button_left_padding),
@@ -390,6 +393,7 @@ fun CreateAccountScreen(navController: NavHostController,
                             ),
                             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                             modifier = Modifier
+                                .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.bit_more_space),
                                     start = dimensionResource(id = R.dimen.app_button_left_padding),

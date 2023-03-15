@@ -53,15 +53,18 @@ object MobileClient {
                     when (userStateDetails) {
                         UserState.SIGNED_IN -> {
                             Log.i("Mobile Client", "state as signed in")
+                            _isLoggedIn.value = true
                         }
                         UserState.SIGNED_OUT -> {
                             Log.i("Mobile Client", "state as signed out")
+                            _isLoggedIn.value = false
                         }
                         UserState.GUEST -> {
                             Log.i("Mobile Client", "state as guest")
+                            _isLoggedIn.value = false
                         }
                         else -> {
-
+                            _isLoggedIn.value = false
                         }
                     }
 

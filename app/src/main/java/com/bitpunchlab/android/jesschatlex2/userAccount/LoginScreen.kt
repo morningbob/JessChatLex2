@@ -165,6 +165,7 @@ fun LoginScreen(navController: NavHostController,
                         buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(
                                 top = dimensionResource(id = R.dimen.general_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
@@ -180,6 +181,7 @@ fun LoginScreen(navController: NavHostController,
                         buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(top = dimensionResource(id = R.dimen.general_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
                                 end = dimensionResource(id = R.dimen.app_button_right_padding))
@@ -188,7 +190,8 @@ fun LoginScreen(navController: NavHostController,
                     GeneralText(
                         textString = stringResource(R.string.forgot_password),
                         modifier = Modifier
-                            .padding(bottom = dimensionResource(id = R.dimen.general_space),
+                            .padding(
+                                bottom = dimensionResource(id = R.dimen.general_space),
                                 top = dimensionResource(id = R.dimen.bit_more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
@@ -198,7 +201,8 @@ fun LoginScreen(navController: NavHostController,
                     GeneralText(
                         textString = stringResource(R.string.confirm_email),
                         modifier = Modifier
-                            .padding(bottom = dimensionResource(id = R.dimen.general_space),
+                            .padding(
+                                bottom = dimensionResource(id = R.dimen.general_space),
                                 top = dimensionResource(id = R.dimen.general_space),
                             ),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
@@ -296,6 +300,7 @@ fun LoginScreen(navController: NavHostController,
                         buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(top = dimensionResource(id = R.dimen.bit_more_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
                                 end = dimensionResource(id = R.dimen.app_button_right_padding))
@@ -309,6 +314,7 @@ fun LoginScreen(navController: NavHostController,
                         buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
+                            .fillMaxWidth()
                             .padding(top = dimensionResource(id = R.dimen.bit_more_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
                                 end = dimensionResource(id = R.dimen.app_button_right_padding))

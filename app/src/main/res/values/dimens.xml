@@ -5,6 +5,7 @@
     <dimen name="textfield_right_padding">50dp</dimen>
     <dimen name="app_button_left_padding">70dp</dimen>
     <dimen name="app_button_right_padding">70dp</dimen>
+    <dimen name="app_button_extra_padding">110dp</dimen>
     <dimen name="general_space">10dp</dimen>
     <dimen name="bit_more_space">30dp</dimen>
     <dimen name="more_space">50dp</dimen>
@@ -12,4 +13,10 @@
     <dimen name="error_left_right_padding">20dp</dimen>
     <dimen name="between_button_padding">10dp</dimen>
     <dimen name="clickable_text_padding">6dp</dimen>
+    <dimen name="records_text_left_right_margin">30dp</dimen>
+    <dimen name="general_text_size">18sp</dimen>
+    <dimen name="normal_text_size">20sp</dimen>
+    <dimen name="message_item_padding">8dp</dimen>
+    <dimen name="textfield_land_width">100dp</dimen>
+    <dimen name="textfield_land_height">170dp</dimen>
 </resources>

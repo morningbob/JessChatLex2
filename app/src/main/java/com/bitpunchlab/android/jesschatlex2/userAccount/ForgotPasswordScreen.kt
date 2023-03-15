@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -67,12 +68,17 @@ fun ForgotPasswordScreen(navController: NavHostController,
                 TitleText(
                     title = stringResource(R.string.forgot_password),
                     modifier = Modifier
-                        .padding(top = 100.dp, bottom = 100.dp))
+                        .padding(top = dimensionResource(id = R.dimen.header_title_padding),
+                            bottom = dimensionResource(id = R.dimen.header_title_padding)))
             }
             Text(
                 text = stringResource(R.string.reset_password_desc),
                 modifier = Modifier
-                    .padding(top = 25.dp, bottom = 30.dp, start = 50.dp, end = 50.dp),
+                    .padding(
+                        top = dimensionResource(id = R.dimen.bit_more_space),
+                        bottom = dimensionResource(id = R.dimen.bit_more_space),
+                        start = dimensionResource(id = R.dimen.app_button_left_padding),
+                        end = dimensionResource(id = R.dimen.app_button_right_padding)),
                 color = JessChatLex.getColor(mode, Element.TEXT)
             )
             if (chosenOption == 0) {
@@ -86,7 +92,11 @@ fun ForgotPasswordScreen(navController: NavHostController,
                     buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                     buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                     modifier = Modifier
-
+                        .fillMaxWidth()
+                        .padding(
+                            start = dimensionResource(id = R.dimen.app_button_left_padding),
+                            end = dimensionResource(id = R.dimen.app_button_right_padding),
+                        )
                 )
                 Spacer(modifier = Modifier.width(50.dp))
                 AppButton(
@@ -99,6 +109,11 @@ fun ForgotPasswordScreen(navController: NavHostController,
                     buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
                     buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = dimensionResource(id = R.dimen.app_button_left_padding),
+                            end = dimensionResource(id = R.dimen.app_button_left_padding),
+                        )
                 )
             }
 
