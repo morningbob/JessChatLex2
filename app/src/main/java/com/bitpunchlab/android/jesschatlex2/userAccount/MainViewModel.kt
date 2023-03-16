@@ -32,6 +32,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var userName : StateFlow<String> = _userName.asStateFlow()
     val _userEmail = MutableStateFlow<String>("Loading...")
     var userEmail : StateFlow<String> = _userEmail.asStateFlow()
+    val _lexNull = MutableStateFlow<Boolean>(false)
+    var lexNull : StateFlow<Boolean> = _lexNull.asStateFlow()
+
 
     // listen to login status
     init {
@@ -42,6 +45,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         // we watch when isLogged in is true, we get the name
         listenLoginState()
         listenLexError()
+        listenLexNull()
     }
 
     private fun listenLoginState() {
@@ -81,6 +85,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             MobileClient.lexError.collect() { it ->
                 if (it == true) {
                     _loadingAlpha.value = 0f
+
+                }
+            }
+        }
+    }
+
+    private fun listenLexNull() {
+        CoroutineScope(Dispatchers.IO).launch {
+            MobileClient.lexNull.collect() { it ->
+                if (it == true) {
+                    _lexNull.value = true
 
                 }
             }

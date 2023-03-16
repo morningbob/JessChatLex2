@@ -1,5 +1,6 @@
 package com.bitpunchlab.android.jesschatlex2.userAccount
 
+import android.content.res.Configuration
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +39,9 @@ fun ForgotPasswordScreen(navController: NavHostController,
     val readyReset by forgotPassViewModel.readyReset.collectAsState()
     val readyRequest by forgotPassViewModel.readyRequest.collectAsState()
     val resetPasswordStatus by forgotPassViewModel.resetPasswordStatus.collectAsState()
+
+    val config = LocalConfiguration.current
+    val isPortrait = config.orientation == Configuration.ORIENTATION_PORTRAIT
 
     var chosenOption by remember {
         mutableStateOf(0)
@@ -68,85 +73,198 @@ fun ForgotPasswordScreen(navController: NavHostController,
                 TitleText(
                     title = stringResource(R.string.forgot_password),
                     modifier = Modifier
-                        .padding(top = dimensionResource(id = R.dimen.header_title_padding),
-                            bottom = dimensionResource(id = R.dimen.header_title_padding)))
-            }
-            Text(
-                text = stringResource(R.string.reset_password_desc),
-                modifier = Modifier
-                    .padding(
-                        top = dimensionResource(id = R.dimen.bit_more_space),
-                        bottom = dimensionResource(id = R.dimen.bit_more_space),
-                        start = dimensionResource(id = R.dimen.app_button_left_padding),
-                        end = dimensionResource(id = R.dimen.app_button_right_padding)),
-                color = JessChatLex.getColor(mode, Element.TEXT)
-            )
-            if (chosenOption == 0) {
-                AppButton(
-                    title = stringResource(R.string.have_code),
-                    onClick = {
-                        chosenOption = 1
-                              },
-                    shouldEnable = true,
-                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
-                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
-                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-                    modifier = Modifier
-                        .fillMaxWidth()
                         .padding(
-                            start = dimensionResource(id = R.dimen.app_button_left_padding),
-                            end = dimensionResource(id = R.dimen.app_button_right_padding),
-                        )
-                )
-                Spacer(modifier = Modifier.width(50.dp))
-                AppButton(
-                    title = stringResource(R.string.donot_have_code),
-                    onClick = {
-                        chosenOption = 2
-                              },
-                    shouldEnable = true,
-                    buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
-                    buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
-                    buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            start = dimensionResource(id = R.dimen.app_button_left_padding),
-                            end = dimensionResource(id = R.dimen.app_button_left_padding),
+                            top = dimensionResource(id = R.dimen.header_title_padding),
+                            bottom = dimensionResource(id = R.dimen.header_title_padding)
                         )
                 )
             }
 
-            if (chosenOption == 1) {
-                ResetPasswordWidget(navigateCode = { chosenOption = 2 }, email = email, emailError = emailError, code = verificationCode,
-                    codeError = codeError, newPassword = newPassword, newPassError = newPassError, 
-                    confirmPass = confirmPass, confirmPassError = confirmPassError, readyReset = readyReset,
-                    forgotPassViewModel = forgotPassViewModel, mode = mode)
-            } else if (chosenOption == 2) {
-                RequestCodeWidget(navigateRequest = { chosenOption = 1 }, email = email,
-                    emailError = emailError, readyRequest = readyRequest,
-                    forgotPassViewModel =forgotPassViewModel, mode = mode)
-            }
+            if (isPortrait) {
+                Text(
+                    text = stringResource(R.string.reset_password_desc),
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            bottom = dimensionResource(id = R.dimen.bit_more_space),
+                            start = dimensionResource(id = R.dimen.app_button_left_padding),
+                            end = dimensionResource(id = R.dimen.app_button_right_padding)
+                        ),
+                    color = JessChatLex.getColor(mode, Element.TEXT)
+                )
+                if (chosenOption == 0) {
+                    AppButton(
+                        title = stringResource(R.string.have_code),
+                        onClick = {
+                            chosenOption = 1
+                        },
+                        shouldEnable = true,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                                end = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                            )
+                    )
+                    Spacer(modifier = Modifier.width(50.dp))
+                    AppButton(
+                        title = stringResource(R.string.donot_have_code),
+                        onClick = {
+                            chosenOption = 2
+                        },
+                        shouldEnable = true,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                start = dimensionResource(
+                                    id =
+                                    R.dimen.app_button_land_whole_padding
+                                ),
+                                end = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                            )
+                    )
+                }
 
-        } // column
-        when (resetPasswordStatus) {
-            // change password succeeded
-            1 -> {
-                ResetPasswordSucceededDialog(forgotPassViewModel = forgotPassViewModel, mode = mode)
+                if (chosenOption == 1) {
+                    ResetPasswordWidget(
+                        navigateCode = { chosenOption = 2 },
+                        email = email,
+                        emailError = emailError,
+                        code = verificationCode,
+                        codeError = codeError,
+                        newPassword = newPassword,
+                        newPassError = newPassError,
+                        confirmPass = confirmPass,
+                        confirmPassError = confirmPassError,
+                        readyReset = readyReset,
+                        forgotPassViewModel = forgotPassViewModel,
+                        mode = mode,
+                        isPortrait = isPortrait
+                    )
+                } else if (chosenOption == 2) {
+                    RequestCodeWidget(
+                        navigateRequest = { chosenOption = 1 }, email = email,
+                        emailError = emailError, readyRequest = readyRequest,
+                        forgotPassViewModel = forgotPassViewModel, mode = mode,
+                        isPortrait = isPortrait
+                    )
+                }
+
+            } // end of if portrait
+            else {
+                // landscape
+                Text(
+                    text = stringResource(R.string.reset_password_desc),
+                    modifier = Modifier
+                        .padding(
+                            top = dimensionResource(id = R.dimen.more_space),
+                            bottom = dimensionResource(id = R.dimen.more_space),
+                            start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                            end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                        ),
+                    color = JessChatLex.getColor(mode, Element.TEXT)
+                )
+                if (chosenOption == 0) {
+                    AppButton(
+                        title = stringResource(R.string.have_code),
+                        onClick = {
+                            chosenOption = 1
+                        },
+                        shouldEnable = true,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                                end = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                                bottom = dimensionResource(id = R.dimen.general_space)
+                            )
+                    )
+                    //Spacer(modifier = Modifier.width(50.dp))
+                    AppButton(
+                        title = stringResource(R.string.donot_have_code),
+                        onClick = {
+                            chosenOption = 2
+                        },
+                        shouldEnable = true,
+                        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+                        buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
+                        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = dimensionResource(id = R.dimen.more_space),
+                                start = dimensionResource(
+                                    id =
+                                    R.dimen.app_button_land_whole_padding
+                                ),
+                                end = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                            )
+                    )
+                }
+
+                if (chosenOption == 1) {
+                    ResetPasswordWidget(
+                        navigateCode = { chosenOption = 2 },
+                        email = email,
+                        emailError = emailError,
+                        code = verificationCode,
+                        codeError = codeError,
+                        newPassword = newPassword,
+                        newPassError = newPassError,
+                        confirmPass = confirmPass,
+                        confirmPassError = confirmPassError,
+                        readyReset = readyReset,
+                        forgotPassViewModel = forgotPassViewModel,
+                        mode = mode,
+                        isPortrait = isPortrait
+                    )
+                } else if (chosenOption == 2) {
+                    RequestCodeWidget(
+                        navigateRequest = { chosenOption = 1 }, email = email,
+                        emailError = emailError, readyRequest = readyRequest,
+                        forgotPassViewModel = forgotPassViewModel, mode = mode,
+                        isPortrait = isPortrait
+                    )
+                }
+            } // end of else
+            when (resetPasswordStatus) {
+                // change password succeeded
+                1 -> {
+                    ResetPasswordSucceededDialog(
+                        forgotPassViewModel = forgotPassViewModel,
+                        mode = mode
+                    )
+                }
+                // change password failed
+                2 -> {
+                    ResetPasswordFailedDialog(
+                        forgotPassViewModel = forgotPassViewModel,
+                        mode = mode
+                    )
+                }
+                // request verification code succeeded
+                3 -> {
+                    SendCodeSucceededDialog(
+                        forgotPassViewModel = forgotPassViewModel,
+                        mode = mode
+                    )
+                }
+                // request verification code failed
+                4 -> {
+                    SendCodeFailedDialog(forgotPassViewModel = forgotPassViewModel, mode = mode)
+                }
             }
-            // change password failed
-            2 -> {
-                ResetPasswordFailedDialog(forgotPassViewModel = forgotPassViewModel, mode = mode)
-            }
-            // request verification code succeeded
-            3 -> {
-                SendCodeSucceededDialog(forgotPassViewModel = forgotPassViewModel, mode = mode)
-            }
-            // request verification code failed
-            4 -> {
-                SendCodeFailedDialog(forgotPassViewModel = forgotPassViewModel, mode = mode)
-            }
-        }
+        }// big column
     } // surface
 }
 
@@ -154,8 +272,12 @@ fun ForgotPasswordScreen(navController: NavHostController,
 fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: String, code: String, codeError: String,
                         newPassword: String, newPassError: String, confirmPass: String,
                         confirmPassError: String, readyReset: Boolean, forgotPassViewModel: ForgotPassViewModel,
-                        mode: ColorMode) {
-    Column() {
+                        mode: ColorMode, isPortrait: Boolean) {
+    Column(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
         UserInputTextField(
             title = stringResource(R.string.email),
             content = email,
@@ -165,14 +287,36 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
             modifier = Modifier
-                .padding(top = 10.dp, start = 70.dp, end = 70.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = dimensionResource(id = R.dimen.general_space),
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                ),
             call = { forgotPassViewModel.updateEmail(it) })
         ErrorText(
             error = emailError,
             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
             modifier = Modifier
-                .padding(top = 2.dp, start = 30.dp, end = 30.dp),
-            )
+                .fillMaxWidth()
+                .padding(
+                    top = 2.dp,
+                    start = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    ),
+                    end = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    )
+                )
+        )
 
         UserInputTextField(
             title = stringResource(R.string.enter_code),
@@ -183,15 +327,36 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
             modifier = Modifier
-                .padding(top = 10.dp, start = 70.dp, end = 70.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = dimensionResource(id = R.dimen.general_space),
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                ),
             call = { forgotPassViewModel.updateVerificationCode(it) })
         ErrorText(
             error = codeError,
             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
             modifier = Modifier
-                .padding(top = 2.dp, start = 30.dp, end = 30.dp)
+                .fillMaxWidth()
+                .padding(
+                    top = 2.dp,
+                    start = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    ),
+                    end = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    )
+                )
         )
-
 
         UserInputTextField(
             title = stringResource(R.string.enter_new_pass),
@@ -202,16 +367,37 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
             modifier = Modifier
-                .padding(top = 4.dp, start = 70.dp, end = 70.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = 4.dp,
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                ),
             call = { forgotPassViewModel.updateNewPassword(it) })
 
         ErrorText(
             error = newPassError,
             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
             modifier = Modifier
-                .padding(top = 2.dp, start = 30.dp, end = 30.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = 2.dp,
+                    start = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    ),
+                    end = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    )
+                ),
         )
-
 
         UserInputTextField(
             title = stringResource(R.string.confirm_pass),
@@ -222,17 +408,39 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
             modifier = Modifier
-                .padding(top = 4.dp, start = 70.dp, end = 70.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = 4.dp,
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                ),
             call = { forgotPassViewModel.updateConfirmPassword(it) })
 
         ErrorText(
             error = confirmPassError,
             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
             modifier = Modifier
-                .padding(top = 2.dp, start = 30.dp, end = 30.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = 2.dp,
+                    start = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    ),
+                    end = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    )
+                ),
         )
 
-        Spacer(modifier = Modifier.width(5.dp))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
 
         AppButton(
             title = stringResource(R.string.change_pass),
@@ -248,15 +456,24 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = dimensionResource(id = R.dimen.bit_more_space),
+                    start = dimensionResource (id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                )
         )
 
         Text(
             text = stringResource(R.string.no_code),
-            fontSize = 18.sp,
+            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
             color = JessChatLex.getColor(mode, Element.CLICKABLE),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 50.dp)
+                .padding(
+                    top = dimensionResource(id = R.dimen.bit_more_space),
+                    bottom = dimensionResource(id = R.dimen.more_space)
+                )
                 .clickable(enabled = true) {
                     navigateCode.invoke()
                 },
@@ -269,8 +486,11 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
 
 @Composable
 fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: String, readyRequest: Boolean,
-                      forgotPassViewModel: ForgotPassViewModel, mode: ColorMode) {
-    Column() {
+                      forgotPassViewModel: ForgotPassViewModel, mode: ColorMode, isPortrait: Boolean) {
+    Column(
+        modifier = Modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         UserInputTextField(
             title = stringResource(R.string.email),
             content = email,
@@ -280,17 +500,39 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
             hide = false,
             modifier = Modifier
-                .padding(top = 10.dp, start = 70.dp, end = 70.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = dimensionResource(id = R.dimen.general_space),
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                ),
             call = { forgotPassViewModel.updateEmail(it) })
 
         ErrorText(
             error = emailError,
             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
             modifier = Modifier
-                .padding(top = 2.dp, start = 30.dp, end = 30.dp),
+                .fillMaxWidth()
+                .padding(
+                    top = 2.dp,
+                    start = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    ),
+                    end = dimensionResource(
+                        id = if (isPortrait) {
+                            R.dimen.error_left_right_padding
+                        } else {
+                            R.dimen.app_button_land_whole_padding
+                        }
+                    )
+                ),
         )
 
-        Spacer(modifier = Modifier.width(5.dp))
+        //Spacer(modifier = Modifier.width(5.dp))
 
         AppButton(
             title = stringResource(R.string.request_code),
@@ -302,15 +544,26 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
             buttonBackground = JessChatLex.getColor(mode, Element.BUTTON_BACKGROUND),
             buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    top = dimensionResource(id = R.dimen.bit_more_space),
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                )
         )
 
         Text(
             text = stringResource(R.string.have_code),
-            fontSize = 18.sp,
+            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
             color = JessChatLex.getColor(mode, Element.CLICKABLE),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 50.dp)
+                .padding(
+                    top = dimensionResource(id = R.dimen.bit_more_space),
+                    bottom = dimensionResource(
+                        id = R.dimen.more_space
+                    )
+                )
                 .clickable(enabled = true) {
                     navigateRequest.invoke()
                 },

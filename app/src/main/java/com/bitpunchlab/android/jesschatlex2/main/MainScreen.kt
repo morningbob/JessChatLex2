@@ -27,6 +27,7 @@ import com.bitpunchlab.android.jesschatlex2.R
 import com.bitpunchlab.android.jesschatlex2.Records
 import com.bitpunchlab.android.jesschatlex2.awsClient.MobileClient
 import com.bitpunchlab.android.jesschatlex2.base.CustomCircularProgressBar
+import com.bitpunchlab.android.jesschatlex2.base.CustomDialog
 import com.bitpunchlab.android.jesschatlex2.base.SendIcon
 import com.bitpunchlab.android.jesschatlex2.helpers.ColorMode
 import com.bitpunchlab.android.jesschatlex2.helpers.Element
@@ -51,6 +52,8 @@ fun MainScreen(navController: NavHostController,
     var shouldNavigateRecords by remember { mutableStateOf(false) }
 
     val lexError by MobileClient.lexError.collectAsState()
+
+    val lexNull by MobileClient.lexNull.collectAsState()
 
     LaunchedEffect(key1 = loginState) {
         if (loginState == false) {
@@ -100,15 +103,18 @@ fun MainScreen(navController: NavHostController,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                         // display error message here, if there is interaction error
-                        lexError?.let {
+                        //lexError?.let {
+
+                        //if (lexError == true || lexNull == true)
                             Text(
-                                text = stringResource(R.string.lex_error),
+                                text = stringResource(R.string.lex_bot_error),
                                 modifier = Modifier
                                     .background(Color.Yellow)
                                     .padding(5.dp),
                                 color = Color.Red
                             )
-                        }
+
+                        //}
                         Log.i("bottom padding", it.calculateBottomPadding().toString())
                         LazyColumn(
                             modifier = Modifier
@@ -118,7 +124,8 @@ fun MainScreen(navController: NavHostController,
                                 .padding(
                                     top = dimensionResource(id = R.dimen.general_space),
                                     start = dimensionResource(id = R.dimen.bit_more_space),
-                                    end = dimensionResource(id = R.dimen.bit_more_space),),//bottom = it.calculateBottomPadding() + 100.dp),
+                                    end = dimensionResource(id = R.dimen.bit_more_space),
+                                ),//bottom = it.calculateBottomPadding() + 100.dp),
                             horizontalAlignment = Alignment.Start
                         ) {
                             item {
@@ -226,7 +233,7 @@ fun MainScreen(navController: NavHostController,
                             // display error message here, if there is interaction error
                             lexError?.let {
                                 Text(
-                                    text = stringResource(R.string.lex_error),
+                                    text = stringResource(R.string.lex_bot_error),
                                     modifier = Modifier
                                         .background(Color.Yellow)
                                         .padding(5.dp),
@@ -241,7 +248,8 @@ fun MainScreen(navController: NavHostController,
                                     .padding(
                                         top = dimensionResource(id = R.dimen.general_space),
                                         start = dimensionResource(id = R.dimen.bit_more_space),
-                                        end = dimensionResource(id = R.dimen.bit_more_space),),
+                                        end = dimensionResource(id = R.dimen.bit_more_space),
+                                    ),
                                 horizontalAlignment = Alignment.Start
                             ) {
                                 item {
@@ -361,6 +369,8 @@ fun MainScreen(navController: NavHostController,
         } // end of scaffold
     } // end of surface
 }
+
+
 
 
 

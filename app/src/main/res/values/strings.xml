@@ -55,7 +55,7 @@
     <string name="update_pass_failed_content">We couldn\'t update your password.  Please make sure you have wifi and the current password is correct.  If the problem persists, please contact admin@jessbitcom.pro</string>
     <string name="invalid_pass_title">Invalid Password</string>
     <string name="invalid_pass_content">New password must be different from the current password.</string>
-    <string name="lex_error">There is error getting response from the bot.</string>
+    <string name="lex_bot_error">There is error getting response from the bot.</string>
     <string name="type_message">Type your message</string>
     <string name="logging_out">Logging Out</string>
     <string name="bot_name">OrderFlowers_dev</string>

@@ -41,6 +41,11 @@ object MobileClient {
     private val _lexError = MutableStateFlow<Boolean?>(null)
     val lexError : StateFlow<Boolean?> = _lexError.asStateFlow()
 
+    private val _lexNull = MutableStateFlow<Boolean?>(null)
+    val lexNull : StateFlow<Boolean?> = _lexNull.asStateFlow()
+
+    private val _lexError2 = MutableStateFlow<String?>(null)
+    val lexError2 : StateFlow<String?> = _lexError2.asStateFlow()
 
     fun initializeMobileClient(context: Context) {
 
@@ -103,16 +108,12 @@ object MobileClient {
 
                     // part 3
                     lexClient?.setInteractionListener(interactionListener)
-
-
                 }
 
                 override fun onError(e: Exception?) {
                     Log.i("AWSClient", "error initializing")
                 }
-
             })
-
     }
 
     fun listenUserState() {
@@ -239,7 +240,6 @@ object MobileClient {
                     }
 
                 })
-
     }
 
     suspend fun forgotPassword(email: String) : Boolean =
@@ -261,7 +261,6 @@ object MobileClient {
                     Log.i("mobile client", "forget password failed to get code")
                     cancellableContinuation.resume(false) {}
                 }
-
             })
     }
 
@@ -282,7 +281,6 @@ object MobileClient {
                 override fun onError(e: java.lang.Exception?) {
                     cancellableContinuation.resume(false) {}
                 }
-
             })
     }
 
@@ -298,10 +296,7 @@ object MobileClient {
                     Log.i("mobile client", "change password failed, $e")
                     cancellableContinuation.resume(false) {}
                 }
-
             })
-
-
     }
 
     // for just sign out locally, just call signout()
@@ -314,7 +309,6 @@ object MobileClient {
             override fun onError(e: java.lang.Exception?) {
                 Log.i("mobile client", "failed to sign out $e")
             }
-
         })
     }
 
@@ -358,6 +352,7 @@ object MobileClient {
             lexClient?.textInForTextOut(message, null)
         } else {
             Log.i("lex client", "is null")
+            _lexError2.value = "Trying to connect to the server..."
         }
     }
 

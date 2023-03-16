@@ -6,6 +6,7 @@
     <dimen name="app_button_left_padding">70dp</dimen>
     <dimen name="app_button_right_padding">70dp</dimen>
     <dimen name="app_button_extra_padding">110dp</dimen>
+    <dimen name="app_button_land_whole_padding">70dp</dimen>
     <dimen name="general_space">10dp</dimen>
     <dimen name="bit_more_space">30dp</dimen>
     <dimen name="more_space">50dp</dimen>
