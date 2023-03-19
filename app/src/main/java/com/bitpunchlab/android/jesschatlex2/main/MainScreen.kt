@@ -51,9 +51,7 @@ fun MainScreen(navController: NavHostController,
 
     var shouldNavigateRecords by remember { mutableStateOf(false) }
 
-    val lexError by MobileClient.lexError.collectAsState()
-
-    val lexNull by MobileClient.lexNull.collectAsState()
+    val lexError2 by MobileClient.lexError2.collectAsState()
 
     LaunchedEffect(key1 = loginState) {
         if (loginState == false) {
@@ -103,18 +101,15 @@ fun MainScreen(navController: NavHostController,
                         horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                         // display error message here, if there is interaction error
-                        //lexError?.let {
-
-                        //if (lexError == true || lexNull == true)
+                        lexError2?.let { error ->
                             Text(
-                                text = stringResource(R.string.lex_bot_error),
+                                text = error,
                                 modifier = Modifier
                                     .background(Color.Yellow)
                                     .padding(5.dp),
                                 color = Color.Red
                             )
-
-                        //}
+                        }
                         Log.i("bottom padding", it.calculateBottomPadding().toString())
                         LazyColumn(
                             modifier = Modifier
@@ -137,9 +132,10 @@ fun MainScreen(navController: NavHostController,
                                     }
                                     Text(
                                         text = message.message,
-                                        modifier = Modifier.padding(8.dp),
+                                        modifier = Modifier
+                                            .padding(dimensionResource(id = R.dimen.message_item_padding)),
                                         color = textColor,
-                                        fontSize = 20.sp
+                                        fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp
                                     )
                                 }
                             }
@@ -231,12 +227,12 @@ fun MainScreen(navController: NavHostController,
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             // display error message here, if there is interaction error
-                            lexError?.let {
+                            lexError2?.let { error ->
                                 Text(
-                                    text = stringResource(R.string.lex_bot_error),
+                                    text = error,
                                     modifier = Modifier
                                         .background(Color.Yellow)
-                                        .padding(5.dp),
+                                        .padding(dimensionResource(id = R.dimen.message_item_padding)),
                                     color = Color.Red
                                 )
                             }
@@ -261,9 +257,9 @@ fun MainScreen(navController: NavHostController,
                                         }
                                         Text(
                                             text = message.message,
-                                            modifier = Modifier.padding(8.dp),
+                                            modifier = Modifier.padding(dimensionResource(id = R.dimen.message_item_padding)),
                                             color = textColor,
-                                            fontSize = 20.sp
+                                            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp
                                         )
                                     }
                                 }
@@ -298,8 +294,15 @@ fun MainScreen(navController: NavHostController,
                                     onValueChange = { newInput: String ->
                                         input = newInput
                                     },
+                                    
                                     modifier = Modifier
-                                        .height(dimensionResource(id = R.dimen.textfield_land_height)),
+                                        .height(dimensionResource(id = R.dimen.textfield_land_height))
+                                        .fillMaxWidth()
+                                        .padding(
+                                            start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                        ),
+
                                     trailingIcon = {
                                         if (input != "") {
                                             SendIcon(
@@ -317,7 +320,8 @@ fun MainScreen(navController: NavHostController,
                                         color = JessChatLex.getColor(
                                             themeMode,
                                             Element.FIELD_BORDER
-                                        )
+                                        ),
+                                        fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp
                                     ),
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
 
@@ -338,7 +342,7 @@ fun MainScreen(navController: NavHostController,
                                             Element.FIELD_BORDER
                                         )
                                     ),
-                                    shape = RoundedCornerShape(12.dp),
+                                    shape = RoundedCornerShape(dimensionResource(id = R.dimen.normal_round_corner)),
                                     label = {
                                         Text(
                                             text = stringResource(R.string.type_message),
@@ -355,14 +359,12 @@ fun MainScreen(navController: NavHostController,
                     } // end of row
                 } // end of if land
             }
-        //}
             // progress bar
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .fillMaxSize()
                     .alpha(loadingAlpha),
-
                 ) {
                 CustomCircularProgressBar()
             }

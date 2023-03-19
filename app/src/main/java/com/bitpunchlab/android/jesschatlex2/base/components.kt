@@ -32,9 +32,10 @@ import com.bitpunchlab.android.jesschatlex2.ui.theme.JessChatLex
 
 @Composable
 fun UserInputTextField(title: String, content: String, hide: Boolean,
-                       modifier: Modifier, trailingIcon: (@Composable () -> Unit)? = null,
+                       modifier: Modifier,
                        textColor: Color = JessChatLex.blueText,
                        textBorder: Color = JessChatLex.blueBackground,
+                       textSize: TextUnit = dimensionResource(id = R.dimen.general_text_size).value.sp,
                        fieldBackground: Color = Color.White,
                        fieldBorder: Color = JessChatLex.blueBackground,
                         call: (String) -> Unit)  {
@@ -54,7 +55,8 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
             label = {
                 Text(
                     text = title,
-                    color = textColor
+                    color = textColor,
+                    fontSize = textSize
                 )
             },
             value = content,
@@ -67,7 +69,7 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
                 .then(modifier),
 
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-            textStyle = LocalTextStyle.current.copy(color = textColor),
+            textStyle = LocalTextStyle.current.copy(color = textColor, fontSize = textSize),
 
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = fieldBorder,
@@ -78,7 +80,7 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
                 backgroundColor = fieldBackground,
                 textColor = textColor,
                 ),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen.normal_round_corner)),
         )
     }
 }
@@ -93,7 +95,7 @@ fun TitleText(title: String, modifier: Modifier) {
             //.padding(top = paddingTop.dp, bottom = paddingBottom.dp),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.h1,
-        fontSize = 40.sp,
+        fontSize = dimensionResource(id = R.dimen.title_text_size).value.sp,
         color = Color.White
     )
 }
@@ -107,7 +109,10 @@ fun GeneralText(textString: String, textColor: Color = MaterialTheme.colors.prim
         text = textString,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 50.dp, end = 50.dp)
+            .padding(
+                //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                //end = dimensionResource(id = R.dimen.textfield_right_padding)
+            )
             .clickable(enabled = onClick != null) {
                 onClick?.invoke()
             }
@@ -120,17 +125,21 @@ fun GeneralText(textString: String, textColor: Color = MaterialTheme.colors.prim
 }
 
 @Composable
-fun ErrorText(error: String, color: Color = Color.Red, modifier: Modifier) {
+fun ErrorText(error: String, color: Color = Color.Red,
+              size: TextUnit = dimensionResource(id = R.dimen.general_text_size).value.sp,
+              modifier: Modifier) {
     Text(
         text = error,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 3.dp, start = dimensionResource(id = R.dimen.more_space),
-                end = dimensionResource(id = R.dimen.more_space))
+            .padding(
+                top = 3.dp
+            )
             .then(modifier),
         textAlign = TextAlign.Start,
         style = MaterialTheme.typography.body2,
         color = color,
+        fontSize = size
     )
 }
 
@@ -157,12 +166,12 @@ fun AppButton(title: String, onClick: () -> Unit, shouldEnable: Boolean,
             .border(BorderStroke(2.dp, buttonBorder), RoundedCornerShape(15.dp))
             .then(modifier),
 
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.normal_round_corner)),
         enabled = shouldEnable)
     {
         Text(
             text = title,
-            fontSize = 22.sp,
+            fontSize = dimensionResource(id = R.dimen.bigger_text_size).value.sp,
             color = Color.White
         )
     }

@@ -15,6 +15,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.bitpunchlab.android.jesschatlex2.CreateAccount
 import com.bitpunchlab.android.jesschatlex2.ForgotPassword
@@ -114,22 +115,29 @@ fun LoginScreen(navController: NavHostController,
                         content = emailState,
                         textColor = JessChatLex.getColor(mode, Element.TEXT),
                         textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                        textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = false,
-                        modifier = Modifier.padding(
-                            top = dimensionResource(id = R.dimen.more_space),
-                            start = dimensionResource(R.dimen.textfield_left_padding),
-                            end = dimensionResource(R.dimen.textfield_right_padding)
-                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = dimensionResource(id = R.dimen.more_space),
+                                start = dimensionResource(R.dimen.textfield_left_padding),
+                                end = dimensionResource(R.dimen.textfield_right_padding)
+                            ),
 
                         ) { loginViewModel.updateEmail(it) }
                     ErrorText(
                         error = emailErrorState,
                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         modifier = Modifier
-                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                            )
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                     UserInputTextField(
@@ -137,19 +145,28 @@ fun LoginScreen(navController: NavHostController,
                         content = passwordState,
                         textColor = JessChatLex.getColor(mode, Element.TEXT),
                         textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                        textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = true,
-                        modifier = Modifier.padding(top = dimensionResource(id = R.dimen.general_space),
-                            start = dimensionResource(R.dimen.textfield_left_padding),
-                            end = dimensionResource(R.dimen.textfield_right_padding)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = dimensionResource(id = R.dimen.general_space),
+                                start = dimensionResource(R.dimen.textfield_left_padding),
+                                end = dimensionResource(R.dimen.textfield_right_padding)
+                            ),
                     ) { loginViewModel.updatePassword(it) }
                     ErrorText(
                         error = passwordErrorState,
                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         modifier = Modifier
-                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                            )
                     )
                 }
                 //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
@@ -169,7 +186,8 @@ fun LoginScreen(navController: NavHostController,
                             .padding(
                                 top = dimensionResource(id = R.dimen.general_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                                end = dimensionResource(id = R.dimen.app_button_right_padding)
+                            )
 
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
@@ -182,9 +200,11 @@ fun LoginScreen(navController: NavHostController,
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = dimensionResource(id = R.dimen.general_space),
+                            .padding(
+                                top = dimensionResource(id = R.dimen.general_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                                end = dimensionResource(id = R.dimen.app_button_right_padding)
+                            )
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                     GeneralText(
@@ -194,6 +214,7 @@ fun LoginScreen(navController: NavHostController,
                                 bottom = dimensionResource(id = R.dimen.general_space),
                                 top = dimensionResource(id = R.dimen.bit_more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         textAlign = TextAlign.Center,
                         onClick = { onForgotPasswordClicked.invoke() }
                     )
@@ -206,6 +227,7 @@ fun LoginScreen(navController: NavHostController,
                                 top = dimensionResource(id = R.dimen.general_space),
                             ),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         textAlign = TextAlign.Center,
                         onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
                     )
@@ -223,6 +245,7 @@ fun LoginScreen(navController: NavHostController,
                                 bottom = dimensionResource(id = R.dimen.more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         onClick = { // get email
                             loginViewModel.updateResendCodeStatus(1)
                         }
@@ -249,19 +272,25 @@ fun LoginScreen(navController: NavHostController,
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = false,
-                        modifier = Modifier.padding(
-                            top = dimensionResource(id = R.dimen.more_space),
-                            start = dimensionResource(R.dimen.textfield_left_padding),
-                            end = dimensionResource(R.dimen.textfield_right_padding)
-                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = dimensionResource(id = R.dimen.more_space),
+                                start = dimensionResource(R.dimen.textfield_left_padding),
+                                end = dimensionResource(R.dimen.textfield_right_padding)
+                            ),
 
                         ) { loginViewModel.updateEmail(it) }
                     ErrorText(
                         error = emailErrorState,
                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         modifier = Modifier
-                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                            )
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                     UserInputTextField(
@@ -272,22 +301,34 @@ fun LoginScreen(navController: NavHostController,
                         fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                         fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                         hide = true,
-                        modifier = Modifier.padding(
-                            top = dimensionResource(id = R.dimen.bit_more_space),
-                            start = dimensionResource(R.dimen.textfield_left_padding),
-                            end = dimensionResource(R.dimen.textfield_right_padding)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                start = dimensionResource(R.dimen.textfield_left_padding),
+                                end = dimensionResource(R.dimen.textfield_right_padding)
+                            ),
                     ) { loginViewModel.updatePassword(it) }
                     ErrorText(
                         error = passwordErrorState,
                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         modifier = Modifier
-                            .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                end = dimensionResource(id = R.dimen.error_left_right_padding))
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                            )
                     )
                 }
                 Column(
                     modifier = Modifier
-                        .padding(top = dimensionResource(id = R.dimen.bit_more_space))
+                        .padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            start = 0.dp,
+                            end = dimensionResource(id = R.dimen.app_button_left_padding)
+                        )
+
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -301,9 +342,11 @@ fun LoginScreen(navController: NavHostController,
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                            .padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                //start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                //end = dimensionResource(id = R.dimen.app_button_right_padding)
+                            )
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                     AppButton(
@@ -315,9 +358,11 @@ fun LoginScreen(navController: NavHostController,
                         buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                end = dimensionResource(id = R.dimen.app_button_right_padding))
+                            .padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                //start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                //end = dimensionResource(id = R.dimen.app_button_right_padding)
+                            )
                     )
                     Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                     GeneralText(
@@ -327,6 +372,7 @@ fun LoginScreen(navController: NavHostController,
                             top = dimensionResource(id = R.dimen.bit_more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         onClick = { onForgotPasswordClicked.invoke() }
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
@@ -337,6 +383,7 @@ fun LoginScreen(navController: NavHostController,
                             top = dimensionResource(id = R.dimen.general_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         onClick = { loginViewModel.updateShowConfirmEmailDialog(true) }
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
@@ -352,6 +399,7 @@ fun LoginScreen(navController: NavHostController,
                                 bottom = dimensionResource(id = R.dimen.bit_more_space)),
                         textColor = JessChatLex.getColor(mode, Element.CLICKABLE),
                         textAlign = TextAlign.Center,
+                        size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                         onClick = { // get email
                             loginViewModel.updateResendCodeStatus(1)
                         }
@@ -391,7 +439,7 @@ fun LoginScreen(navController: NavHostController,
                     loginViewModel.updateResendCodeStatus(0)
                     loginViewModel.updateResendCodeStatus(4)
                 })
-        } else {
+        } else if (resendCodeStatus != 0) {
             ResendCodeResultDialog(
                 status = resendCodeStatus,
                 loginViewModel = loginViewModel,

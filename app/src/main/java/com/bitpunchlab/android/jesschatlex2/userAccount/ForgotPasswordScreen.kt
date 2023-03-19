@@ -90,7 +90,8 @@ fun ForgotPasswordScreen(navController: NavHostController,
                             start = dimensionResource(id = R.dimen.app_button_left_padding),
                             end = dimensionResource(id = R.dimen.app_button_right_padding)
                         ),
-                    color = JessChatLex.getColor(mode, Element.TEXT)
+                    color = JessChatLex.getColor(mode, Element.TEXT),
+                    fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp
                 )
                 if (chosenOption == 0) {
                     AppButton(
@@ -169,7 +170,8 @@ fun ForgotPasswordScreen(navController: NavHostController,
                             start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
                             end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
                         ),
-                    color = JessChatLex.getColor(mode, Element.TEXT)
+                    color = JessChatLex.getColor(mode, Element.TEXT),
+                    fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp
                 )
                 if (chosenOption == 0) {
                     AppButton(
@@ -186,7 +188,7 @@ fun ForgotPasswordScreen(navController: NavHostController,
                             .padding(
                                 start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
                                 end = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                                bottom = dimensionResource(id = R.dimen.general_space)
+                                //bottom = dimensionResource(id = R.dimen.general_space)
                             )
                     )
                     //Spacer(modifier = Modifier.width(50.dp))
@@ -202,7 +204,7 @@ fun ForgotPasswordScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = dimensionResource(id = R.dimen.more_space),
+                                top = dimensionResource(id = R.dimen.bit_more_space),
                                 start = dimensionResource(
                                     id =
                                     R.dimen.app_button_land_whole_padding
@@ -278,6 +280,12 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
+        val leftRightPadding = if (isPortrait) {
+            R.dimen.error_left_right_padding
+        } else {
+            R.dimen.app_button_land_whole_padding
+        }
+
         UserInputTextField(
             title = stringResource(R.string.email),
             content = email,
@@ -290,8 +298,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = dimensionResource(id = R.dimen.general_space),
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
             call = { forgotPassViewModel.updateEmail(it) })
         ErrorText(
@@ -301,20 +309,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = 2.dp,
-                    start = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    ),
-                    end = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    )
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 )
         )
 
@@ -330,8 +326,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = dimensionResource(id = R.dimen.general_space),
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
             call = { forgotPassViewModel.updateVerificationCode(it) })
         ErrorText(
@@ -341,20 +337,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = 2.dp,
-                    start = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    ),
-                    end = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    )
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 )
         )
 
@@ -370,8 +354,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = 4.dp,
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
             call = { forgotPassViewModel.updateNewPassword(it) })
 
@@ -382,20 +366,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = 2.dp,
-                    start = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    ),
-                    end = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    )
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
         )
 
@@ -411,8 +383,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = 4.dp,
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
             call = { forgotPassViewModel.updateConfirmPassword(it) })
 
@@ -423,20 +395,8 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = 2.dp,
-                    start = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    ),
-                    end = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    )
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
         )
 
@@ -459,14 +419,14 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = dimensionResource(id = R.dimen.bit_more_space),
-                    start = dimensionResource (id = R.dimen.app_button_land_whole_padding),
+                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
                     end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
                 )
         )
 
         Text(
             text = stringResource(R.string.no_code),
-            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
+            fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
             color = JessChatLex.getColor(mode, Element.CLICKABLE),
             modifier = Modifier
                 .fillMaxWidth()
@@ -481,7 +441,6 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
 
         )
     }
-    
 }
 
 @Composable
@@ -531,9 +490,7 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
                     )
                 ),
         )
-
         //Spacer(modifier = Modifier.width(5.dp))
-
         AppButton(
             title = stringResource(R.string.request_code),
             onClick = {
@@ -554,7 +511,7 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
 
         Text(
             text = stringResource(R.string.have_code),
-            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
+            fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
             color = JessChatLex.getColor(mode, Element.CLICKABLE),
             modifier = Modifier
                 .fillMaxWidth()

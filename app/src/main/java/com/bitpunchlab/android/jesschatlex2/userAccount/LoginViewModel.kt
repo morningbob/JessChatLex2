@@ -48,7 +48,6 @@ class LoginViewModel : ViewModel() {
     val resendCodeEmailError : StateFlow<String> = _resendCodeEmailError.asStateFlow()
 
 
-
     init {
         CoroutineScope(Dispatchers.IO).launch {
             combine(emailErrorState, passwordErrorState) { email, password ->

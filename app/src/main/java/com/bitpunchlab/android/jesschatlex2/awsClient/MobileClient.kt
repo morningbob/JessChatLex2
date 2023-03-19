@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.telecom.Call
 import android.util.Log
+import androidx.compose.ui.res.stringResource
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.SignOutOptions
@@ -38,12 +39,6 @@ object MobileClient {
     private val _isLoggedIn = MutableStateFlow<Boolean?>(null)
     val isLoggedIn : StateFlow<Boolean?> = _isLoggedIn.asStateFlow()
 
-    private val _lexError = MutableStateFlow<Boolean?>(null)
-    val lexError : StateFlow<Boolean?> = _lexError.asStateFlow()
-
-    private val _lexNull = MutableStateFlow<Boolean?>(null)
-    val lexNull : StateFlow<Boolean?> = _lexNull.asStateFlow()
-
     private val _lexError2 = MutableStateFlow<String?>(null)
     val lexError2 : StateFlow<String?> = _lexError2.asStateFlow()
 
@@ -73,47 +68,51 @@ object MobileClient {
                         }
                     }
 
-                    val id = AWSMobileClient.getInstance().identityId
-                    Log.i("AWSClient", "id: $id")
-                    var botName = context.getString(R.string.bot_name)
-                    var botAlias = ""
-                    var botRegion = ""
-                    var lexConfig : JSONObject? = null
-
-                    try {
-                        lexConfig = AWSMobileClient.getInstance().configuration.optJsonObject("Lex")
-                        lexConfig = lexConfig.getJSONObject(lexConfig.keys().next())
-
-                        botAlias = lexConfig.getString("Alias")
-                        botRegion = lexConfig.getString("Region")
-                        Log.i("name", botName)
-                        Log.i("alias", botAlias)
-                        Log.i("Region", botRegion)
-                    } catch (e: JSONException) {
-                        Log.i("AWSClient", "parse JSOn error")
-                    }
-
-                    val lexInterConfig = InteractionConfig(
-                        botName,
-                        botAlias,
-                        id
-                    )
-
-                    lexClient = InteractionClient(
-                        context,
-                        AWSMobileClient.getInstance(),
-                        Regions.fromName(botRegion),
-                        lexInterConfig
-                    )
-
-                    // part 3
-                    lexClient?.setInteractionListener(interactionListener)
+                    initializeLex(context)
                 }
 
                 override fun onError(e: Exception?) {
                     Log.i("AWSClient", "error initializing")
                 }
             })
+    }
+
+    fun initializeLex(context: Context) {
+        val id = AWSMobileClient.getInstance().identityId
+        Log.i("AWSClient", "id: $id")
+        var botName = context.getString(R.string.bot_name)
+        var botAlias = ""
+        var botRegion = ""
+        var lexConfig : JSONObject? = null
+
+        try {
+            lexConfig = AWSMobileClient.getInstance().configuration.optJsonObject("Lex")
+            lexConfig = lexConfig.getJSONObject(lexConfig.keys().next())
+
+            botAlias = lexConfig.getString("Alias")
+            botRegion = lexConfig.getString("Region")
+            Log.i("name", botName)
+            Log.i("alias", botAlias)
+            Log.i("Region", botRegion)
+        } catch (e: JSONException) {
+            Log.i("AWSClient", "parse JSOn error")
+        }
+
+        val lexInterConfig = InteractionConfig(
+            botName,
+            botAlias,
+            id
+        )
+
+        lexClient = InteractionClient(
+            context,
+            AWSMobileClient.getInstance(),
+            Regions.fromName(botRegion),
+            lexInterConfig
+        )
+
+        // part 3
+        lexClient?.setInteractionListener(interactionListener)
     }
 
     fun listenUserState() {
@@ -340,19 +339,20 @@ object MobileClient {
             } else {
                 Log.i("lex listener", "interaction error detected")
             }
-            _lexError.value = true
+            _lexError2.value = "There is error getting response from the bot."
         }
 
     }
 
-    fun sendMessage(message: String) {
+    fun sendMessage(message: String, context: Context) {
         // reset lexError for the next round
-        _lexError.value = null
+        _lexError2.value = null
         if (lexClient != null) {
             lexClient?.textInForTextOut(message, null)
         } else {
             Log.i("lex client", "is null")
             _lexError2.value = "Trying to connect to the server..."
+            initializeLex(context)
         }
     }
 

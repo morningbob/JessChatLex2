@@ -58,6 +58,12 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
         return ColorMode.DARK_PURPLE
     }
 
+    LaunchedEffect(userName) {
+        if (userName == "Loading...") {
+            mainViewModel.requestUserNameEmail()
+        }
+    }
+
     LaunchedEffect(key1 = loginState) {
         if (loginState == false) {
             navController.navigate(Login.route) {
@@ -100,7 +106,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 Element.BANNER
                             )
                         )
-                        .padding(top = 0.dp, bottom = 0.dp),
+                        //.padding(top = 0.dp, bottom = 0.dp),
                     ) {
                     TitleText(
                         title = stringResource(R.string.profile),
@@ -125,9 +131,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                             modifier = Modifier
                                 //.fillMaxWidth()
                                 .padding(
-                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding),
                                     top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_left_padding),
                                     bottom = dimensionResource(id = R.dimen.general_space)
                                 ),
                             size = dimensionResource(id = R.dimen.general_text_size).value.sp,
@@ -148,7 +154,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 //.fillMaxWidth()
                                 .padding(
                                     start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_left_padding),
                                     bottom = dimensionResource(id = R.dimen.general_space)
                                 ),
                             textColor = JessChatLex.getColor(mode, Element.OTHER_TEXT),
@@ -173,7 +179,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 .padding(
                                     top = dimensionResource(id = R.dimen.general_space),
                                     start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_left_padding),
                                     bottom = dimensionResource(id = R.dimen.general_space)
                                 ),
                             textColor = JessChatLex.getColor(mode, Element.OTHER_TEXT),
@@ -182,9 +188,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                         if (!shouldChangePassword) {
                             Text(
                                 text = stringResource(R.string.change_pass),
-                                fontSize = 20.sp,
+                                fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                 modifier = Modifier
-                                    .padding(8.dp)
+                                    .padding(dimensionResource(id = R.dimen.message_item_padding))
                                     .clickable(
                                         enabled = true,
                                         onClick = {
@@ -192,7 +198,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         }),
                                 color = JessChatLex.getColor(mode, Element.CLICKABLE),
                             )
-                            Spacer(modifier = Modifier.width(20.dp))
+                            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                         } else {
                             Column(
                                 modifier = Modifier
@@ -205,42 +211,56 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     textBorder = JessChatLex.getColor(mode, Element.BANNER),
                                     fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                                     fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                                    textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     hide = false,
-                                    modifier = Modifier.padding(
-                                        bottom = 2.dp,
-                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_right_padding),),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            bottom = 2.dp,
+                                            start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            end = dimensionResource(id = R.dimen.textfield_right_padding),
+                                        ),
                                     call = { profileViewModel.updateCurrentPassword(it)} )
                                 ErrorText(
                                     error = currentPassError,
                                     color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                                    size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(
                                             bottom = 4.dp,
                                             start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                            end = dimensionResource(id = R.dimen.error_left_right_padding)),
+                                            end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                        ),
                                 )
                                 UserInputTextField(
                                     title = stringResource(R.string.new_pass),
                                     content = newPassword,
                                     textColor = JessChatLex.getColor(mode, Element.TEXT),
                                     textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                                    textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                                     fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                                     hide = false,
-                                    modifier = Modifier.padding(
-                                        bottom = 2.dp,
-                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_right_padding),),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            bottom = 2.dp,
+                                            start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            end = dimensionResource(id = R.dimen.textfield_right_padding),
+                                        ),
                                     call = { profileViewModel.updateNewPassword(it)} )
                                 ErrorText(
                                     error = newPassError,
                                     color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                                    size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(
                                             bottom = 4.dp,
                                             start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                            end = dimensionResource(id = R.dimen.error_left_right_padding)),
+                                            end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                        ),
                                 )
 
                                 UserInputTextField(
@@ -248,23 +268,30 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     content = confirmPassword,
                                     textColor = JessChatLex.getColor(mode, Element.TEXT),
                                     textBorder = JessChatLex.getColor(mode, Element.BANNER),
+                                    textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                                     fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                                     hide = false,
-                                    modifier = Modifier.padding(
-                                        bottom = 2.dp,
-                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_right_padding),),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(
+                                            bottom = 2.dp,
+                                            start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            end = dimensionResource(id = R.dimen.textfield_right_padding),
+                                        ),
                                     call = { profileViewModel.updateConfirmPassword(it) },
                                 )
                                 ErrorText(
                                     error = confirmPassError,
                                     color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                                    size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     modifier = Modifier
+                                        .fillMaxWidth()
                                         .padding(
                                             bottom = 4.dp,
                                             start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                            end = dimensionResource(id = R.dimen.error_left_right_padding)),
+                                            end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                        ),
                                 )
 
                                 AppButton(
@@ -281,7 +308,8 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         .padding(
                                             start = dimensionResource(id = R.dimen.app_button_left_padding),
                                             end = dimensionResource(id = R.dimen.app_button_right_padding),
-                                            bottom = dimensionResource(id = R.dimen.more_space))
+                                            bottom = dimensionResource(id = R.dimen.more_space)
+                                        )
                                 )
                             }
                         }
@@ -298,7 +326,6 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                             modifier = Modifier
                                 .fillMaxWidth(0.5f)
                                 .verticalScroll(rememberScrollState()),
-                            //.background(JessChatLex.getColor(mode, Element.BACKGROUND)),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             GeneralText(
@@ -306,9 +333,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 modifier = Modifier
                                     //.fillMaxWidth()
                                     .padding(
-                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_right_padding),
                                         top = dimensionResource(id = R.dimen.more_space),
+                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                        end = dimensionResource(id = R.dimen.textfield_left_padding),
                                         bottom = dimensionResource(id = R.dimen.general_space)
                                     ),
                                 size = dimensionResource(id = R.dimen.general_text_size).value.sp,
@@ -329,9 +356,10 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     //.fillMaxWidth()
                                     .padding(
                                         start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_right_padding),
+                                        end = dimensionResource(id = R.dimen.textfield_left_padding),
                                         bottom = dimensionResource(id = R.dimen.general_space)
                                     ),
+                                size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                 textColor = JessChatLex.getColor(mode, Element.OTHER_TEXT)
                             )
                             GeneralText(
@@ -343,6 +371,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         bottom = dimensionResource(id = R.dimen.general_space)
                                     ),
                                 textAlign = TextAlign.Center,
+                                size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                 textColor = JessChatLex.getColor(mode, Element.TEXT),
                             )
 
@@ -363,24 +392,28 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         .padding(
                                             top = dimensionResource(id = R.dimen.more_space),
                                             //start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                            end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            //end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            //end = dimensionResource(id = R.dimen.textfield_left_padding),
                                             bottom = dimensionResource(id = R.dimen.general_space)
                                         ),
+                                    size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                     textColor = JessChatLex.getColor(mode, Element.OTHER_TEXT)
                                 )
                                 Text(
                                     text = stringResource(R.string.change_pass),
-                                    fontSize = 20.sp,
+                                    fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
                                     modifier = Modifier
-                                        .padding(8.dp)
+                                        .padding(dimensionResource(id = R.dimen.message_item_padding))
                                         .clickable(
                                             enabled = true,
                                             onClick = {
                                                 profileViewModel.updateShouldChangePassword(true)
                                             }),
                                     color = JessChatLex.getColor(mode, Element.CLICKABLE),
+                                    //fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                 )
-                                Spacer(modifier = Modifier.width(20.dp))
+                                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                             } else {
                                 Column(
                                     modifier = Modifier
@@ -439,9 +472,10 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         hide = false,
                                         modifier = Modifier
                                             .padding(
-                                            bottom = 2.dp,
-                                            start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                            end = dimensionResource(id = R.dimen.textfield_left_padding),)
+                                                bottom = 2.dp,
+                                                //start = dimensionResource(id = R.dimen.textfield_right_padding),
+                                                //end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            )
                                             .fillMaxWidth(),
                                         call = { profileViewModel.updateNewPassword(it) })
                                     ErrorText(
@@ -451,8 +485,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                             .padding(
                                                 bottom = 4.dp,
                                                 //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                                end = dimensionResource(id = R.dimen.error_left_right_padding)
-                                            ).fillMaxWidth(),
+                                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                            )
+                                            .fillMaxWidth(),
                                     )
 
                                     UserInputTextField(
@@ -471,10 +506,10 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         hide = false,
                                         modifier = Modifier
                                             .padding(
-                                            bottom = 2.dp,
-                                            start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                            end = dimensionResource(id = R.dimen.textfield_left_padding)
-                                        )
+                                                bottom = 2.dp,
+                                                //start = dimensionResource(id = R.dimen.textfield_right_padding),
+                                                //end = dimensionResource(id = R.dimen.textfield_left_padding)
+                                            )
                                             .fillMaxWidth(),
                                         call = { profileViewModel.updateConfirmPassword(it) },
 

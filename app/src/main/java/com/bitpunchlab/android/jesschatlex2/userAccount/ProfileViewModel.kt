@@ -10,32 +10,32 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ProfileViewModel : ViewModel() {
-    val _shouldChangePassword = MutableStateFlow<Boolean>(false)
+    private val _shouldChangePassword = MutableStateFlow<Boolean>(false)
     var shouldChangePassword : StateFlow<Boolean> = _shouldChangePassword.asStateFlow()
 
-    val _currentPassword = MutableStateFlow<String>("")
+    private val _currentPassword = MutableStateFlow<String>("")
     var currentPassword : StateFlow<String> = _currentPassword.asStateFlow()
 
-    val _newPassword = MutableStateFlow<String>("")
+    private val _newPassword = MutableStateFlow<String>("")
     var newPassword : StateFlow<String> = _newPassword.asStateFlow()
 
-    val _confirmPassword = MutableStateFlow<String>("")
+    private val _confirmPassword = MutableStateFlow<String>("")
     var confirmPassword : StateFlow<String> = _confirmPassword.asStateFlow()
 
-    val _currentPassError = MutableStateFlow<String>(" ")
+    private val _currentPassError = MutableStateFlow<String>(" ")
     var currentPassError : StateFlow<String> = _currentPassError.asStateFlow()
 
-    val _newPassError = MutableStateFlow<String>(" ")
+    private val _newPassError = MutableStateFlow<String>(" ")
     var newPassError : StateFlow<String> = _newPassError.asStateFlow()
 
-    val _confirmPassError = MutableStateFlow<String>(" ")
+    private val _confirmPassError = MutableStateFlow<String>(" ")
     var confirmPassError : StateFlow<String> = _confirmPassError.asStateFlow()
 
     // result succeeded 1, failed 2, but if old == new, 3
-    val _changePassResult = MutableStateFlow<Int>(0)
+    private val _changePassResult = MutableStateFlow<Int>(0)
     var changePassResult : StateFlow<Int> = _changePassResult.asStateFlow()
 
-    val _readyChange = MutableStateFlow<Boolean>(false)
+    private val _readyChange = MutableStateFlow<Boolean>(false)
     var readyChange : StateFlow<Boolean> = _readyChange.asStateFlow()
 
     private val _loadingAlpha = MutableStateFlow<Float>(0f)

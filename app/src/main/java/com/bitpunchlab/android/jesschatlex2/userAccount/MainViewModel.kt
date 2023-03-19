@@ -26,14 +26,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     val _allMessages = MutableStateFlow<List<Message>>(emptyList())
     var allMessages : StateFlow<List<Message>> = _allMessages.asStateFlow()
+
     private val _loadingAlpha = MutableStateFlow<Float>(0f)
     val loadingAlpha: StateFlow<Float> = _loadingAlpha.asStateFlow()
+
     val _userName = MutableStateFlow<String>("Loading...")
     var userName : StateFlow<String> = _userName.asStateFlow()
+
     val _userEmail = MutableStateFlow<String>("Loading...")
     var userEmail : StateFlow<String> = _userEmail.asStateFlow()
-    val _lexNull = MutableStateFlow<Boolean>(false)
-    var lexNull : StateFlow<Boolean> = _lexNull.asStateFlow()
 
 
     // listen to login status
@@ -45,18 +46,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         // we watch when isLogged in is true, we get the name
         listenLoginState()
         listenLexError()
-        listenLexNull()
     }
 
     private fun listenLoginState() {
         CoroutineScope(Dispatchers.IO).launch {
             MobileClient.isLoggedIn.collect() { it ->
                 if (it == true) {
-                    val pair = MobileClient.getUserNameEmail()
-                    pair?.let {
-                        _userName.value = pair.first
-                        _userEmail.value = pair.second
-                    }
+                    requestUserNameEmail()
                 }
             }
         }
@@ -82,22 +78,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun listenLexError() {
         CoroutineScope(Dispatchers.IO).launch {
-            MobileClient.lexError.collect() { it ->
-                if (it == true) {
+            MobileClient.lexError2.collect() { it ->
+                if (it != null) {
                     _loadingAlpha.value = 0f
-
                 }
             }
         }
     }
 
-    private fun listenLexNull() {
+    fun requestUserNameEmail() {
         CoroutineScope(Dispatchers.IO).launch {
-            MobileClient.lexNull.collect() { it ->
-                if (it == true) {
-                    _lexNull.value = true
-
-                }
+            val pair = MobileClient.getUserNameEmail()
+            pair?.let {
+                _userName.value = pair.first
+                _userEmail.value = pair.second
             }
         }
     }
@@ -105,7 +99,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun sendMessage(messageString: String) {
         if (messageString != "") {
             _loadingAlpha.value = 1f
-            MobileClient.sendMessage(messageString)
+            MobileClient.sendMessage(messageString, getApplication<Application>().applicationContext)
             val message = Message(
                 UUID.randomUUID().toString(),
                 WhoSaid.User,
@@ -137,8 +131,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             MobileClient.signOut()
         }
     }
-
-
 }
 
 class MainViewModelFactory(private val application: Application)

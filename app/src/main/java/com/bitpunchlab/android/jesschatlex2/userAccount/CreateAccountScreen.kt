@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.bitpunchlab.android.jesschatlex2.Login
@@ -90,7 +91,9 @@ fun CreateAccountScreen(navController: NavHostController,
             }
             if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
@@ -109,14 +112,16 @@ fun CreateAccountScreen(navController: NavHostController,
                         TitleText(
                             title = stringResource(R.string.register),
                             modifier = Modifier
-                                .padding(top = dimensionResource(id = R.dimen.header_title_padding),
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.header_title_padding),
                                     bottom = dimensionResource(id = R.dimen.header_title_padding))
                         )
                     }
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        modifier = Modifier) {
+                            //.verticalScroll(rememberScrollState())) {
                         UserInputTextField(
                             title = stringResource(R.string.name), content = nameState,
                             textColor = JessChatLex.getColor(mode, Element.TEXT),
@@ -124,17 +129,25 @@ fun CreateAccountScreen(navController: NavHostController,
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
                             hide = false,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) { registerViewModel.updateName(it) }
                         ErrorText(
                             error = nameErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                         UserInputTextField(
                             title = stringResource(R.string.email), content = emailState,
@@ -142,18 +155,26 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = false,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.general_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.general_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) { registerViewModel.updateEmail(it) }
                         ErrorText(
                             error = emailErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                         UserInputTextField(
                             title = stringResource(R.string.password), content = passwordState,
@@ -161,18 +182,26 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = true,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.general_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.general_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) { registerViewModel.updatePassword(it) }
                         ErrorText(
                             error = passwordErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                         UserInputTextField(
                             title = stringResource(R.string.confirm_password),
@@ -181,25 +210,35 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = true,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.general_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.general_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) {
                             registerViewModel.updateConfirmPassword(it)
                         }
                         ErrorText(
                             error = confirmPassErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                     }
                     Column(
                         modifier = Modifier
-                            .padding(bottom = 50.dp),
+                            .padding(
+                                top = dimensionResource(id = R.dimen.general_space),
+                                bottom = dimensionResource(id = R.dimen.more_space)),
                             //.fillMaxHeight(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         //verticalArrangement = Arrangement.Center
@@ -281,18 +320,26 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = false,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) { registerViewModel.updateName(it) }
                         ErrorText(
                             error = nameErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                         UserInputTextField(
                             title = stringResource(R.string.email), content = emailState,
@@ -300,18 +347,26 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = false,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) { registerViewModel.updateEmail(it) }
                         ErrorText(
                             error = emailErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                         UserInputTextField(
                             title = stringResource(R.string.password), content = passwordState,
@@ -319,18 +374,26 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = true,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) { registerViewModel.updatePassword(it) }
                         ErrorText(
                             error = passwordErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                         UserInputTextField(
                             title = stringResource(R.string.confirm_password),
@@ -339,26 +402,37 @@ fun CreateAccountScreen(navController: NavHostController,
                             textBorder = JessChatLex.getColor(mode, Element.BANNER),
                             fieldBackground = JessChatLex.getColor(mode, Element.FIELD_BACKGROUND),
                             fieldBorder = JessChatLex.getColor(mode, Element.FIELD_BORDER),
+                            textSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             hide = true,
-                            modifier = Modifier.padding(
-                                top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                end = dimensionResource(id = R.dimen.textfield_right_padding))
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                )
                         ) {
                             registerViewModel.updateConfirmPassword(it)
                         }
                         ErrorText(
                             error = confirmPassErrorState,
                             color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
+                            size = dimensionResource(id = R.dimen.general_text_size).value.sp,
                             modifier = Modifier
-                                .padding(start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding))
+                                .fillMaxWidth()
+                                .padding(
+                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                )
                         )
                     }
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .padding(bottom = dimensionResource(id = R.dimen.more_space))
+                            .padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                bottom = dimensionResource(id = R.dimen.more_space)
+                            )
                             .fillMaxHeight(),
                             //verticalArrangement = Arrangement.SpaceEvenly
 
