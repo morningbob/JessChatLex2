@@ -79,7 +79,7 @@ fun CreateAccountScreen(navController: NavHostController,
                 .fillMaxSize()
                 //.verticalScroll(rememberScrollState())
                 .background(JessChatLex.getColor(mode, Element.BACKGROUND)),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            //horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
             var onSendClicked = {
@@ -95,7 +95,7 @@ fun CreateAccountScreen(navController: NavHostController,
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                    //verticalArrangement = Arrangement.Center,
                 ) {
 
                     Column(

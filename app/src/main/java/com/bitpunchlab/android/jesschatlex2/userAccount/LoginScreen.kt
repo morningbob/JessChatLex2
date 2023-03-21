@@ -184,7 +184,7 @@ fun LoginScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = dimensionResource(id = R.dimen.general_space),
+                                top = dimensionResource(id = R.dimen.bit_more_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
                                 end = dimensionResource(id = R.dimen.app_button_right_padding)
                             )
@@ -201,7 +201,7 @@ fun LoginScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = dimensionResource(id = R.dimen.general_space),
+                                top = dimensionResource(id = R.dimen.bit_more_space),
                                 start = dimensionResource(id = R.dimen.app_button_left_padding),
                                 end = dimensionResource(id = R.dimen.app_button_right_padding)
                             )
