@@ -92,7 +92,7 @@ fun MainScreen(navController: NavHostController,
                 modifier = Modifier
                     .fillMaxSize()
                     .background(JessChatLex.getColor(themeMode, Element.BACKGROUND))
-                    .padding(bottom = it.calculateBottomPadding() + 20.dp),
+                    //.padding(bottom = it.calculateBottomPadding() + dimensionResource(id = R.dimen.bit_more_space)),
 
             ) {
                 if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -114,7 +114,7 @@ fun MainScreen(navController: NavHostController,
                         LazyColumn(
                             modifier = Modifier
                                 //.fillMaxHeight(0.75f)
-                                .fillMaxHeight(0.9f)
+                                .fillMaxHeight(0.75f)
                                 .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.general_space),
@@ -143,7 +143,8 @@ fun MainScreen(navController: NavHostController,
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight(),
+                                .fillMaxHeight()
+                                .padding(bottom = it.calculateBottomPadding() + dimensionResource(id = R.dimen.bit_more_space)),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             // this is the color of the cursor handle
@@ -222,8 +223,9 @@ fun MainScreen(navController: NavHostController,
                         Column(
                             modifier = Modifier
                                 .fillMaxHeight()
-                                .fillMaxWidth(0.65f)
+                                .fillMaxWidth(0.6f)
                                 .background(JessChatLex.getColor(themeMode, Element.BACKGROUND)),
+                                //.padding(bottom = it.calculateBottomPadding() + dimensionResource(id = R.dimen.bit_more_space)),
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             // display error message here, if there is interaction error
@@ -272,6 +274,7 @@ fun MainScreen(navController: NavHostController,
                                 .padding(
                                     top = dimensionResource(id = R.dimen.more_space),
                                     end = dimensionResource(id = R.dimen.more_space),
+                                    bottom = it.calculateBottomPadding() + 30.dp,
                                 ),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
@@ -299,8 +302,8 @@ fun MainScreen(navController: NavHostController,
                                         .height(dimensionResource(id = R.dimen.textfield_land_height))
                                         .fillMaxWidth()
                                         .padding(
-                                            start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                            end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                            //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                            //end = dimensionResource(id = R.dimen.textfield_right_padding)
                                         ),
 
                                     trailingIcon = {

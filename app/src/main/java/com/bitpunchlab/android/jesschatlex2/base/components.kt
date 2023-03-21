@@ -9,6 +9,7 @@ import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
@@ -210,13 +211,18 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
 
     Dialog(onDismissRequest = { onDismiss.invoke() }) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen.more_round_corner)),
             color = backgroundColor
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 30.dp, bottom = 30.dp, start = 30.dp, end = 30.dp)
+                    .padding(
+                        top = dimensionResource(id = R.dimen.bit_more_space),
+                        bottom = dimensionResource(id = R.dimen.bit_more_space),
+                        start = dimensionResource(id = R.dimen.bit_more_space),
+                        end = dimensionResource(id = R.dimen.bit_more_space)
+                    )
             ) {
 
                 Text(
@@ -225,21 +231,29 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h3,
-                    color = textColor
+                    color = textColor,
+                    fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp
                 )
 
                 Text(
                     text = message,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 30.dp),
+                        .padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            start = dimensionResource(id = R.dimen.bit_more_space),
+                            end = dimensionResource(id = R.dimen.bit_more_space)
+                        ),
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.body1,
-                    color = textColor
+                    color = textColor,
+                    fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp
                 )
 
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (fieldOne != null) {
                         UserInputTextField(
@@ -249,7 +263,10 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                             fieldBorder = buttonBorder,
                             fieldBackground = fieldBackground,
                             textColor = textColor,
-                            modifier = Modifier.padding(top = 30.dp, start = 15.dp, end = 15.dp),
+                            modifier = Modifier.padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                start = dimensionResource(id = R.dimen.bit_more_space),
+                                end = dimensionResource(id = R.dimen.bit_more_space)),
                             call = { fieldOneValue = it })
                     }
 
@@ -261,7 +278,10 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                             fieldBorder = buttonBorder,
                             fieldBackground = fieldBackground,
                             textColor = textColor,
-                            modifier = Modifier.padding(top = 30.dp, start = 15.dp, end = 15.dp),
+                            modifier = Modifier.padding(
+                                top = dimensionResource(id = R.dimen.bit_more_space),
+                                start = dimensionResource(id = R.dimen.bit_more_space),
+                                end = dimensionResource(id = R.dimen.bit_more_space)),
                             call = { fieldTwoValue = it })
                     }
 
@@ -269,7 +289,11 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 30.dp, start = 10.dp, end = 10.dp),
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.bit_more_space),
+                                    end = dimensionResource(id = R.dimen.bit_more_space)
+                                ),
                             horizontalArrangement = Arrangement.SpaceAround
                         ) {
                             DialogButton(
@@ -299,8 +323,12 @@ fun CustomDialog(title: String, message: String, backgroundColor: Color = JessCh
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 30.dp, start = 10.dp, end = 10.dp),
-                            horizontalArrangement = Arrangement.Center
+                                .padding(
+                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    start = dimensionResource(id = R.dimen.bit_more_space),
+                                    end = dimensionResource(id = R.dimen.bit_more_space)
+                                ),
+                                horizontalArrangement = Arrangement.Center
                         ) {
                             DialogButton(
                                 title = stringResource(R.string.ok),
@@ -334,7 +362,7 @@ fun DialogButton(title: String, color: Color = JessChatLex.blueBackground,
     ) {
         Text(
             text = title,
-            fontSize = 17.sp,
+            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
             color = Color.White
         )
     }

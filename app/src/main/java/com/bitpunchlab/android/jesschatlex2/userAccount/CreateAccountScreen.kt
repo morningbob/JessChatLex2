@@ -312,7 +312,12 @@ fun CreateAccountScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .fillMaxHeight()
-                            .verticalScroll(rememberScrollState()),) {
+                            .padding(
+                                start = dimensionResource(id = R.dimen.land_2_col_padding),
+                                end = dimensionResource(id = R.dimen.land_2_col_padding)
+                            )
+                            .verticalScroll(rememberScrollState()),
+                    ) {
 
                         UserInputTextField(
                             title = stringResource(R.string.name), content = nameState,
@@ -326,8 +331,8 @@ fun CreateAccountScreen(navController: NavHostController,
                                 .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.bit_more_space),
-                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                    //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    //end = dimensionResource(id = R.dimen.textfield_right_padding)
                                 )
                         ) { registerViewModel.updateName(it) }
                         ErrorText(
@@ -337,8 +342,8 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                    //start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                 )
                         )
                         UserInputTextField(
@@ -352,9 +357,9 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = dimensionResource(id = R.dimen.bit_more_space),
-                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                    top = dimensionResource(id = R.dimen.general_space),
+                                    //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    //end = dimensionResource(id = R.dimen.textfield_right_padding)
                                 )
                         ) { registerViewModel.updateEmail(it) }
                         ErrorText(
@@ -364,8 +369,8 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                    //start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                 )
                         )
                         UserInputTextField(
@@ -379,9 +384,9 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = dimensionResource(id = R.dimen.bit_more_space),
-                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                    top = dimensionResource(id = R.dimen.general_space),
+                                    //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    //end = dimensionResource(id = R.dimen.textfield_right_padding)
                                 )
                         ) { registerViewModel.updatePassword(it) }
                         ErrorText(
@@ -391,8 +396,8 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                    //start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                 )
                         )
                         UserInputTextField(
@@ -407,9 +412,9 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = dimensionResource(id = R.dimen.bit_more_space),
-                                    start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                    end = dimensionResource(id = R.dimen.textfield_right_padding)
+                                    top = dimensionResource(id = R.dimen.general_space),
+                                    //start = dimensionResource(id = R.dimen.textfield_left_padding),
+                                    //end = dimensionResource(id = R.dimen.textfield_right_padding)
                                 )
                         ) {
                             registerViewModel.updateConfirmPassword(it)
@@ -421,16 +426,19 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                    end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                    //start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                    //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                 )
                         )
                     }
+                        // 2nd column
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .padding(
                                 top = dimensionResource(id = R.dimen.bit_more_space),
+                                end = dimensionResource(id = R.dimen.app_button_left_padding),
+                                //end =
                                 bottom = dimensionResource(id = R.dimen.more_space)
                             )
                             .fillMaxHeight(),
@@ -451,8 +459,8 @@ fun CreateAccountScreen(navController: NavHostController,
                                 .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.more_space),
-                                    start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                    end = dimensionResource(id = R.dimen.app_button_right_padding),
+                                    //start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                    //end = dimensionResource(id = R.dimen.app_button_right_padding),
                                     bottom = dimensionResource(id = R.dimen.general_space)
                                 )
                         )
@@ -470,8 +478,8 @@ fun CreateAccountScreen(navController: NavHostController,
                                 .fillMaxWidth()
                                 .padding(
                                     top = dimensionResource(id = R.dimen.bit_more_space),
-                                    start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                    end = dimensionResource(id = R.dimen.app_button_right_padding)
+                                    //start = dimensionResource(id = R.dimen.app_button_left_padding),
+                                    //end = dimensionResource(id = R.dimen.app_button_right_padding)
                                 )
                         )
                     }

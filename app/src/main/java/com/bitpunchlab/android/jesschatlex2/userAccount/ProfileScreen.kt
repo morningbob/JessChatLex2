@@ -381,6 +381,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 //.fillMaxSize(),
                                 .fillMaxWidth()
                                 .fillMaxHeight()
+                                .padding(
+                                    end = dimensionResource(id = R.dimen.app_button_right_padding)
+                                )
                                 .verticalScroll(rememberScrollState()),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -418,7 +421,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 Column(
                                     modifier = Modifier
                                         .padding(
-                                            start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                            //start = dimensionResource(id = R.dimen.error_left_right_padding),
                                             end = dimensionResource(id = R.dimen.error_left_right_padding)
                                         )
                                 ) {
@@ -441,7 +444,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                                 top = dimensionResource(id = R.dimen.more_space),
                                                 bottom = 2.dp,
                                                 //start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                                end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                                //end = dimensionResource(id = R.dimen.textfield_left_padding),
                                             )
                                             .fillMaxWidth(),
                                         call = { profileViewModel.updateCurrentPassword(it) })
@@ -452,7 +455,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                             .padding(
                                                 bottom = 4.dp,
                                                 //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                             )
                                             .fillMaxWidth(),
                                     )
@@ -521,7 +524,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                             .padding(
                                                 bottom = 4.dp,
                                                 //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                             )
                                             .fillMaxWidth(),
                                     )
@@ -551,7 +554,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                             .fillMaxWidth()
                                             .padding(
                                                 //start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                                end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                                //end = dimensionResource(id = R.dimen.textfield_left_padding),
                                                 bottom = dimensionResource(id = R.dimen.more_space)
                                             ),
                                     )

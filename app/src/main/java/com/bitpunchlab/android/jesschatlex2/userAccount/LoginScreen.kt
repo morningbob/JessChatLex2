@@ -34,7 +34,7 @@ fun LoginScreen(navController: NavHostController,
                 mainViewModel: MainViewModel,
                 loginViewModel: LoginViewModel = LoginViewModel(),
     //userInfoViewModel: UserInfoViewModel = viewModel(LocalContext.current as ComponentActivity)
-) {
+){
     val lightMode = !isSystemInDarkTheme()
     fun chooseMode() : ColorMode {
         if (lightMode) {
@@ -251,8 +251,6 @@ fun LoginScreen(navController: NavHostController,
                         }
                     )
                 }
-
-
             } else {// end of if portrait
                 // landscape
                 Row(
@@ -263,6 +261,11 @@ fun LoginScreen(navController: NavHostController,
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .verticalScroll(rememberScrollState())
+                        .padding(
+                            start = dimensionResource(id = R.dimen.land_2_col_padding),
+                            end = dimensionResource(id = R.dimen.land_2_col_padding)
+                        )
+
                 ) {
                     UserInputTextField(
                         title = stringResource(R.string.email),
@@ -276,9 +279,9 @@ fun LoginScreen(navController: NavHostController,
                             .fillMaxWidth()
                             .padding(
                                 top = dimensionResource(id = R.dimen.more_space),
-                                start = dimensionResource(R.dimen.textfield_left_padding),
-                                end = dimensionResource(R.dimen.textfield_right_padding)
-                            ),
+                                //start = dimensionResource(R.dimen.textfield_left_padding),
+                                //end = dimensionResource(R.dimen.textfield_right_padding)
+                            )
 
                         ) { loginViewModel.updateEmail(it) }
                     ErrorText(
@@ -288,8 +291,8 @@ fun LoginScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                //start = dimensionResource(id = R.dimen.error_left_right_padding),
+                            // end = dimensionResource(id = R.dimen.error_left_right_padding)
                             )
                     )
                     //Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
@@ -304,9 +307,9 @@ fun LoginScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = dimensionResource(id = R.dimen.bit_more_space),
-                                start = dimensionResource(R.dimen.textfield_left_padding),
-                                end = dimensionResource(R.dimen.textfield_right_padding)
+                                top = dimensionResource(id = R.dimen.general_space),
+                                //start = dimensionResource(R.dimen.textfield_left_padding),
+                                //end = dimensionResource(R.dimen.textfield_right_padding)
                             ),
                     ) { loginViewModel.updatePassword(it) }
                     ErrorText(
@@ -316,8 +319,8 @@ fun LoginScreen(navController: NavHostController,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                //start = dimensionResource(id = R.dimen.error_left_right_padding),
+                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
                             )
                     )
                 }

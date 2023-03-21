@@ -7,9 +7,9 @@
     <dimen name="app_button_right_padding">70dp</dimen>
     <dimen name="app_button_extra_padding">110dp</dimen>
     <dimen name="app_button_land_whole_padding">150dp</dimen>
-    <dimen name="general_space">7dp</dimen>
-    <dimen name="bit_more_space">15dp</dimen>
-    <dimen name="more_space">30dp</dimen>
+    <dimen name="general_space">10dp</dimen>
+    <dimen name="bit_more_space">30dp</dimen>
+    <dimen name="more_space">50dp</dimen>
     <dimen name="error_left_right_padding">78dp</dimen>
     <dimen name="clickable_text_padding">6dp</dimen>
     <dimen name="records_text_left_right_margin">100dp</dimen>
@@ -21,4 +21,6 @@
     <dimen name="textfield_land_width">100dp</dimen>
     <dimen name="textfield_land_height">170dp</dimen>
     <dimen name="normal_round_corner">12dp</dimen>
+    <dimen name="more_round_corner">16dp</dimen>
+    <dimen name="land_2_col_padding">80dp</dimen>
 </resources>

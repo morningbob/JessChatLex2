@@ -21,4 +21,6 @@
     <dimen name="textfield_land_width">100dp</dimen>
     <dimen name="textfield_land_height">170dp</dimen>
     <dimen name="normal_round_corner">12dp</dimen>
+    <dimen name="more_round_corner">16dp</dimen>
+    <dimen name="land_2_col_padding">80dp</dimen>
 </resources>
