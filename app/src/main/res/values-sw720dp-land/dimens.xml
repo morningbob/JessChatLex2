@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="header_title_padding">150dp</dimen>
+    <dimen name="header_title_padding">40dp</dimen>
     <dimen name="textfield_left_padding">160dp</dimen>
     <dimen name="textfield_right_padding">160dp</dimen>
     <dimen name="app_button_left_padding">160dp</dimen>
     <dimen name="app_button_right_padding">160dp</dimen>
     <dimen name="app_button_extra_padding">110dp</dimen>
     <dimen name="app_button_land_whole_padding">150dp</dimen>
-    <dimen name="general_space">30dp</dimen>
-    <dimen name="bit_more_space">60dp</dimen>
-    <dimen name="more_space">120dp</dimen>
-    <dimen name="error_left_right_padding">70dp</dimen>
+    <dimen name="general_space">25dp</dimen>
+    <dimen name="bit_more_space">40dp</dimen>
+    <dimen name="more_space">80dp</dimen>
+
+    <dimen name="error_left_right_padding">180dp</dimen>
     <dimen name="clickable_text_padding">6dp</dimen>
+    <dimen name="clickable_text_surface">200dp</dimen>
+
     <dimen name="records_text_left_right_margin">100dp</dimen>
-    <dimen name="general_text_size">22sp</dimen>
-    <dimen name="normal_text_size">25sp</dimen>
-    <dimen name="bigger_text_size">30sp</dimen>
+    <dimen name="general_text_size">25sp</dimen>
+    <dimen name="normal_text_size">28sp</dimen>
+    <dimen name="bigger_text_size">32sp</dimen>
     <dimen name="message_item_padding">12dp</dimen>
     <dimen name="title_text_size">50sp</dimen>
     <dimen name="textfield_land_width">100dp</dimen>

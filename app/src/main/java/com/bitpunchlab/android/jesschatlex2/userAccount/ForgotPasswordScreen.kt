@@ -424,22 +424,33 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 )
         )
 
-        Text(
-            text = stringResource(R.string.no_code),
-            fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
-            color = JessChatLex.getColor(mode, Element.CLICKABLE),
+        Surface(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = dimensionResource(id = R.dimen.bit_more_space),
-                    bottom = dimensionResource(id = R.dimen.more_space)
-                )
-                .clickable(enabled = true) {
-                    navigateCode.invoke()
-                },
-            textAlign = TextAlign.Center
-
+                .width(dimensionResource(id = R.dimen.clickable_text_surface))
+                .background(JessChatLex.getColor(mode, Element.BACKGROUND))
         )
+        {
+            Column() {
+                Text(
+                    text = stringResource(R.string.no_code),
+                    fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
+                    color = JessChatLex.getColor(mode, Element.CLICKABLE),
+                    modifier = Modifier
+                        .background(JessChatLex.getColor(mode, Element.BACKGROUND))
+                        .fillMaxWidth()
+                        .padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            bottom = dimensionResource(id = R.dimen.more_space)
+                        )
+                        .clickable(enabled = true) {
+                            navigateCode.invoke()
+                        },
+                    textAlign = TextAlign.Center
+
+                )
+            }
+        }
+
     }
 }
 
@@ -509,23 +520,33 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
                 )
         )
 
-        Text(
-            text = stringResource(R.string.have_code),
-            fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
-            color = JessChatLex.getColor(mode, Element.CLICKABLE),
+        Surface(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    top = dimensionResource(id = R.dimen.bit_more_space),
-                    bottom = dimensionResource(
-                        id = R.dimen.more_space
-                    )
-                )
-                .clickable(enabled = true) {
-                    navigateRequest.invoke()
-                },
-            textAlign = TextAlign.Center
+                .width(dimensionResource(id = R.dimen.clickable_text_surface))
+                .background(JessChatLex.getColor(mode, Element.BACKGROUND))
         )
+        {
+            Column() {
+                Text(
+                    text = stringResource(R.string.have_code),
+                    fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp,
+                    color = JessChatLex.getColor(mode, Element.CLICKABLE),
+                    modifier = Modifier
+                        .background(JessChatLex.getColor(mode, Element.BACKGROUND))
+                        .fillMaxWidth()
+                        .padding(
+                            top = dimensionResource(id = R.dimen.bit_more_space),
+                            bottom = dimensionResource(
+                                id = R.dimen.more_space
+                            )
+                        )
+                        .clickable(enabled = true) {
+                            navigateRequest.invoke()
+                        },
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 
 }

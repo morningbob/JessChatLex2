@@ -107,6 +107,7 @@ fun CreateAccountScreen(navController: NavHostController,
                                     Element.BANNER
                                 )
                             ),
+                        verticalArrangement = Arrangement.Top
 
                     ) {
                         TitleText(
@@ -268,7 +269,7 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    top = dimensionResource(id = R.dimen.general_space),
                                     start = dimensionResource(id = R.dimen.app_button_left_padding),
                                     end = dimensionResource(id = R.dimen.app_button_right_padding)
                                 )
@@ -477,7 +478,7 @@ fun CreateAccountScreen(navController: NavHostController,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(
-                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    top = dimensionResource(id = R.dimen.general_space),
                                     //start = dimensionResource(id = R.dimen.app_button_left_padding),
                                     //end = dimensionResource(id = R.dimen.app_button_right_padding)
                                 )
