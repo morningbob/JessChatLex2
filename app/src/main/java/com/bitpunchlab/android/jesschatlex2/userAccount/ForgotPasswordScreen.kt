@@ -86,9 +86,9 @@ fun ForgotPasswordScreen(navController: NavHostController,
                     modifier = Modifier
                         .padding(
                             top = dimensionResource(id = R.dimen.bit_more_space),
-                            bottom = dimensionResource(id = R.dimen.bit_more_space),
+                            bottom = dimensionResource(id = R.dimen.general_space),
                             start = dimensionResource(id = R.dimen.app_button_left_padding),
-                            end = dimensionResource(id = R.dimen.app_button_right_padding)
+                            end = dimensionResource(id = R.dimen.app_button_right_padding),
                         ),
                     color = JessChatLex.getColor(mode, Element.TEXT),
                     fontSize = dimensionResource(id = R.dimen.normal_text_size).value.sp
@@ -129,6 +129,7 @@ fun ForgotPasswordScreen(navController: NavHostController,
                                     R.dimen.app_button_land_whole_padding
                                 ),
                                 end = dimensionResource(id = R.dimen.app_button_land_whole_padding),
+                                bottom = dimensionResource(id = R.dimen.more_space)
                             )
                     )
                 }
@@ -297,7 +298,7 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = dimensionResource(id = R.dimen.general_space),
+                    //top = dimensionResource(id = R.dimen.general_space),
                     start = dimensionResource(id = leftRightPadding),
                     end = dimensionResource(id = leftRightPadding)
                 ),
@@ -308,9 +309,9 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 2.dp,
-                    start = dimensionResource(id = leftRightPadding),
-                    end = dimensionResource(id = leftRightPadding)
+                    top = dimensionResource(id = R.dimen.between_error_padding),
+                    start = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space),
+                    end = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space)
                 )
         )
 
@@ -325,7 +326,7 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = dimensionResource(id = R.dimen.general_space),
+                    top = dimensionResource(id = R.dimen.between_textfield_padding),
                     start = dimensionResource(id = leftRightPadding),
                     end = dimensionResource(id = leftRightPadding)
                 ),
@@ -336,9 +337,9 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 2.dp,
-                    start = dimensionResource(id = leftRightPadding),
-                    end = dimensionResource(id = leftRightPadding)
+                    top = dimensionResource(id = R.dimen.between_error_padding),
+                    start = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space),
+                    end = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space)
                 )
         )
 
@@ -353,7 +354,7 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 4.dp,
+                    top = dimensionResource(id = R.dimen.between_textfield_padding),
                     start = dimensionResource(id = leftRightPadding),
                     end = dimensionResource(id = leftRightPadding)
                 ),
@@ -365,9 +366,9 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 2.dp,
-                    start = dimensionResource(id = leftRightPadding),
-                    end = dimensionResource(id = leftRightPadding)
+                    top = dimensionResource(id = R.dimen.between_error_padding),
+                    start = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space),
+                    end = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space)
                 ),
         )
 
@@ -382,7 +383,7 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 4.dp,
+                    top = dimensionResource(id = R.dimen.between_textfield_padding),
                     start = dimensionResource(id = leftRightPadding),
                     end = dimensionResource(id = leftRightPadding)
                 ),
@@ -394,9 +395,9 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 2.dp,
-                    start = dimensionResource(id = leftRightPadding),
-                    end = dimensionResource(id = leftRightPadding)
+                    top = dimensionResource(id = R.dimen.between_error_padding),
+                    start = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space),
+                    end = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space)
                 ),
         )
 
@@ -419,14 +420,14 @@ fun ResetPasswordWidget(navigateCode: () -> Unit, email: String, emailError: Str
                 .fillMaxWidth()
                 .padding(
                     top = dimensionResource(id = R.dimen.bit_more_space),
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 )
         )
 
         Surface(
             modifier = Modifier
-                .width(dimensionResource(id = R.dimen.clickable_text_surface))
+                .width(dimensionResource(id = R.dimen.clickable_text_sentence))
                 .background(JessChatLex.getColor(mode, Element.BACKGROUND))
         )
         {
@@ -461,6 +462,12 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
         modifier = Modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val leftRightPadding = if (isPortrait) {
+            R.dimen.error_left_right_padding
+        } else {
+            R.dimen.app_button_land_whole_padding
+        }
+
         UserInputTextField(
             title = stringResource(R.string.email),
             content = email,
@@ -472,9 +479,9 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = dimensionResource(id = R.dimen.general_space),
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    //top = dimensionResource(id = R.dimen.general_space),
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 ),
             call = { forgotPassViewModel.updateEmail(it) })
 
@@ -485,20 +492,8 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
                 .fillMaxWidth()
                 .padding(
                     top = 2.dp,
-                    start = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    ),
-                    end = dimensionResource(
-                        id = if (isPortrait) {
-                            R.dimen.error_left_right_padding
-                        } else {
-                            R.dimen.app_button_land_whole_padding
-                        }
-                    )
+                    start = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space),
+                    end = dimensionResource(id = leftRightPadding) + dimensionResource(id = R.dimen.general_space)
                 ),
         )
         //Spacer(modifier = Modifier.width(5.dp))
@@ -515,14 +510,14 @@ fun RequestCodeWidget(navigateRequest: () -> Unit, email: String, emailError: St
                 .fillMaxWidth()
                 .padding(
                     top = dimensionResource(id = R.dimen.bit_more_space),
-                    start = dimensionResource(id = R.dimen.app_button_land_whole_padding),
-                    end = dimensionResource(id = R.dimen.app_button_land_whole_padding)
+                    start = dimensionResource(id = leftRightPadding),
+                    end = dimensionResource(id = leftRightPadding)
                 )
         )
 
         Surface(
             modifier = Modifier
-                .width(dimensionResource(id = R.dimen.clickable_text_surface))
+                .width(dimensionResource(id = R.dimen.clickable_text_sentence))
                 .background(JessChatLex.getColor(mode, Element.BACKGROUND))
         )
         {

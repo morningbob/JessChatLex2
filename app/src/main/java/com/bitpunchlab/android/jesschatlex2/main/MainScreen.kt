@@ -180,7 +180,8 @@ fun MainScreen(navController: NavHostController,
                                         color = JessChatLex.getColor(
                                             themeMode,
                                             Element.FIELD_BORDER
-                                        )
+                                        ),
+                                        fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp
                                     ),
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
                                         focusedBorderColor = JessChatLex.getColor(
@@ -200,17 +201,20 @@ fun MainScreen(navController: NavHostController,
                                             Element.FIELD_BORDER
                                         )
                                     ),
-                                    shape = RoundedCornerShape(12.dp),
+                                    shape = RoundedCornerShape(dimensionResource(id = R.dimen.normal_round_corner)),
                                     label = {
                                         Text(
                                             text = stringResource(R.string.type_message),
+                                            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                             color = JessChatLex.getColor(
                                                 themeMode,
                                                 Element.FIELD_BORDER
                                             ),
                                         )
                                     },
-                                    modifier = Modifier.fillMaxHeight()
+                                    modifier = Modifier
+                                        //.width(dimensionResource(id = R.dimen.message_box_length))
+                                        .fillMaxWidth(0.7f)
                                 )
                             }
                         }
@@ -302,8 +306,7 @@ fun MainScreen(navController: NavHostController,
                                         .height(dimensionResource(id = R.dimen.textfield_land_height))
                                         .fillMaxWidth()
                                         .padding(
-                                            //start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                            //end = dimensionResource(id = R.dimen.textfield_right_padding)
+
                                         ),
 
                                     trailingIcon = {
@@ -349,6 +352,7 @@ fun MainScreen(navController: NavHostController,
                                     label = {
                                         Text(
                                             text = stringResource(R.string.type_message),
+                                            fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                             color = JessChatLex.getColor(
                                                 themeMode,
                                                 Element.FIELD_BORDER

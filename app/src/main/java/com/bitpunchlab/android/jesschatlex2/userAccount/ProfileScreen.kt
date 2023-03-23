@@ -131,7 +131,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                             modifier = Modifier
                                 //.fillMaxWidth()
                                 .padding(
-                                    top = dimensionResource(id = R.dimen.bit_more_space),
+                                    top = dimensionResource(id = R.dimen.more_space),
                                     start = dimensionResource(id = R.dimen.textfield_left_padding),
                                     end = dimensionResource(id = R.dimen.textfield_left_padding),
                                     bottom = dimensionResource(id = R.dimen.general_space)
@@ -216,7 +216,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(
-                                            bottom = 2.dp,
+                                            //bottom = 2.dp,
                                             start = dimensionResource(id = R.dimen.textfield_left_padding),
                                             end = dimensionResource(id = R.dimen.textfield_right_padding),
                                         ),
@@ -228,7 +228,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(
-                                            bottom = 4.dp,
+                                            top = dimensionResource(id = R.dimen.between_error_padding),
                                             start = dimensionResource(id = R.dimen.error_left_right_padding),
                                             end = dimensionResource(id = R.dimen.error_left_right_padding)
                                         ),
@@ -245,7 +245,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(
-                                            bottom = 2.dp,
+                                            top = dimensionResource(id = R.dimen.between_textfield_padding),
                                             start = dimensionResource(id = R.dimen.textfield_left_padding),
                                             end = dimensionResource(id = R.dimen.textfield_right_padding),
                                         ),
@@ -257,7 +257,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(
-                                            bottom = 4.dp,
+                                            top = dimensionResource(id = R.dimen.between_error_padding),
                                             start = dimensionResource(id = R.dimen.error_left_right_padding),
                                             end = dimensionResource(id = R.dimen.error_left_right_padding)
                                         ),
@@ -275,7 +275,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(
-                                            bottom = 2.dp,
+                                            top = dimensionResource(id = R.dimen.between_textfield_padding),
                                             start = dimensionResource(id = R.dimen.textfield_left_padding),
                                             end = dimensionResource(id = R.dimen.textfield_right_padding),
                                         ),
@@ -288,9 +288,10 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(
-                                            bottom = 4.dp,
+                                            top = dimensionResource(id = R.dimen.between_error_padding),
                                             start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                            end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                            end = dimensionResource(id = R.dimen.error_left_right_padding),
+                                            bottom = dimensionResource(id = R.dimen.bit_more_space)
                                         ),
                                 )
 
@@ -334,8 +335,8 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     //.fillMaxWidth()
                                     .padding(
                                         top = dimensionResource(id = R.dimen.more_space),
-                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                        start = dimensionResource(id = R.dimen.land_2_col_padding),
+                                        end = dimensionResource(id = R.dimen.land_2_col_padding),
                                         bottom = dimensionResource(id = R.dimen.general_space)
                                     ),
                                 size = dimensionResource(id = R.dimen.general_text_size).value.sp,
@@ -355,8 +356,8 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                 modifier = Modifier
                                     //.fillMaxWidth()
                                     .padding(
-                                        start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                        end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                        start = dimensionResource(id = R.dimen.land_2_col_padding),
+                                        end = dimensionResource(id = R.dimen.land_2_col_padding),
                                         bottom = dimensionResource(id = R.dimen.general_space)
                                     ),
                                 size = dimensionResource(id = R.dimen.general_text_size).value.sp,
@@ -394,10 +395,6 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         //.fillMaxWidth()
                                         .padding(
                                             top = dimensionResource(id = R.dimen.more_space),
-                                            //start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                            //start = dimensionResource(id = R.dimen.textfield_left_padding),
-                                            //end = dimensionResource(id = R.dimen.textfield_left_padding),
-                                            //end = dimensionResource(id = R.dimen.textfield_left_padding),
                                             bottom = dimensionResource(id = R.dimen.general_space)
                                         ),
                                     size = dimensionResource(id = R.dimen.general_text_size).value.sp,
@@ -422,7 +419,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     modifier = Modifier
                                         .padding(
                                             //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                            end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                            //end = dimensionResource(id = R.dimen.error_left_right_padding)
                                         )
                                 ) {
                                     UserInputTextField(
@@ -442,9 +439,6 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         modifier = Modifier
                                             .padding(
                                                 top = dimensionResource(id = R.dimen.more_space),
-                                                bottom = 2.dp,
-                                                //start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                                //end = dimensionResource(id = R.dimen.textfield_left_padding),
                                             )
                                             .fillMaxWidth(),
                                         call = { profileViewModel.updateCurrentPassword(it) })
@@ -453,9 +447,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
                                         modifier = Modifier
                                             .padding(
-                                                bottom = 4.dp,
-                                                //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                                top = dimensionResource(id = R.dimen.between_error_padding),
+                                                start = dimensionResource(id = R.dimen.general_space),
+                                                end = dimensionResource(id = R.dimen.general_space)
                                             )
                                             .fillMaxWidth(),
                                     )
@@ -475,9 +469,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         hide = false,
                                         modifier = Modifier
                                             .padding(
-                                                bottom = 2.dp,
-                                                //start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                                //end = dimensionResource(id = R.dimen.textfield_left_padding),
+                                                top = dimensionResource(id = R.dimen.between_textfield_padding),
                                             )
                                             .fillMaxWidth(),
                                         call = { profileViewModel.updateNewPassword(it) })
@@ -486,9 +478,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
                                         modifier = Modifier
                                             .padding(
-                                                bottom = 4.dp,
-                                                //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                                top = dimensionResource(id = R.dimen.between_error_padding),
+                                                start = dimensionResource(id = R.dimen.general_space),
+                                                end = dimensionResource(id = R.dimen.general_space)
                                             )
                                             .fillMaxWidth(),
                                     )
@@ -509,9 +501,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         hide = false,
                                         modifier = Modifier
                                             .padding(
-                                                bottom = 2.dp,
-                                                //start = dimensionResource(id = R.dimen.textfield_right_padding),
-                                                //end = dimensionResource(id = R.dimen.textfield_left_padding)
+                                                top = dimensionResource(id = R.dimen.between_textfield_padding),
                                             )
                                             .fillMaxWidth(),
                                         call = { profileViewModel.updateConfirmPassword(it) },
@@ -522,9 +512,9 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         color = JessChatLex.getColor(mode, Element.ERROR_TEXT),
                                         modifier = Modifier
                                             .padding(
-                                                bottom = 4.dp,
-                                                //start = dimensionResource(id = R.dimen.error_left_right_padding),
-                                                //end = dimensionResource(id = R.dimen.error_left_right_padding)
+                                                bottom = dimensionResource(id = R.dimen.bit_more_space),
+                                                start = dimensionResource(id = R.dimen.general_space),
+                                                end = dimensionResource(id = R.dimen.general_space)
                                             )
                                             .fillMaxWidth(),
                                     )
@@ -553,8 +543,6 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(
-                                                //start = dimensionResource(id = R.dimen.app_button_left_padding),
-                                                //end = dimensionResource(id = R.dimen.textfield_left_padding),
                                                 bottom = dimensionResource(id = R.dimen.more_space)
                                             ),
                                     )
