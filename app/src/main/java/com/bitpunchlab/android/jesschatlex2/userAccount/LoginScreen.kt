@@ -34,6 +34,7 @@ fun LoginScreen(navController: NavHostController,
                 mainViewModel: MainViewModel,
                 loginViewModel: LoginViewModel = LoginViewModel(),
     //userInfoViewModel: UserInfoViewModel = viewModel(LocalContext.current as ComponentActivity)
+
 ){
     val lightMode = !isSystemInDarkTheme()
     fun chooseMode() : ColorMode {

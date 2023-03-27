@@ -19,7 +19,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -71,7 +73,7 @@ fun UserInputTextField(title: String, content: String, hide: Boolean,
 
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             textStyle = LocalTextStyle.current.copy(color = textColor, fontSize = textSize),
-
+            visualTransformation = if (!hide) VisualTransformation.None else PasswordVisualTransformation(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = fieldBorder,
                 unfocusedBorderColor = fieldBorder,
