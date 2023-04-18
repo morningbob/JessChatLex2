@@ -311,6 +311,20 @@ object MobileClient {
         })
     }
 
+    suspend fun deleteAccount() : Boolean =
+        suspendCancellableCoroutine<Boolean> { cancellableContinuation ->
+            AWSMobileClient.getInstance().deleteUser(object : Callback<Void> {
+                override fun onResult(result: Void?) {
+                    Log.i("mobile client", "deleted account")
+                }
+
+                override fun onError(e: java.lang.Exception?) {
+                    Log.i("mobile client", "failed to delete account")
+                }
+
+            })
+    }
+
     private val interactionListener = object : InteractionListener {
         override fun onReadyForFulfillment(response: Response?) {
             Log.i("lex listener", "transaction completed")

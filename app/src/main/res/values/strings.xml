@@ -62,4 +62,7 @@
     <string name="send_message">Send Message</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="confirm_delete_title">Confirm Deletion</string>
+    <string name="confirm_delete_message">Are you sure to delete your account?</string>
 </resources>

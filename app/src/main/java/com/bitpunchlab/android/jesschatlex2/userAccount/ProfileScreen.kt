@@ -47,6 +47,7 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
     val changePassResult by profileViewModel.changePassResult.collectAsState()
     val readyChange by profileViewModel.readyChange.collectAsState()
     val loadingAlpha by profileViewModel.loadingAlpha.collectAsState()
+    val shouldDeleteAccount by profileViewModel.shouldDeleteAccount.collectAsState()
 
     val config = LocalConfiguration.current
 
@@ -195,6 +196,21 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                         enabled = true,
                                         onClick = {
                                             profileViewModel.updateShouldChangePassword(true)
+                                        }),
+                                color = JessChatLex.getColor(mode, Element.CLICKABLE),
+                            )
+                            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.more_space)))
+
+                            Text(
+                                text = stringResource(R.string.delete_account),
+                                fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
+                                modifier = Modifier
+                                    .padding(dimensionResource(id = R.dimen.message_item_padding))
+                                    .clickable(
+                                        enabled = true,
+                                        onClick = {
+                                            //profileViewModel.updateShouldChangePassword(true)
+                                            profileViewModel.updateDeleteAccount(1)
                                         }),
                                 color = JessChatLex.getColor(mode, Element.CLICKABLE),
                             )
@@ -413,6 +429,20 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                                     color = JessChatLex.getColor(mode, Element.CLICKABLE),
                                     //fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
                                 )
+                                Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.more_space)))
+                                Text(
+                                    text = stringResource(R.string.delete_account),
+                                    fontSize = dimensionResource(id = R.dimen.general_text_size).value.sp,
+                                    modifier = Modifier
+                                        .padding(dimensionResource(id = R.dimen.message_item_padding))
+                                        .clickable(
+                                            enabled = true,
+                                            onClick = {
+                                                //profileViewModel.updateShouldChangePassword(true)
+                                                profileViewModel.updateDeleteAccount(1)
+                                            }),
+                                    color = JessChatLex.getColor(mode, Element.CLICKABLE),
+                                )
                                 Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.general_space)))
                             } else {
                                 Column(
@@ -552,6 +582,12 @@ fun ProfileScreen(navController: NavHostController, mainViewModel: MainViewModel
                     } // end of Row
                 } // end of landscape if
                 }
+            
+            if (shouldDeleteAccount == 1) {
+                ConfirmDeleteAccountDialog(
+                    profileViewModel = profileViewModel,
+                    mode = mode)
+            }
 
             if (changePassResult == 1) {
                 ChangePasswordSuccessDialog(profileViewModel = profileViewModel, mode = mode)
@@ -610,4 +646,23 @@ fun PasswordsSameErrorDialog(profileViewModel: ProfileViewModel, mode: ColorMode
         textColor = JessChatLex.getColor(mode, Element.TEXT),
         onDismiss = { profileViewModel.updateChangePassResult(0) },
         okOnClick = { _, _ -> profileViewModel.updateChangePassResult(0) })
+}
+
+@Composable
+fun ConfirmDeleteAccountDialog(profileViewModel: ProfileViewModel, mode: ColorMode) {
+    CustomDialog(
+        title = stringResource(R.string.confirm_delete_title),
+        message = stringResource(R.string.confirm_delete_message),
+        backgroundColor = JessChatLex.getColor(mode, Element.BACKGROUND),
+        buttonColor = JessChatLex.getColor(mode, Element.BUTTON_COLOR),
+        buttonBorder = JessChatLex.getColor(mode, Element.BUTTON_BORDER),
+        textColor = JessChatLex.getColor(mode, Element.TEXT),
+        onDismiss = { profileViewModel.updateChangePassResult(0) },
+        okOnClick = { _, _ ->
+            profileViewModel.processDeleteAccount()
+            profileViewModel.updateChangePassResult(0)
+        },
+        cancelOnClick = { _,_ ->
+            profileViewModel.updateDeleteAccount(0)
+        })
 }

@@ -41,6 +41,9 @@ class ProfileViewModel : ViewModel() {
     private val _loadingAlpha = MutableStateFlow<Float>(0f)
     val loadingAlpha: StateFlow<Float> = _loadingAlpha.asStateFlow()
 
+    private val _shouldDeleteAccount = MutableStateFlow<Int>(0)
+    val shouldDeleteAccount : StateFlow<Int> = _shouldDeleteAccount
+
     init {
         CoroutineScope(Dispatchers.IO).launch {
             combine(currentPassError, newPassError, confirmPassError) { current, new, confirm ->
@@ -99,6 +102,16 @@ class ProfileViewModel : ViewModel() {
                 _changePassResult.value = 2
                 resetFields()
             }
+        }
+    }
+
+    fun updateDeleteAccount(should: Int) {
+        _shouldDeleteAccount.value = should
+    }
+
+    fun processDeleteAccount() {
+        CoroutineScope(Dispatchers.IO).launch {
+            MobileClient.deleteAccount()
         }
     }
 
