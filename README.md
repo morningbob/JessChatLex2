@@ -16,31 +16,31 @@
 &nbsp;
 &nbsp;
 
-<img src=".\images\chat_01.jpg" alt="application register account screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
+<img src=".\images\chat_01.png" alt="application register account screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
 
 &nbsp;
 <center> Registration screen, a user need to register an account and login before he can send message to the chat bot. </center>
 &nbsp;
 
-<img src=".\images\chat_02.jpg" alt="application login screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
+<img src=".\images\chat_02.png" alt="application login screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
 
 &nbsp;
 <center> Login screen, a user can create account, verify email and reset password in this screen.</center>
 &nbsp;
 
-<img src=".\images\chat_03.jpg" alt="application reset password screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
+<img src=".\images\chat_03.png" alt="application reset password screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
 
 &nbsp;
 <center> Reset password screen, a user can reset password here.  After a user requested to reset password, the server will send a confirmation code to the user's registered email.  The user needs to enter the confirmation code in this screen in order to reset the password.</center>
 &nbsp;
 
-<img src=".\images\chat_04.jpg" alt="application home screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
+<img src=".\images\chat_04.png" alt="application home screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
 
 &nbsp;
 <center> Home screen, which is also the screen to chat with the chat bot.  If there is error getting a response, there will be an error message display on the top of the screen.  There is a bottom navigation bar that the user can use to navigate the app.  The app keeps a record of all the user's chats.  The user can navigate to the record page to read them.  User can also navigate to the profile page.</center>
 &nbsp;
 
-<img src=".\images\chat_04.jpg" alt="application profile screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
+<img src=".\images\chat_05.jpg" alt="application profile screenshot" style="width:250px; margin-left: auto; margin-right: auto; display: block;" />
 
 &nbsp;
 <center> Profile screen, the user can check his name and email in this page.  The user can also change his password here.</center>
