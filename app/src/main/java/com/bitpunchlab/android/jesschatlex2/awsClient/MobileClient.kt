@@ -163,8 +163,8 @@ object MobileClient {
             AWSMobileClient.getInstance().signUp(email, password, attributes, null, object : Callback<SignUpResult> {
                 override fun onResult(result: SignUpResult?) {
                     if (result?.confirmationState == false) {
-                        Log.i("mobile client", "??")
-                        cancellableContinuation.resume(false) {}
+                        Log.i("mobile client", "sign up wait for confirmation")
+                        cancellableContinuation.resume(true) {}
                     } else {
                         Log.i("mobile client", "sign up done")
                         cancellableContinuation.resume(true) {}
@@ -174,6 +174,7 @@ object MobileClient {
                 override fun onError(e: java.lang.Exception?) {
                     Log.i("mobile client", "error sign up $e")
                     cancellableContinuation.resume(false) {}
+
                 }
 
             })
